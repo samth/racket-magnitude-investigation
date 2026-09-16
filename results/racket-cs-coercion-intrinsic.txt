@@ -1,0 +1,65 @@
+Racket branch: cs-intrinsic-real-to-double-flonum
+Commit: c2afc30141
+Typed Racket: unmodified c01299b5
+
+Final metadata expansion:
+
+  (lambda (x)
+    (if (flonum? x)
+        x
+        (if (real? x)
+            (exact->inexact x)
+            (raise-argument-error 'real->double-flonum "real?" x))))
+
+Isolated 100-million-iteration recurrence
+
+x86 raw:
+  119.46 ms, 119.91 ms, 119.95 ms
+  882592 allocated bytes, 0 ms GC
+x86 with two coercions:
+  118.99 ms, 118.67 ms, 118.76 ms
+  882592 allocated bytes, 0 ms GC
+
+ARM raw:
+  295.13 ms, 296.20 ms, 295.21 ms
+  882608 allocated bytes, 0 ms GC
+ARM with two coercions:
+  295.96 ms, 299.76 ms, 296.94 ms
+  882608-948128 allocated bytes, 0 ms GC
+
+AArch64 raw and coercing disassemblies are textually identical.
+x86 instruction streams are identical except for relocated literal and
+runtime-code addresses.
+
+Bad-argument check on both builds:
+
+  real->double-flonum: contract violation
+    expected: real?
+    given: #f
+
+Mandelbrot, 1024x1024, max_iter=1024, one warmup and five runs
+
+x86 typed-zfl with stock TR:
+  506.72, 523.67, 517.01, 513.62, 537.15 ms
+  average 519.63 ms, allocation about 5170 MB
+x86 paired inexact baseline:
+  1336.17, 1336.76, 1336.56, 1339.83, 1337.06 ms
+  average 1337.28 ms, allocation about 8553 MB
+  relative time 0.389x
+
+ARM typed-zfl with stock TR:
+  2348.47, 2348.83, 2347.74, 2343.89, 2345.98 ms
+  average 2346.98 ms, allocation about 5170 MB
+ARM paired inexact baseline:
+  3867.52, 3886.48, 3873.90, 3872.59, 3867.77 ms
+  average 3873.65 ms, allocation about 8553 MB
+  relative time 0.606x
+
+typed-zfl output was byte-identical to inexact on x86 and ARM.
+
+The existing optimizer comparison for
+  (real->double-flonum (fl+ z z))
+is enabled for Chez Scheme by the patch. The complete optimize.rktl file could
+not be run from this copied, uninstalled worktree because matching source
+packages encountered stale/incompatible compiled artifacts before reaching
+the new test. Rebuilt runtime/compiler tests above passed on both architectures.

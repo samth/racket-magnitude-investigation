@@ -1,0 +1,48 @@
+From c2afc30141808aeaf36d873de5021d3bcacf6292 Mon Sep 17 00:00:00 2001
+From: Sam Tobin-Hochstadt <samth@iu.edu>
+Date: Wed, 16 Sep 2026 11:53:48 -0400
+Subject: [PATCH] Inline real->double-flonum on Racket CS
+
+---
+ pkgs/racket-test-core/tests/racket/optimize.rktl |  3 +--
+ racket/src/cs/primitive/kernel.ss                | 10 +++++++++-
+ 2 files changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/pkgs/racket-test-core/tests/racket/optimize.rktl b/pkgs/racket-test-core/tests/racket/optimize.rktl
+index 3177e4920f..b2d7602444 100644
+--- a/pkgs/racket-test-core/tests/racket/optimize.rktl
++++ b/pkgs/racket-test-core/tests/racket/optimize.rktl
+@@ -844,8 +844,7 @@
+ (test-comp '(lambda (z) (let ([f (lambda (i) (car i))]) (f z)) #t)
+            '(lambda (z) (let ([f (lambda (i) (car i))]) (f z)) (pair? z)))
+ 
+-(test-comp #:except 'chez-scheme ; real->double-flonum is not primitive
+-           '(lambda (z) (fl+ z z))
++(test-comp '(lambda (z) (fl+ z z))
+            '(lambda (z) (real->double-flonum (fl+ z z))))
+ (test-comp #:except 'chez-scheme
+            '(lambda (z) (fl+ z z))
+diff --git a/racket/src/cs/primitive/kernel.ss b/racket/src/cs/primitive/kernel.ss
+index 42dbd8943a..c9ab5569f1 100644
+--- a/racket/src/cs/primitive/kernel.ss
++++ b/racket/src/cs/primitive/kernel.ss
+@@ -789,7 +789,15 @@
+   [read-on-demand-source (known-procedure/single-valued 3)]
+   [read-string (known-procedure/single-valued 6)]
+   [read-string! (known-procedure/single-valued 30)]
+-  [real->double-flonum (known-procedure/folding 2)]
++  [real->double-flonum
++   (known-procedure/can-inline
++    2
++    '(lambda (x)
++       (if (flonum? x)
++           x
++           (if (real? x)
++               (exact->inexact x)
++               (raise-argument-error 'real->double-flonum "real?" x)))))]
+   [real->floating-point-bytes (known-procedure/single-valued 60)]
+   [real->single-flonum (known-procedure/single-valued 2)]
+   [real-part (known-procedure/folding 2)]
+-- 
+2.53.0
+

@@ -13,6 +13,7 @@ All times are averages for a 1024x1024 Mandelbrot image with `max_iter=1024`, on
 | `typed-zfl-alt-mag.rkt` | `sqrt(real^2 + imag^2)` | 644 ms / 0.483x | 3251 ms / 0.830x | 6822 / 6822 MB |
 | `typed-zfl-squared-mag.rkt` | Compare `real^2 + imag^2` with 4; no `sqrt` | 655 ms / 0.491x | 2695 ms / 0.688x | 6822 / 6822 MB |
 | coercion fix + stock magnitude | Remove redundant component coercions; retain stock zero test and scaled division | 504 ms / 0.378x | 2390 ms / 0.610x | 5166 / 5166 MB |
+| Racket CS intrinsic + stock TR [2] | Inline `real->double-flonum` with a flonum identity fast path | 520 ms / 0.389x | 2347 ms / 0.606x | 5170 / 5170 MB |
 | coercion fix + `typed-zfl-alt-mag.rkt` | Remove redundant component coercions with direct square root | 456 ms / 0.342x | 1048 ms / 0.267x | 3485 / 3485 MB |
 | coercion fix + `typed-zfl-squared-mag.rkt` | Remove redundant component coercions with squared escape test | 424 ms / 0.318x | 889 ms / 0.227x | 3485 / 3485 MB |
 | hybrid magnitude [1] | Direct square in the ordinary range, scaled division at extremes | 745 ms / 0.558x | 3483 ms / 0.886x | 6822 / 6822 MB |
@@ -31,6 +32,8 @@ All times are averages for a 1024x1024 Mandelbrot image with `max_iter=1024`, on
 | `roofline.rkt` | Lucas's fully hand-specialized unsafe implementation | 279 ms / 0.209x | 324 ms / 0.083x | 1 / 1 MB |
 
 [1] These rows came from the earlier normalized magnitude series, whose `inexact.rkt` baselines were 1335 ms on x86 and 3931 ms on ARM. The other rows came from the fresh Lucas/isolation series, whose baselines are shown in the first row. The baseline difference is below 1%. The ratio-without-infinity-check variant is diagnostic and does not preserve the full special-value behavior.
+
+[2] This row uses unmodified Typed Racket at `c01299b5` with Racket branch `cs-intrinsic-real-to-double-flonum`. Its paired source-build baselines were 1337 ms on x86 and 3874 ms on ARM. The output was byte-identical to `inexact.rkt` on both machines.
 
 The x86 host is an Intel Core Ultra 7 265. The ARM host `oracle` is a Neoverse N1. Both use Racket CS 9.3.0.8 snapshots. The iteration loop executes 104,129,299 times in this workload.
 
@@ -107,6 +110,34 @@ The AArch64 disassembly uses four `movz`/`movk` instructions to materialize each
 
 Chez already knows how to eliminate its internal `real->flonum` and `$real->flonum` primitives when `known-flonum-result?` proves the argument is a flonum. Racket CS's `real->double-flonum`, however, reaches Chez as a call to a separately compiled Racket wrapper. Its compiler metadata describes a foldable procedure but does not expose the identity-on-flonum rule or the unboxed result path. Chez therefore cannot apply its existing primitive optimization at this call site. Making the Racket operation a compiler-recognized intrinsic could eliminate the call too, but avoiding the redundant call in TR is smaller and also applies to Racket BC.
 
+## Racket CS to Chez intrinsic connection
+
+Branch `cs-intrinsic-real-to-double-flonum`, commit `c2afc30141`, changes the Racket CS primitive metadata from `known-procedure/folding` to a small cross-module inline expansion:
+
+```racket
+(lambda (x)
+  (if (flonum? x)
+      x
+      (if (real? x)
+          (exact->inexact x)
+          (raise-argument-error 'real->double-flonum "real?" x))))
+```
+
+The first prototype expanded directly to Chez `real->flonum`. That eliminated the hot call but changed a bad-argument error from `real->double-flonum` to Chez's rewritten name `->fl`. A second prototype retained an inlined `real?` guard. It preserved the error, but AArch64 did not eliminate the guard: the isolated loop took 342 ms instead of 296 ms despite eliminating all allocation. The final flonum-first expansion exposes the exact identity case and leaves the original conversion and error behavior in a cold fallback.
+
+With the final expansion, the isolated 100-million-iteration coercing loop is indistinguishable from the raw loop:
+
+| Final intrinsic microbenchmark | x86 | ARM | Allocation |
+|---|---:|---:|---:|
+| Raw recurrence | 119-120 ms | 295-296 ms | about 0.9 MB |
+| Two `real->double-flonum` calls | 119 ms | 296-300 ms | about 0.9 MB |
+
+The final AArch64 disassemblies are textually identical. The x86 instruction streams are also identical; only relocated literal and runtime-code addresses differ. The public bad-argument message remains `real->double-flonum: contract violation`.
+
+Unmodified Typed Racket with this Racket branch takes 520 ms on x86 and 2347 ms on ARM, allocating 5170 MB on each. Those results match the separate TR coercion patch within normal variation. The Racket change therefore removes the two TR-generated coercion boxes for all Racket CS clients, while the TR patch remains useful for Racket BC and avoids generating redundant operations in the first place.
+
+The Racket optimizer regression now enables the existing comparison showing that `(real->double-flonum (fl+ z z))` compiles like `(fl+ z z)` under Chez Scheme. The complete optimizer file could not be run from the copied, uninstalled worktree because its package bytecode had an incompatible FASL version. The rebuilt x86 and ARM microbenchmarks, disassembly comparisons, contract-error check, and byte-for-byte Mandelbrot comparison all passed.
+
 ## Why Lucas's scalar versions are faster
 
 `typed-scalar.rkt` carries `zr` and `zi` as separate `Float` arguments. This avoids the generated complex multiply/add machinery and its two extra per-iteration coercion boxes. Its `math/flonum` `flhypot` is the same scaled-division algorithm, but it is defined inside `begin-encourage-inline` and receives scalar arguments directly. Even with the division, scalarization improves the result to 483 ms on x86 and 1836 ms on ARM.
@@ -156,15 +187,17 @@ The same atomic form takes 16367 ms and allocates 13548 MB on the Neoverse N1. A
 
 1. Change the generated generic `zero?` to `unsafe-fl=`. This removes one allocation per magnitude call.
 2. Remove the `real->double-flonum` coercion boxes introduced by generated float-complex multiplication and addition. Implemented and tested on branch `avoid-redundant-float-complex-coercions`, commit `c63c8ed4`.
-3. Arrange generated scalar recurrences as immediate loops, or otherwise communicate loop-carried flonum types to Chez so recursive calls remain unboxed.
-4. Use range information from `i < max_iter` to replace the hot checked `fx+` with `unsafe-fx+` when `max_iter` is a positive fixnum.
-5. Consider strength reduction for multiplication by exactly `2.0` where the floating-point semantics are acceptable.
-6. Investigate AArch64 lowering of `#%foreign-inline` `foreign-procedure` calls with `double-float` arguments/results.
-7. For workload code such as Mandelbrot, prefer a squared-radius predicate instead of computing magnitude. This is a source-level algorithmic optimization, not a valid general implementation of `magnitude`.
+3. Expose the identity-on-flonum case for Racket CS `real->double-flonum` so Chez can eliminate redundant calls from any client. Implemented and tested on branch `cs-intrinsic-real-to-double-flonum`, commit `c2afc30141`.
+4. Arrange generated scalar recurrences as immediate loops, or otherwise communicate loop-carried flonum types to Chez so recursive calls remain unboxed.
+5. Use range information from `i < max_iter` to replace the hot checked `fx+` with `unsafe-fx+` when `max_iter` is a positive fixnum.
+6. Consider strength reduction for multiplication by exactly `2.0` where the floating-point semantics are acceptable.
+7. Investigate AArch64 lowering of `#%foreign-inline` `foreign-procedure` calls with `double-float` arguments/results.
+8. For workload code such as Mandelbrot, prefer a squared-radius predicate instead of computing magnitude. This is a source-level algorithmic optimization, not a valid general implementation of `magnitude`.
 
 ## Experimental branches
 
 - Racket `flhypot`: branch `flhypot`, commit `1cb4f05769`.
+- Racket CS coercion intrinsic: branch `cs-intrinsic-real-to-double-flonum`, commit `c2afc30141`.
 - Typed Racket: branch `use-flhypot`, commits `8c8af219`, `5bc1455f`, and `1819ebda`.
 - Typed Racket redundant-coercion fix: branch `avoid-redundant-float-complex-coercions`, commit `c63c8ed4`.
 - Math library: branch `use-racket-flhypot`, commit `3fd5a82`.
