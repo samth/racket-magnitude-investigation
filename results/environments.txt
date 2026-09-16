@@ -1,0 +1,26 @@
+x86 local
+Architecture:                            x86_64
+CPU(s):                                  20
+On-line CPU(s) list:                     0-19
+Model name:                              Intel(R) Core(TM) Ultra 7 265
+Thread(s) per core:                      1
+Core(s) per socket:                      20
+Socket(s):                               1
+CPU(s) scaling MHz:                      75%
+CPU max MHz:                             5300.0000
+CPU min MHz:                             800.0000
+NUMA node0 CPU(s):                       0-19
+Welcome to Racket v9.3.0.8 [cs].
+Racket commit 4d515e40351a16b13b2a64d6a8af791a72e53a1a
+Typed Racket stock commit c01299b54c208d5f545b2d2a6c057ff14536a5f5
+
+ARM oracle
+Architecture:                            aarch64
+CPU(s):                                  2
+On-line CPU(s) list:                     0,1
+Model name:                              Neoverse-N1
+Thread(s) per core:                      1
+Core(s) per socket:                      2
+Socket(s):                               1
+NUMA node0 CPU(s):                       0,1
+Welcome to Racket v9.3.0.8-2026-09-12-06fd59e02c [cs].

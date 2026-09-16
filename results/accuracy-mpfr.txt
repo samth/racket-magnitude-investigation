@@ -1,0 +1,15 @@
+mandelbrot-orbit
+  runtime-hypot: n=102615 exact=102026 1-ulp=589 >=2-ulp=0 avg-ulp=0.00573990157384398 max-ulp=1
+  math/flonum-flhypot: n=102615 exact=63896 1-ulp=38456 >=2-ulp=263 avg-ulp=0.3798859815816401 max-ulp=2
+  optimizer-ratio: n=102615 exact=63896 1-ulp=38456 >=2-ulp=263 avg-ulp=0.3798859815816401 max-ulp=2
+  optimizer-hybrid: n=102615 exact=85261 1-ulp=17354 >=2-ulp=0 avg-ulp=0.16911757540320616 max-ulp=1
+large-finite
+  runtime-hypot: n=8192 exact=8186 1-ulp=6 >=2-ulp=0 avg-ulp=0.000732421875 max-ulp=1
+  math/flonum-flhypot: n=8192 exact=4684 1-ulp=3438 >=2-ulp=70 avg-ulp=0.436767578125 max-ulp=2
+  optimizer-ratio: n=8192 exact=4684 1-ulp=3438 >=2-ulp=70 avg-ulp=0.436767578125 max-ulp=2
+  optimizer-hybrid: n=8192 exact=4684 1-ulp=3438 >=2-ulp=70 avg-ulp=0.436767578125 max-ulp=2
+small-finite
+  runtime-hypot: n=8192 exact=8180 1-ulp=12 >=2-ulp=0 avg-ulp=0.00146484375 max-ulp=1
+  math/flonum-flhypot: n=8192 exact=4658 1-ulp=3458 >=2-ulp=76 avg-ulp=0.440673828125 max-ulp=2
+  optimizer-ratio: n=8192 exact=4658 1-ulp=3458 >=2-ulp=76 avg-ulp=0.440673828125 max-ulp=2
+  optimizer-hybrid: n=8192 exact=4658 1-ulp=3458 >=2-ulp=76 avg-ulp=0.440673828125 max-ulp=2

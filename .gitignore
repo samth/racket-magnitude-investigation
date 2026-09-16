@@ -1,0 +1,5 @@
+/checkouts/
+**/compiled/
+*.zo
+*.dep
+*~

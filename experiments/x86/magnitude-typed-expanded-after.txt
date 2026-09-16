@@ -1,0 +1,1250 @@
+(module magnitude-typed typed/racket
+  (#%module-begin
+   (module configure-runtime '#%kernel
+     (#%module-begin (#%require racket/runtime-config) (#%app configure '#f)))
+   (begin-for-syntax
+    (module*
+     #%type-decl
+     #f
+     (#%plain-module-begin
+      (#%declare #:empty-namespace)
+      (#%require typed-racket/types/numeric-tower)
+      (#%require typed-racket/env/type-name-env)
+      (#%require typed-racket/env/global-env)
+      (#%require typed-racket/env/type-alias-env)
+      (#%require typed-racket/types/struct-table)
+      (#%require typed-racket/types/abbrev)
+      (#%require typed-racket/env/struct-name-env)
+      (#%require
+       (all-except racket/private/sort sort)
+       (rename racket/private/sort raw-sort sort))
+      (#%app
+       register-type
+       (t-quote-syntax run-default)
+       (let-values (((procedure) simple->27)
+                    ((temp1)
+                     (#%app
+                      list
+                      (#%app
+                       Un
+                       (#%app -ivec -FloatComplex)
+                       (#%app -mvec -FloatComplex))
+                      -Nat))
+                    ((-Nat2) -Nat)
+                    ((temp3) '#f))
+         (if (#%app
+              variable-reference-constant?
+              (#%variable-reference simple->27))
+           (#%app simple-> temp3 temp1 -Nat2)
+           (#%app
+            (#%app
+             checked-procedure-check-and-extract
+             struct:keyword-procedure
+             procedure
+             keyword-procedure-extract
+             '(#:T+)
+             '4)
+            '(#:T+)
+            (#%app list temp3)
+            temp1
+            -Nat2))))
+      (#%app
+       register-type
+       (t-quote-syntax run-hybrid)
+       (let-values (((procedure) simple->27)
+                    ((temp4)
+                     (#%app
+                      list
+                      (#%app
+                       Un
+                       (#%app -ivec -FloatComplex)
+                       (#%app -mvec -FloatComplex))
+                      -Nat))
+                    ((-Nat5) -Nat)
+                    ((temp6) '#f))
+         (if (#%app
+              variable-reference-constant?
+              (#%variable-reference simple->27))
+           (#%app simple-> temp6 temp4 -Nat5)
+           (#%app
+            (#%app
+             checked-procedure-check-and-extract
+             struct:keyword-procedure
+             procedure
+             keyword-procedure-extract
+             '(#:T+)
+             '4)
+            '(#:T+)
+            (#%app list temp6)
+            temp4
+            -Nat5))))
+      (#%app
+       register-type
+       (t-quote-syntax run-ratio)
+       (let-values (((procedure) simple->27)
+                    ((temp7)
+                     (#%app
+                      list
+                      (#%app
+                       Un
+                       (#%app -ivec -FloatComplex)
+                       (#%app -mvec -FloatComplex))
+                      -Nat))
+                    ((-Nat8) -Nat)
+                    ((temp9) '#f))
+         (if (#%app
+              variable-reference-constant?
+              (#%variable-reference simple->27))
+           (#%app simple-> temp9 temp7 -Nat8)
+           (#%app
+            (#%app
+             checked-procedure-check-and-extract
+             struct:keyword-procedure
+             procedure
+             keyword-procedure-extract
+             '(#:T+)
+             '4)
+            '(#:T+)
+            (#%app list temp9)
+            temp7
+            -Nat8))))
+      (#%app
+       register-type
+       (t-quote-syntax run-ratio-zero)
+       (let-values (((procedure) simple->27)
+                    ((temp10)
+                     (#%app
+                      list
+                      (#%app
+                       Un
+                       (#%app -ivec -FloatComplex)
+                       (#%app -mvec -FloatComplex))
+                      -Nat))
+                    ((-Nat11) -Nat)
+                    ((temp12) '#f))
+         (if (#%app
+              variable-reference-constant?
+              (#%variable-reference simple->27))
+           (#%app simple-> temp12 temp10 -Nat11)
+           (#%app
+            (#%app
+             checked-procedure-check-and-extract
+             struct:keyword-procedure
+             procedure
+             keyword-procedure-extract
+             '(#:T+)
+             '4)
+            '(#:T+)
+            (#%app list temp12)
+            temp10
+            -Nat11))))
+      (#%app
+       register-type
+       (t-quote-syntax run-simple)
+       (let-values (((procedure) simple->27)
+                    ((temp13)
+                     (#%app
+                      list
+                      (#%app
+                       Un
+                       (#%app -ivec -FloatComplex)
+                       (#%app -mvec -FloatComplex))
+                      -Nat))
+                    ((-Nat14) -Nat)
+                    ((temp15) '#f))
+         (if (#%app
+              variable-reference-constant?
+              (#%variable-reference simple->27))
+           (#%app simple-> temp15 temp13 -Nat14)
+           (#%app
+            (#%app
+             checked-procedure-check-and-extract
+             struct:keyword-procedure
+             procedure
+             keyword-procedure-extract
+             '(#:T+)
+             '4)
+            '(#:T+)
+            (#%app list temp15)
+            temp13
+            -Nat14)))))))
+   (begin-for-syntax
+    (#%app
+     add-mod!
+     (#%app variable-reference->module-path-index (#%variable-reference))))
+   (define-values
+    (blame1)
+    (#%app
+     module-name-fixup
+     (#%app variable-reference->module-source/submod (#%variable-reference))
+     (#%app list)))
+   (begin-for-syntax
+    (#%require typed-racket/utils/redirect-contract)
+    (module #%contract-defs-reference racket/base
+      (#%module-begin
+       (module configure-runtime '#%kernel
+         (#%module-begin
+          (#%require racket/runtime-config)
+          (#%app configure '#f)))
+       (#%require racket/runtime-path)
+       (#%require (for-meta 1 racket/base))
+       (define-values
+        (contract-defs-submod)
+        (let-values (((contract-defs-submod)
+                      (let-values (((runtime?) '#t))
+                        (#%app
+                         list
+                         'module
+                         '(submod ".." #%contract-defs)
+                         (#%variable-reference)))))
+          (let-values (((get-dir) void))
+            (#%app
+             apply
+             values
+             (#%app
+              resolve-paths
+              (#%variable-reference)
+              get-dir
+              (#%app list contract-defs-submod))))))
+       (begin-for-syntax
+        (#%app
+         register-ext-files
+         (#%variable-reference)
+         (let-values (((contract-defs-submod)
+                       (let-values (((runtime?) '#f))
+                         (#%app
+                          list
+                          'module
+                          '(submod ".." #%contract-defs)
+                          (#%variable-reference)))))
+           (#%app list contract-defs-submod))))
+       (#%provide contract-defs-submod)))
+    (#%require (submod "." #%contract-defs-reference))
+    (define-values
+     (make-redirect2)
+     (#%app make-make-redirect-to-contract contract-defs-submod)))
+   (module*
+    #%contract-defs
+    #f
+    (#%plain-module-begin
+     (#%declare #:empty-namespace)
+     (#%require (submod typed-racket/private/type-contract predicates))
+     (#%require typed-racket/utils/utils)
+     (#%require (for-meta 1 typed-racket/utils/utils))
+     (#%require typed-racket/utils/any-wrap)
+     (#%require typed-racket/utils/struct-type-c)
+     (#%require typed-racket/utils/prefab-c)
+     (#%require typed-racket/utils/opaque-object)
+     (#%require typed-racket/utils/evt-contract)
+     (#%require typed-racket/utils/hash-contract)
+     (#%require typed-racket/utils/vector-contract)
+     (#%require typed-racket/utils/sealing-contract)
+     (#%require typed-racket/utils/promise-not-name-contract)
+     (#%require typed-racket/utils/simple-result-arrow)
+     (#%require typed-racket/utils/eq-contract)
+     (#%require racket/sequence)
+     (#%require racket/contract/parametric)
+     (#%require typed-racket/utils/shallow-contract)))
+   (#%require math/flonum)
+   (#%require typed/racket/unsafe)
+   (#%provide run-default run-ratio-zero run-ratio run-simple run-hybrid)
+   (define-syntaxes
+    (ratio-magnitude-zero)
+    (lambda (user-stx)
+      (let-values (((arg) user-stx))
+        (let-values (((rslt)
+                      (#%app
+                       (lambda (e)
+                         (if (#%app stx-pair? e)
+                           (if (#%app (lambda (e) null) (#%app stx-car e))
+                             (#%app
+                              (lambda (e)
+                                (if (#%app stx-pair? e)
+                                  (let-values (((mh) (#%app stx-car e)))
+                                    (if mh
+                                      (if (#%app stx-null/#f (#%app stx-cdr e))
+                                        mh
+                                        '#f)
+                                      '#f))
+                                  '#f))
+                              (#%app stx-cdr e))
+                             '#f)
+                           '#f))
+                       arg)))
+          (if rslt
+            (let-values (((sc1) rslt))
+              (let-values ()
+                (#%app
+                 syntax-protect
+                 (let-values (((loc) (#%app check-loc 'syntax/loc user-stx)))
+                   (#%app
+                    t-subst
+                    loc
+                    (quote-syntax
+                     (let _ (if
+                             (zero? i)
+                             r
+                             (if (or (fl= r +inf.0) (fl= i +inf.0))
+                               +inf.0
+                               (if (fl< i r)
+                                 (let ((q (fl/ i r)))
+                                   (fl* r (flsqrt (fl+ 1.0 (fl* q q)))))
+                                 (let ((q (fl/ r i)))
+                                   (fl* i (flsqrt (fl+ 1.0 (fl* q q))))))))))
+                    '(1)
+                    (#%app
+                     t-resyntax
+                     '#f
+                     (quote-syntax STX)
+                     (#%app
+                      t-list
+                      (#%app
+                       t-subst
+                       '#f
+                       (quote-syntax (r (flabs (real-part _))))
+                       '(recur 1)
+                       (#%app list '(recur 1) (#%app list '(1) sc1)))
+                      (#%app
+                       t-subst
+                       '#f
+                       (quote-syntax (i (flabs (imag-part _))))
+                       '(recur 1)
+                       (#%app list '(recur 1) (#%app list '(1) sc1))))))))))
+            (let-values (((rslt) arg))
+              (let-values ()
+                (let-values () (#%app pattern-failure user-stx '(z))))))))))
+   (define-syntaxes
+    (ratio-magnitude)
+    (lambda (user-stx)
+      (let-values (((arg) user-stx))
+        (let-values (((rslt)
+                      (#%app
+                       (lambda (e)
+                         (if (#%app stx-pair? e)
+                           (if (#%app (lambda (e) null) (#%app stx-car e))
+                             (#%app
+                              (lambda (e)
+                                (if (#%app stx-pair? e)
+                                  (let-values (((mh) (#%app stx-car e)))
+                                    (if mh
+                                      (if (#%app stx-null/#f (#%app stx-cdr e))
+                                        mh
+                                        '#f)
+                                      '#f))
+                                  '#f))
+                              (#%app stx-cdr e))
+                             '#f)
+                           '#f))
+                       arg)))
+          (if rslt
+            (let-values (((sc1) rslt))
+              (let-values ()
+                (#%app
+                 syntax-protect
+                 (let-values (((loc) (#%app check-loc 'syntax/loc user-stx)))
+                   (#%app
+                    t-subst
+                    loc
+                    (quote-syntax
+                     (let _ (if
+                             (fl= i 0.0)
+                             r
+                             (if (or (fl= r +inf.0) (fl= i +inf.0))
+                               +inf.0
+                               (if (fl< i r)
+                                 (let ((q (fl/ i r)))
+                                   (fl* r (flsqrt (fl+ 1.0 (fl* q q)))))
+                                 (let ((q (fl/ r i)))
+                                   (fl* i (flsqrt (fl+ 1.0 (fl* q q))))))))))
+                    '(1)
+                    (#%app
+                     t-resyntax
+                     '#f
+                     (quote-syntax STX)
+                     (#%app
+                      t-list
+                      (#%app
+                       t-subst
+                       '#f
+                       (quote-syntax (r (flabs (real-part _))))
+                       '(recur 1)
+                       (#%app list '(recur 1) (#%app list '(1) sc1)))
+                      (#%app
+                       t-subst
+                       '#f
+                       (quote-syntax (i (flabs (imag-part _))))
+                       '(recur 1)
+                       (#%app list '(recur 1) (#%app list '(1) sc1))))))))))
+            (let-values (((rslt) arg))
+              (let-values ()
+                (let-values () (#%app pattern-failure user-stx '(z))))))))))
+   (define-syntaxes
+    (simple-magnitude)
+    (lambda (user-stx)
+      (let-values (((arg) user-stx))
+        (let-values (((rslt)
+                      (#%app
+                       (lambda (e)
+                         (if (#%app stx-pair? e)
+                           (if (#%app (lambda (e) null) (#%app stx-car e))
+                             (#%app
+                              (lambda (e)
+                                (if (#%app stx-pair? e)
+                                  (let-values (((mh) (#%app stx-car e)))
+                                    (if mh
+                                      (if (#%app stx-null/#f (#%app stx-cdr e))
+                                        mh
+                                        '#f)
+                                      '#f))
+                                  '#f))
+                              (#%app stx-cdr e))
+                             '#f)
+                           '#f))
+                       arg)))
+          (if rslt
+            (let-values (((sc1) rslt))
+              (let-values ()
+                (#%app
+                 syntax-protect
+                 (let-values (((loc) (#%app check-loc 'syntax/loc user-stx)))
+                   (#%app
+                    t-subst
+                    loc
+                    (quote-syntax (let _ (flsqrt (fl+ (fl* r r) (fl* i i)))))
+                    '(1)
+                    (#%app
+                     t-resyntax
+                     '#f
+                     (quote-syntax STX)
+                     (#%app
+                      t-list
+                      (#%app
+                       t-subst
+                       '#f
+                       (quote-syntax (r (real-part _)))
+                       '(recur 1)
+                       (#%app list '(1) sc1))
+                      (#%app
+                       t-subst
+                       '#f
+                       (quote-syntax (i (imag-part _)))
+                       '(recur 1)
+                       (#%app list '(1) sc1)))))))))
+            (let-values (((rslt) arg))
+              (let-values ()
+                (let-values () (#%app pattern-failure user-stx '(z))))))))))
+   (define-syntaxes
+    (hybrid-magnitude)
+    (lambda (user-stx)
+      (let-values (((arg) user-stx))
+        (let-values (((rslt)
+                      (#%app
+                       (lambda (e)
+                         (if (#%app stx-pair? e)
+                           (if (#%app (lambda (e) null) (#%app stx-car e))
+                             (#%app
+                              (lambda (e)
+                                (if (#%app stx-pair? e)
+                                  (let-values (((mh) (#%app stx-car e)))
+                                    (if mh
+                                      (if (#%app stx-null/#f (#%app stx-cdr e))
+                                        mh
+                                        '#f)
+                                      '#f))
+                                  '#f))
+                              (#%app stx-cdr e))
+                             '#f)
+                           '#f))
+                       arg)))
+          (if rslt
+            (let-values (((sc1) rslt))
+              (let-values ()
+                (#%app
+                 syntax-protect
+                 (let-values (((loc) (#%app check-loc 'syntax/loc user-stx)))
+                   (#%app
+                    t-subst
+                    loc
+                    (quote-syntax
+                     (let _ (let
+                             ((larger (if (fl< r i) i r)))
+                             (cond
+                              ((or (fl= r +inf.0) (fl= i +inf.0)) +inf.0)
+                              ((and (fl>= larger 1e-150) (fl<= larger 1e+150))
+                               (flsqrt (fl+ (fl* r r) (fl* i i))))
+                              ((fl= i 0.0) r)
+                              ((fl< i r)
+                               (let ((q (fl/ i r)))
+                                 (fl* r (flsqrt (fl+ 1.0 (fl* q q))))))
+                              (else
+                               (let ((q (fl/ r i)))
+                                 (fl* i (flsqrt (fl+ 1.0 (fl* q q))))))))))
+                    '(1)
+                    (#%app
+                     t-resyntax
+                     '#f
+                     (quote-syntax STX)
+                     (#%app
+                      t-list
+                      (#%app
+                       t-subst
+                       '#f
+                       (quote-syntax (r (flabs (real-part _))))
+                       '(recur 1)
+                       (#%app list '(recur 1) (#%app list '(1) sc1)))
+                      (#%app
+                       t-subst
+                       '#f
+                       (quote-syntax (i (flabs (imag-part _))))
+                       '(recur 1)
+                       (#%app list '(recur 1) (#%app list '(1) sc1))))))))))
+            (let-values (((rslt) arg))
+              (let-values ()
+                (let-values () (#%app pattern-failure user-stx '(z))))))))))
+   (define-syntaxes
+    (define-runner)
+    (lambda (user-stx)
+      (let-values (((arg) user-stx))
+        (let-values (((rslt)
+                      (#%app
+                       (lambda (e)
+                         (if (#%app stx-pair? e)
+                           (if (#%app (lambda (e) null) (#%app stx-car e))
+                             (#%app
+                              (lambda (e)
+                                (if (#%app stx-pair? e)
+                                  (#%app
+                                   cons/#f
+                                   (#%app stx-car e)
+                                   (#%app
+                                    (lambda (e)
+                                      (if (#%app stx-pair? e)
+                                        (let-values (((mh) (#%app stx-car e)))
+                                          (if mh
+                                            (if (#%app
+                                                 stx-null/#f
+                                                 (#%app stx-cdr e))
+                                              mh
+                                              '#f)
+                                            '#f))
+                                        '#f))
+                                    (#%app stx-cdr e)))
+                                  '#f))
+                              (#%app stx-cdr e))
+                             '#f)
+                           '#f))
+                       arg)))
+          (if rslt
+            (let-values (((sc1) (#%app unsafe-car rslt))
+                         ((sc2) (#%app unsafe-cdr rslt)))
+              (let-values ()
+                (#%app
+                 syntax-protect
+                 (let-values (((loc) (#%app check-loc 'syntax/loc user-stx)))
+                   (#%app
+                    t-subst
+                    loc
+                    (quote-syntax
+                     (define (_
+                              (zs : (Vectorof Float-Complex))
+                              (rounds : Natural))
+                       :
+                       Natural
+                       (define len : Natural (vector-length zs))
+                       (let outer :
+                         Natural
+                         ((round : Natural 0) (hits : Natural 0))
+                         (if (= round rounds)
+                           hits
+                           (let inner :
+                             Natural
+                             ((j : Natural 0) (hits : Natural hits))
+                             (if (= j len)
+                               (outer (add1 round) hits)
+                               (let ((z (vector-ref zs j)))
+                                 (inner
+                                  (add1 j)
+                                  (if (<= (_ z) 2.0) (add1 hits) hits)))))))))
+                    '(recur 1 recur 5)
+                    (#%app list '(0) sc1)
+                    (#%app
+                     list
+                     '(recur 5)
+                     (#%app
+                      list
+                      '(recur 3)
+                      (#%app
+                       list
+                       '(recur 5)
+                       (#%app
+                        list
+                        '(recur 3)
+                        (#%app
+                         list
+                         '(recur 2)
+                         (#%app
+                          list
+                          '(recur 2)
+                          (#%app
+                           list
+                           '(recur 1)
+                           (#%app
+                            list
+                            '(recur 1)
+                            (#%app list '(0) sc2))))))))))))))
+            (let-values (((rslt) arg))
+              (let-values ()
+                (let-values ()
+                  (#%app pattern-failure user-stx '(name mag))))))))))
+   (define-values
+    ()
+    (begin
+      (quote-syntax
+       (:-internal run-default ((Vectorof Float-Complex) Natural -> Natural))
+       #:local)
+      (#%plain-app values)))
+   (define-values
+    (run-default)
+    (lambda (zs rounds)
+      (letrec-values ((()
+                       (begin
+                         (quote-syntax (:-internal len Natural) #:local)
+                         (#%plain-app values)))
+                      ((len) (#%app unsafe-vector-length zs)))
+        (#%app
+         (letrec-values (((outer)
+                          (lambda (round hits)
+                            (if (#%app = round rounds)
+                              hits
+                              (#%app
+                               (letrec-values (((inner)
+                                                (lambda (j hits)
+                                                  (if (#%app = j len)
+                                                    (#%app
+                                                     outer
+                                                     (#%app add1 round)
+                                                     hits)
+                                                    (let-values (((g5)
+                                                                  (#%app
+                                                                   vector-ref
+                                                                   zs
+                                                                   j)))
+                                                      (let-values (((unboxed-real-6)
+                                                                    (#%app
+                                                                     unsafe-flreal-part
+                                                                     g5)))
+                                                        (let-values (((unboxed-imag-7)
+                                                                      (#%app
+                                                                       unsafe-flimag-part
+                                                                       g5)))
+                                                          (let-values (((unboxed-real-3)
+                                                                        unboxed-real-6))
+                                                            (let-values (((unboxed-imag-4)
+                                                                          unboxed-imag-7))
+                                                              (#%app
+                                                               inner
+                                                               (#%app add1 j)
+                                                               (if (#%app
+                                                                    unsafe-fl<=
+                                                                    (let-values ()
+                                                                      (let-values (((r)
+                                                                                    (#%app
+                                                                                     unsafe-flabs
+                                                                                     unboxed-real-3)))
+                                                                        (let-values (((i)
+                                                                                      (#%app
+                                                                                       unsafe-flabs
+                                                                                       unboxed-imag-4)))
+                                                                          (let-values (((larger)
+                                                                                        (if (#%app
+                                                                                             unsafe-fl<
+                                                                                             r
+                                                                                             i)
+                                                                                          i
+                                                                                          r)))
+                                                                            (if (let-values (((or-part)
+                                                                                              (#%app
+                                                                                               unsafe-fl=
+                                                                                               r
+                                                                                               '+inf.0)))
+                                                                                  (if or-part
+                                                                                    or-part
+                                                                                    (#%app
+                                                                                     unsafe-fl=
+                                                                                     i
+                                                                                     '+inf.0)))
+                                                                              (let-values ()
+                                                                                '+inf.0)
+                                                                              (if (if (#%app
+                                                                                       unsafe-fl>=
+                                                                                       larger
+                                                                                       '1e-150)
+                                                                                    (#%app
+                                                                                     unsafe-fl<=
+                                                                                     larger
+                                                                                     '1e+150)
+                                                                                    '#f)
+                                                                                (let-values ()
+                                                                                  (#%app
+                                                                                   unsafe-flsqrt
+                                                                                   (#%app
+                                                                                    unsafe-fl+
+                                                                                    (#%app
+                                                                                     unsafe-fl*
+                                                                                     r
+                                                                                     r)
+                                                                                    (#%app
+                                                                                     unsafe-fl*
+                                                                                     i
+                                                                                     i))))
+                                                                                (if (#%app
+                                                                                     unsafe-fl=
+                                                                                     i
+                                                                                     '0.0)
+                                                                                  (let-values ()
+                                                                                    r)
+                                                                                  (if (#%app
+                                                                                       unsafe-fl<
+                                                                                       i
+                                                                                       r)
+                                                                                    (let-values ()
+                                                                                      (let-values (((q)
+                                                                                                    (#%app
+                                                                                                     unsafe-fl/
+                                                                                                     i
+                                                                                                     r)))
+                                                                                        (#%app
+                                                                                         unsafe-fl*
+                                                                                         r
+                                                                                         (#%app
+                                                                                          unsafe-flsqrt
+                                                                                          (#%app
+                                                                                           unsafe-fl+
+                                                                                           '1.0
+                                                                                           (#%app
+                                                                                            unsafe-fl*
+                                                                                            q
+                                                                                            q))))))
+                                                                                    (let-values ()
+                                                                                      (let-values (((q)
+                                                                                                    (#%app
+                                                                                                     unsafe-fl/
+                                                                                                     r
+                                                                                                     i)))
+                                                                                        (#%app
+                                                                                         unsafe-fl*
+                                                                                         i
+                                                                                         (#%app
+                                                                                          unsafe-flsqrt
+                                                                                          (#%app
+                                                                                           unsafe-fl+
+                                                                                           '1.0
+                                                                                           (#%app
+                                                                                            unsafe-fl*
+                                                                                            q
+                                                                                            q))))))))))))))
+                                                                    '2.0)
+                                                                 (#%app
+                                                                  add1
+                                                                  hits)
+                                                                 hits)))))))))))
+                                 inner)
+                               '0
+                               hits)))))
+           outer)
+         '0
+         '0))))
+   (define-values
+    ()
+    (begin
+      (quote-syntax
+       (:-internal
+        run-ratio-zero
+        ((Vectorof Float-Complex) Natural -> Natural))
+       #:local)
+      (#%plain-app values)))
+   (define-values
+    (run-ratio-zero)
+    (lambda (zs rounds)
+      (letrec-values ((()
+                       (begin
+                         (quote-syntax (:-internal len Natural) #:local)
+                         (#%plain-app values)))
+                      ((len) (#%app unsafe-vector-length zs)))
+        (#%app
+         (letrec-values (((outer)
+                          (lambda (round hits)
+                            (if (#%app = round rounds)
+                              hits
+                              (#%app
+                               (letrec-values (((inner)
+                                                (lambda (j hits)
+                                                  (if (#%app = j len)
+                                                    (#%app
+                                                     outer
+                                                     (#%app add1 round)
+                                                     hits)
+                                                    (let-values (((g10)
+                                                                  (#%app
+                                                                   vector-ref
+                                                                   zs
+                                                                   j)))
+                                                      (let-values (((unboxed-real-11)
+                                                                    (#%app
+                                                                     unsafe-flreal-part
+                                                                     g10)))
+                                                        (let-values (((unboxed-imag-12)
+                                                                      (#%app
+                                                                       unsafe-flimag-part
+                                                                       g10)))
+                                                          (let-values (((unboxed-real-8)
+                                                                        unboxed-real-11))
+                                                            (let-values (((unboxed-imag-9)
+                                                                          unboxed-imag-12))
+                                                              (#%app
+                                                               inner
+                                                               (#%app add1 j)
+                                                               (if (#%app
+                                                                    unsafe-fl<=
+                                                                    (let-values (((r)
+                                                                                  (#%app
+                                                                                   unsafe-flabs
+                                                                                   (let-values ()
+                                                                                     unboxed-real-8))))
+                                                                      (let-values (((i)
+                                                                                    (#%app
+                                                                                     unsafe-flabs
+                                                                                     (let-values ()
+                                                                                       unboxed-imag-9))))
+                                                                        (if (#%app
+                                                                             unsafe-fl=
+                                                                             i
+                                                                             '0.0)
+                                                                          r
+                                                                          (if (let-values (((or-part)
+                                                                                            (#%app
+                                                                                             unsafe-fl=
+                                                                                             r
+                                                                                             '+inf.0)))
+                                                                                (if or-part
+                                                                                  or-part
+                                                                                  (#%app
+                                                                                   unsafe-fl=
+                                                                                   i
+                                                                                   '+inf.0)))
+                                                                            '+inf.0
+                                                                            (if (#%app
+                                                                                 unsafe-fl<
+                                                                                 i
+                                                                                 r)
+                                                                              (let-values (((q)
+                                                                                            (#%app
+                                                                                             unsafe-fl/
+                                                                                             i
+                                                                                             r)))
+                                                                                (#%app
+                                                                                 unsafe-fl*
+                                                                                 r
+                                                                                 (#%app
+                                                                                  unsafe-flsqrt
+                                                                                  (#%app
+                                                                                   unsafe-fl+
+                                                                                   '1.0
+                                                                                   (#%app
+                                                                                    unsafe-fl*
+                                                                                    q
+                                                                                    q)))))
+                                                                              (let-values (((q)
+                                                                                            (#%app
+                                                                                             unsafe-fl/
+                                                                                             r
+                                                                                             i)))
+                                                                                (#%app
+                                                                                 unsafe-fl*
+                                                                                 i
+                                                                                 (#%app
+                                                                                  unsafe-flsqrt
+                                                                                  (#%app
+                                                                                   unsafe-fl+
+                                                                                   '1.0
+                                                                                   (#%app
+                                                                                    unsafe-fl*
+                                                                                    q
+                                                                                    q))))))))))
+                                                                    '2.0)
+                                                                 (#%app
+                                                                  add1
+                                                                  hits)
+                                                                 hits)))))))))))
+                                 inner)
+                               '0
+                               hits)))))
+           outer)
+         '0
+         '0))))
+   (define-values
+    ()
+    (begin
+      (quote-syntax
+       (:-internal run-ratio ((Vectorof Float-Complex) Natural -> Natural))
+       #:local)
+      (#%plain-app values)))
+   (define-values
+    (run-ratio)
+    (lambda (zs rounds)
+      (letrec-values ((()
+                       (begin
+                         (quote-syntax (:-internal len Natural) #:local)
+                         (#%plain-app values)))
+                      ((len) (#%app unsafe-vector-length zs)))
+        (#%app
+         (letrec-values (((outer)
+                          (lambda (round hits)
+                            (if (#%app = round rounds)
+                              hits
+                              (#%app
+                               (letrec-values (((inner)
+                                                (lambda (j hits)
+                                                  (if (#%app = j len)
+                                                    (#%app
+                                                     outer
+                                                     (#%app add1 round)
+                                                     hits)
+                                                    (let-values (((g15)
+                                                                  (#%app
+                                                                   vector-ref
+                                                                   zs
+                                                                   j)))
+                                                      (let-values (((unboxed-real-16)
+                                                                    (#%app
+                                                                     unsafe-flreal-part
+                                                                     g15)))
+                                                        (let-values (((unboxed-imag-17)
+                                                                      (#%app
+                                                                       unsafe-flimag-part
+                                                                       g15)))
+                                                          (let-values (((unboxed-real-13)
+                                                                        unboxed-real-16))
+                                                            (let-values (((unboxed-imag-14)
+                                                                          unboxed-imag-17))
+                                                              (#%app
+                                                               inner
+                                                               (#%app add1 j)
+                                                               (if (#%app
+                                                                    unsafe-fl<=
+                                                                    (let-values (((r)
+                                                                                  (#%app
+                                                                                   unsafe-flabs
+                                                                                   (let-values ()
+                                                                                     unboxed-real-13))))
+                                                                      (let-values (((i)
+                                                                                    (#%app
+                                                                                     unsafe-flabs
+                                                                                     (let-values ()
+                                                                                       unboxed-imag-14))))
+                                                                        (if (#%app
+                                                                             unsafe-fl=
+                                                                             i
+                                                                             '0.0)
+                                                                          r
+                                                                          (if (let-values (((or-part)
+                                                                                            (#%app
+                                                                                             unsafe-fl=
+                                                                                             r
+                                                                                             '+inf.0)))
+                                                                                (if or-part
+                                                                                  or-part
+                                                                                  (#%app
+                                                                                   unsafe-fl=
+                                                                                   i
+                                                                                   '+inf.0)))
+                                                                            '+inf.0
+                                                                            (if (#%app
+                                                                                 unsafe-fl<
+                                                                                 i
+                                                                                 r)
+                                                                              (let-values (((q)
+                                                                                            (#%app
+                                                                                             unsafe-fl/
+                                                                                             i
+                                                                                             r)))
+                                                                                (#%app
+                                                                                 unsafe-fl*
+                                                                                 r
+                                                                                 (#%app
+                                                                                  unsafe-flsqrt
+                                                                                  (#%app
+                                                                                   unsafe-fl+
+                                                                                   '1.0
+                                                                                   (#%app
+                                                                                    unsafe-fl*
+                                                                                    q
+                                                                                    q)))))
+                                                                              (let-values (((q)
+                                                                                            (#%app
+                                                                                             unsafe-fl/
+                                                                                             r
+                                                                                             i)))
+                                                                                (#%app
+                                                                                 unsafe-fl*
+                                                                                 i
+                                                                                 (#%app
+                                                                                  unsafe-flsqrt
+                                                                                  (#%app
+                                                                                   unsafe-fl+
+                                                                                   '1.0
+                                                                                   (#%app
+                                                                                    unsafe-fl*
+                                                                                    q
+                                                                                    q))))))))))
+                                                                    '2.0)
+                                                                 (#%app
+                                                                  add1
+                                                                  hits)
+                                                                 hits)))))))))))
+                                 inner)
+                               '0
+                               hits)))))
+           outer)
+         '0
+         '0))))
+   (define-values
+    ()
+    (begin
+      (quote-syntax
+       (:-internal run-simple ((Vectorof Float-Complex) Natural -> Natural))
+       #:local)
+      (#%plain-app values)))
+   (define-values
+    (run-simple)
+    (lambda (zs rounds)
+      (letrec-values ((()
+                       (begin
+                         (quote-syntax (:-internal len Natural) #:local)
+                         (#%plain-app values)))
+                      ((len) (#%app unsafe-vector-length zs)))
+        (#%app
+         (letrec-values (((outer)
+                          (lambda (round hits)
+                            (if (#%app = round rounds)
+                              hits
+                              (#%app
+                               (letrec-values (((inner)
+                                                (lambda (j hits)
+                                                  (if (#%app = j len)
+                                                    (#%app
+                                                     outer
+                                                     (#%app add1 round)
+                                                     hits)
+                                                    (let-values (((g20)
+                                                                  (#%app
+                                                                   vector-ref
+                                                                   zs
+                                                                   j)))
+                                                      (let-values (((unboxed-real-21)
+                                                                    (#%app
+                                                                     unsafe-flreal-part
+                                                                     g20)))
+                                                        (let-values (((unboxed-imag-22)
+                                                                      (#%app
+                                                                       unsafe-flimag-part
+                                                                       g20)))
+                                                          (let-values (((unboxed-real-18)
+                                                                        unboxed-real-21))
+                                                            (let-values (((unboxed-imag-19)
+                                                                          unboxed-imag-22))
+                                                              (#%app
+                                                               inner
+                                                               (#%app add1 j)
+                                                               (if (#%app
+                                                                    unsafe-fl<=
+                                                                    (let-values (((r)
+                                                                                  (let-values ()
+                                                                                    unboxed-real-18)))
+                                                                      (let-values (((i)
+                                                                                    (let-values ()
+                                                                                      unboxed-imag-19)))
+                                                                        (#%app
+                                                                         unsafe-flsqrt
+                                                                         (#%app
+                                                                          unsafe-fl+
+                                                                          (#%app
+                                                                           unsafe-fl*
+                                                                           r
+                                                                           r)
+                                                                          (#%app
+                                                                           unsafe-fl*
+                                                                           i
+                                                                           i)))))
+                                                                    '2.0)
+                                                                 (#%app
+                                                                  add1
+                                                                  hits)
+                                                                 hits)))))))))))
+                                 inner)
+                               '0
+                               hits)))))
+           outer)
+         '0
+         '0))))
+   (define-values
+    ()
+    (begin
+      (quote-syntax
+       (:-internal run-hybrid ((Vectorof Float-Complex) Natural -> Natural))
+       #:local)
+      (#%plain-app values)))
+   (define-values
+    (run-hybrid)
+    (lambda (zs rounds)
+      (letrec-values ((()
+                       (begin
+                         (quote-syntax (:-internal len Natural) #:local)
+                         (#%plain-app values)))
+                      ((len) (#%app unsafe-vector-length zs)))
+        (#%app
+         (letrec-values (((outer)
+                          (lambda (round hits)
+                            (if (#%app = round rounds)
+                              hits
+                              (#%app
+                               (letrec-values (((inner)
+                                                (lambda (j hits)
+                                                  (if (#%app = j len)
+                                                    (#%app
+                                                     outer
+                                                     (#%app add1 round)
+                                                     hits)
+                                                    (let-values (((g25)
+                                                                  (#%app
+                                                                   vector-ref
+                                                                   zs
+                                                                   j)))
+                                                      (let-values (((unboxed-real-26)
+                                                                    (#%app
+                                                                     unsafe-flreal-part
+                                                                     g25)))
+                                                        (let-values (((unboxed-imag-27)
+                                                                      (#%app
+                                                                       unsafe-flimag-part
+                                                                       g25)))
+                                                          (let-values (((unboxed-real-23)
+                                                                        unboxed-real-26))
+                                                            (let-values (((unboxed-imag-24)
+                                                                          unboxed-imag-27))
+                                                              (#%app
+                                                               inner
+                                                               (#%app add1 j)
+                                                               (if (#%app
+                                                                    unsafe-fl<=
+                                                                    (let-values (((r)
+                                                                                  (#%app
+                                                                                   unsafe-flabs
+                                                                                   (let-values ()
+                                                                                     unboxed-real-23))))
+                                                                      (let-values (((i)
+                                                                                    (#%app
+                                                                                     unsafe-flabs
+                                                                                     (let-values ()
+                                                                                       unboxed-imag-24))))
+                                                                        (let-values (((larger)
+                                                                                      (if (#%app
+                                                                                           unsafe-fl<
+                                                                                           r
+                                                                                           i)
+                                                                                        i
+                                                                                        r)))
+                                                                          (if (let-values (((or-part)
+                                                                                            (#%app
+                                                                                             unsafe-fl=
+                                                                                             r
+                                                                                             '+inf.0)))
+                                                                                (if or-part
+                                                                                  or-part
+                                                                                  (#%app
+                                                                                   unsafe-fl=
+                                                                                   i
+                                                                                   '+inf.0)))
+                                                                            (let-values ()
+                                                                              '+inf.0)
+                                                                            (if (if (#%app
+                                                                                     unsafe-fl>=
+                                                                                     larger
+                                                                                     '1e-150)
+                                                                                  (#%app
+                                                                                   unsafe-fl<=
+                                                                                   larger
+                                                                                   '1e+150)
+                                                                                  '#f)
+                                                                              (let-values ()
+                                                                                (#%app
+                                                                                 unsafe-flsqrt
+                                                                                 (#%app
+                                                                                  unsafe-fl+
+                                                                                  (#%app
+                                                                                   unsafe-fl*
+                                                                                   r
+                                                                                   r)
+                                                                                  (#%app
+                                                                                   unsafe-fl*
+                                                                                   i
+                                                                                   i))))
+                                                                              (if (#%app
+                                                                                   unsafe-fl=
+                                                                                   i
+                                                                                   '0.0)
+                                                                                (let-values ()
+                                                                                  r)
+                                                                                (if (#%app
+                                                                                     unsafe-fl<
+                                                                                     i
+                                                                                     r)
+                                                                                  (let-values ()
+                                                                                    (let-values (((q)
+                                                                                                  (#%app
+                                                                                                   unsafe-fl/
+                                                                                                   i
+                                                                                                   r)))
+                                                                                      (#%app
+                                                                                       unsafe-fl*
+                                                                                       r
+                                                                                       (#%app
+                                                                                        unsafe-flsqrt
+                                                                                        (#%app
+                                                                                         unsafe-fl+
+                                                                                         '1.0
+                                                                                         (#%app
+                                                                                          unsafe-fl*
+                                                                                          q
+                                                                                          q))))))
+                                                                                  (let-values ()
+                                                                                    (let-values (((q)
+                                                                                                  (#%app
+                                                                                                   unsafe-fl/
+                                                                                                   r
+                                                                                                   i)))
+                                                                                      (#%app
+                                                                                       unsafe-fl*
+                                                                                       i
+                                                                                       (#%app
+                                                                                        unsafe-flsqrt
+                                                                                        (#%app
+                                                                                         unsafe-fl+
+                                                                                         '1.0
+                                                                                         (#%app
+                                                                                          unsafe-fl*
+                                                                                          q
+                                                                                          q)))))))))))))
+                                                                    '2.0)
+                                                                 (#%app
+                                                                  add1
+                                                                  hits)
+                                                                 hits)))))))))))
+                                 inner)
+                               '0
+                               hits)))))
+           outer)
+         '0
+         '0))))
+   (#%provide)
+   (#%app void)))

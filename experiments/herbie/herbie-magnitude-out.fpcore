@@ -1,0 +1,14 @@
+;; seed: 15483
+
+(FPCore (x y)
+  :name "Typed Racket magnitude: direct squaring on ordinary values"
+  :precision binary64
+  :pre (and (and (<= -2 x) (<= x 2)) (and (<= -2 y) (<= y 2)))
+  :spec (sqrt (+ (* x x) (* y y)))
+  (hypot x y))
+(FPCore (x y)
+  :name "Prior Typed Racket magnitude: scaled ratio"
+  :precision binary64
+  :pre (and (and (<= -2 x) (<= x 2)) (and (<= -2 y) (<= y 2)))
+  :spec (sqrt (+ (* x x) (* y y)))
+  (hypot x y))

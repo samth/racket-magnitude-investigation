@@ -1,0 +1,7 @@
+;; seed: 15483
+
+(FPCore (x y)
+  :name "native hypot"
+  :precision binary64
+  :spec (sqrt (+ (* x x) (* y y)))
+  (hypot x y))

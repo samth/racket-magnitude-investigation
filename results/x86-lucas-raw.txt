@@ -1,0 +1,36 @@
+----
+[inexact] 1024x1024 max_iter=1024
+time min: 1332ms max: 1336ms avg: 1333ms
+alloc avg: 8549 MB
+----
+[typed] 1024x1024 max_iter=1024
+time min: 1323ms max: 1333ms avg: 1327ms
+alloc avg: 8583 MB
+----
+[typed-zfl-cfl] 1024x1024 max_iter=1024
+time min: 821ms max: 828ms avg: 824ms
+alloc avg: 6856 MB
+----
+[typed-zfl-alt-mag] 1024x1024 max_iter=1024
+time min: 639ms max: 645ms avg: 641ms
+alloc avg: 6822 MB
+----
+[typed-scalar] 1024x1024 max_iter=1024
+time min: 482ms max: 484ms avg: 483ms
+alloc avg: 3502 MB
+----
+[typed-scalar-simpl] 1024x1024 max_iter=1024
+time min: 436ms max: 439ms avg: 437ms
+alloc avg: 3502 MB
+----
+[typed-opt] 1024x1024 max_iter=1024
+time min: 289ms max: 291ms avg: 290ms
+alloc avg: 51 MB
+----
+[roofline] 1024x1024 max_iter=1024
+time min: 279ms max: 280ms avg: 280ms
+alloc avg: 1 MB
+----
+[typed-zfl] 1024x1024 max_iter=1024
+time min: 744ms max: 748ms avg: 746ms
+alloc avg: 6822 MB

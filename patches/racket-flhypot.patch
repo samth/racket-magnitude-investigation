@@ -1,0 +1,528 @@
+From 1cb4f05769c4f76b5d816b8abe7d07ecfa01eda5 Mon Sep 17 00:00:00 2001
+From: Sam Tobin-Hochstadt <samth@iu.edu>
+Date: Wed, 16 Sep 2026 00:38:52 -0400
+Subject: [PATCH] Add flhypot flonum primitives
+
+---
+ .../scribblings/reference/flonums.scrbl       | 12 ++++++
+ .../scribblings/reference/unsafe.scrbl        |  4 +-
+ .../racket-test-core/tests/racket/flonum.rktl |  9 +++++
+ .../racket-test-core/tests/racket/unsafe.rktl |  3 ++
+ racket/collects/racket/flonum.rkt             |  2 +-
+ racket/src/ChezScheme/c/prim5.c               |  1 +
+ racket/src/ChezScheme/s/5_3.ss                |  3 +-
+ racket/src/ChezScheme/s/cmacros.ss            |  4 +-
+ racket/src/ChezScheme/s/cpprim.ss             |  9 +++++
+ racket/src/ChezScheme/s/library.ss            |  1 +
+ racket/src/ChezScheme/s/primdata.ss           |  1 +
+ racket/src/bc/src/jit.h                       |  2 +
+ racket/src/bc/src/jitarith.c                  | 18 +++++++++
+ racket/src/bc/src/jitinline.c                 |  6 +++
+ racket/src/bc/src/numarith.c                  | 38 +++++++++++++++++++
+ racket/src/bc/src/number.c                    |  8 ++++
+ racket/src/bc/src/schminc.h                   |  2 +-
+ racket/src/bc/src/schpriv.h                   |  1 +
+ racket/src/cs/primitive/flfxnum.ss            |  1 +
+ racket/src/cs/primitive/unsafe.ss             |  1 +
+ racket/src/cs/rumble.sls                      |  3 +-
+ racket/src/cs/rumble/unsafe.ss                |  1 +
+ racket/src/version/racket_version.h           |  2 +-
+ 23 files changed, 124 insertions(+), 8 deletions(-)
+
+diff --git a/pkgs/racket-doc/scribblings/reference/flonums.scrbl b/pkgs/racket-doc/scribblings/reference/flonums.scrbl
+index b48c558b0a..cafb7d3a92 100644
+--- a/pkgs/racket-doc/scribblings/reference/flonums.scrbl
++++ b/pkgs/racket-doc/scribblings/reference/flonums.scrbl
+@@ -118,6 +118,18 @@ the range @racket[-1.0] to @racket[1.0] is given to @racket[flasin] or
+ @racket[flacos], or when a negative number is given to @racket[fllog]
+ or @racket[flsqrt].}
+ 
++@defproc[(flhypot [a flonum?] [b flonum?]) flonum?]{
++
++Computes the square root of the sum of the squares of @racket[a] and
++@racket[b] without undue overflow or underflow during the intermediate
++calculation.
++
++If either argument is an infinity, the result is @racket[+inf.0], even
++when the other argument is @racket[+nan.0]. Otherwise, if either argument
++is @racket[+nan.0], the result is @racket[+nan.0].
++
++@history[#:added "9.3.0.9"]}
++
+ @defproc[(flexpt  [a flonum?] [b flonum?])
+          flonum?]{
+ 
+diff --git a/pkgs/racket-doc/scribblings/reference/unsafe.scrbl b/pkgs/racket-doc/scribblings/reference/unsafe.scrbl
+index d0a9e0ae77..62b2763987 100644
+--- a/pkgs/racket-doc/scribblings/reference/unsafe.scrbl
++++ b/pkgs/racket-doc/scribblings/reference/unsafe.scrbl
+@@ -194,6 +194,7 @@ For @tech{flonums}: Unchecked version of @racket[flbit-field].
+ @defproc[(unsafe-flatan [a flonum?]) flonum?]
+ @defproc[(unsafe-fllog [a flonum?]) flonum?]
+ @defproc[(unsafe-flexp [a flonum?]) flonum?]
++@defproc[(unsafe-flhypot [a flonum?] [b flonum?]) flonum?]
+ @defproc[(unsafe-flsqrt [a flonum?]) flonum?]
+ @defproc[(unsafe-flexpt [a flonum?] [b flonum?]) flonum?]
+ )]{
+@@ -201,7 +202,7 @@ For @tech{flonums}: Unchecked version of @racket[flbit-field].
+ For @tech{flonums}: Unchecked (potentially) versions of
+ @racket[flsin], @racket[flcos], @racket[fltan], @racket[flasin],
+ @racket[flacos], @racket[flatan], @racket[fllog], @racket[flexp],
+-@racket[flsqrt], and @racket[flexpt]. Currently, some of these
++@racket[flhypot], @racket[flsqrt], and @racket[flexpt]. Currently, some of these
+ bindings are simply aliases for the corresponding safe bindings.}
+ 
+ 
+@@ -1067,4 +1068,3 @@ referenced too early.
+ @; ------------------------------------------------------------------------
+ 
+ @include-section["unsafe-undefined.scrbl"]
+-
+diff --git a/pkgs/racket-test-core/tests/racket/flonum.rktl b/pkgs/racket-test-core/tests/racket/flonum.rktl
+index 320441caaf..d1ad07d55b 100644
+--- a/pkgs/racket-test-core/tests/racket/flonum.rktl
++++ b/pkgs/racket-test-core/tests/racket/flonum.rktl
+@@ -405,6 +405,15 @@
+ (test -0.0 flsqrt -0.0)
+ (test +nan.0 log (flsqrt -1.0))
+ 
++(test 5.0 flhypot 3.0 4.0)
++(test 4.9999999999999995e+200 flhypot 3e+200 4e+200)
++(test 5e-200 flhypot 3e-200 4e-200)
++(test +inf.0 flhypot +inf.0 +nan.0)
++(test +inf.0 flhypot +nan.0 +inf.0)
++(test +nan.0 flhypot +nan.0 1.0)
++(err/rt-test (flhypot 3 4.0) exn:fail:contract?)
++(err/rt-test (flhypot 3.0 4) exn:fail:contract?)
++
+ ;; ----------------------------------------
+ ;; `flbit-field`, based on tests in the Chez Scheme test suite
+ 
+diff --git a/pkgs/racket-test-core/tests/racket/unsafe.rktl b/pkgs/racket-test-core/tests/racket/unsafe.rktl
+index 1e379e0bfe..00cf056ea2 100644
+--- a/pkgs/racket-test-core/tests/racket/unsafe.rktl
++++ b/pkgs/racket-test-core/tests/racket/unsafe.rktl
+@@ -370,6 +370,9 @@
+   (test-un 5.0 unsafe-flsqrt 25.0)
+   (test-un 0.5 unsafe-flsqrt 0.25)
+   (test-un +nan.0 unsafe-flsqrt -1.0)
++  (test-bin 5.0 'unsafe-flhypot 3.0 4.0)
++  (test-bin 4.9999999999999995e+200 'unsafe-flhypot 3e+200 4e+200)
++  (test-bin 5e-200 'unsafe-flhypot 3e-200 4e-200)
+ 
+   (test-un 1.0 unsafe-flsingle 1.0)
+   (test-un -1.0 unsafe-flsingle -1.0)
+diff --git a/racket/collects/racket/flonum.rkt b/racket/collects/racket/flonum.rkt
+index 2aad40b747..826308530a 100644
+--- a/racket/collects/racket/flonum.rkt
++++ b/racket/collects/racket/flonum.rkt
+@@ -6,7 +6,7 @@
+          (for-syntax racket/base))
+ 
+ (provide fl+ fl- fl* fl/
+-         flabs flsqrt flexp fllog
++         flabs flsqrt flhypot flexp fllog
+          flsin flcos fltan flasin flacos flatan
+          flfloor flceiling flround fltruncate
+          flsingle flexpt flrandom flbit-field
+diff --git a/racket/src/ChezScheme/c/prim5.c b/racket/src/ChezScheme/c/prim5.c
+index e0fe02ecd7..35e924ffce 100644
+--- a/racket/src/ChezScheme/c/prim5.c
++++ b/racket/src/ChezScheme/c/prim5.c
+@@ -1972,6 +1972,7 @@ void S_prim5_init(void) {
+     S_install_c_entry(CENTRY_fllog, proc2ptr(s_log));
+     S_install_c_entry(CENTRY_fllog2, proc2ptr(s_log2));
+     S_install_c_entry(CENTRY_flexpt, proc2ptr(s_pow));
++    S_install_c_entry(CENTRY_flhypot, proc2ptr(s_hypot));
+     S_install_c_entry(CENTRY_flsqrt, proc2ptr(s_sqrt));
+ 
+     S_check_c_entry_vector();
+diff --git a/racket/src/ChezScheme/s/5_3.ss b/racket/src/ChezScheme/s/5_3.ss
+index 8f97c64678..688a274c82 100644
+--- a/racket/src/ChezScheme/s/5_3.ss
++++ b/racket/src/ChezScheme/s/5_3.ss
+@@ -417,7 +417,7 @@
+ 
+ (define log2 ($fllog 2.0))
+ 
+-(define flhypot (cflop2 "(cs)hypot"))
++(define $flhypot (cflop2 "(cs)hypot"))
+ 
+ (define flasinh
+    ; scheme-coded version needs "log2"
+@@ -3362,6 +3362,7 @@
+   (fl-op flasin $flasin x)
+   (fl-op flacos $flacos x)
+   (fl-op flsqrt $flsqrt x)
++  (fl-op flhypot $flhypot x y)
+   (fl-op flexpt $flexpt x y)
+   (fl-op flfloor $flfloor x)
+   (fl-op flceiling $flceiling x))
+diff --git a/racket/src/ChezScheme/s/cmacros.ss b/racket/src/ChezScheme/s/cmacros.ss
+index 93147697d6..90e573e172 100644
+--- a/racket/src/ChezScheme/s/cmacros.ss
++++ b/racket/src/ChezScheme/s/cmacros.ss
+@@ -357,7 +357,7 @@
+ ;; ---------------------------------------------------------------------
+ ;; Version and machine types:
+ 
+-(define-constant scheme-version #x0a050001)
++(define-constant scheme-version #x0a050002)
+ 
+ (define-syntax define-machine-types
+   (lambda (x)
+@@ -3018,6 +3018,7 @@
+      (fl<=? #f 2 #t #t)
+      (fl>=? #f 2 #t #t)
+      (flsqrt #f 1 #t #t)
++     (flhypot #f 2 #t #t)
+      (flround #f 1 #t #t)
+      (flfloor #f 1 #t #t)
+      (flceiling #f 1 #t #t)
+@@ -3170,6 +3171,7 @@
+      fllog
+      fllog2
+      flexpt
++     flhypot
+      flsqrt
+      null-immutable-vector
+      null-immutable-bytevector
+diff --git a/racket/src/ChezScheme/s/cpprim.ss b/racket/src/ChezScheme/s/cpprim.ss
+index ba62330689..cc9d24d388 100644
+--- a/racket/src/ChezScheme/s/cpprim.ss
++++ b/racket/src/ChezScheme/s/cpprim.ss
+@@ -5038,6 +5038,9 @@
+ 
+       (define-inline 3 flexpt
+         [(e1 e2) (build-fl-call (lookup-c-entry flexpt) e1 e2)])
++
++      (define-inline 3 flhypot
++        [(e1 e2) (build-fl-call (lookup-c-entry flhypot) e1 e2)])
+       
+       (let ()
+         (define build-fl-make-rectangular
+@@ -5416,6 +5419,12 @@
+                    (lambda (e1 e2)
+                      (build-libcall #t src sexpr flexpt e1 e2)))])
+ 
++      (define-inline 2 flhypot
++        [(e1 e2) (build-checked-fp-op e1 e2
++                   (lambda (e1 e2) (build-fl-call (lookup-c-entry flhypot) e1 e2))
++                   (lambda (e1 e2)
++                     (build-libcall #t src sexpr flhypot e1 e2)))])
++
+       ;; NB: assuming that we have a trunc instruction for now, will need to change to support Sparc
+       (define-inline 3 flonum->fixnum
+         [(e-x) (bind #f fp (e-x)
+diff --git a/racket/src/ChezScheme/s/library.ss b/racket/src/ChezScheme/s/library.ss
+index feee602280..7f5f10e875 100644
+--- a/racket/src/ChezScheme/s/library.ss
++++ b/racket/src/ChezScheme/s/library.ss
+@@ -719,6 +719,7 @@
+   (define-library-entry (fllog x) (flonum-oops 'fllog x))
+   (define-library-entry (fllog2 x y) (flonum-oops 'fllog (if (flonum? x) y x)))
+   (define-library-entry (flexpt x y) (flonum-oops 'flexpt (if (flonum? x) y x)))
++  (define-library-entry (flhypot x y) (flonum-oops 'flhypot (if (flonum? x) y x)))
+   (define-library-entry (flbit-field x y z) (flonum-oops 'flbit-field x))
+ 
+   (define-library-entry (flonum->fixnum x) (if (flonum? x)
+diff --git a/racket/src/ChezScheme/s/primdata.ss b/racket/src/ChezScheme/s/primdata.ss
+index fb9038e862..28905fafca 100644
+--- a/racket/src/ChezScheme/s/primdata.ss
++++ b/racket/src/ChezScheme/s/primdata.ss
+@@ -133,6 +133,7 @@
+   (flacos [sig [(flonum) -> (flonum)]] [flags arith-op mifoldable discard safeongoodargs unboxed-arguments])
+   (flatan [sig [(flonum) (flonum flonum) -> (flonum)]] [flags arith-op mifoldable discard safeongoodargs unboxed-arguments])
+   (flsqrt [sig [(flonum) -> (flonum)]] [flags arith-op mifoldable discard safeongoodargs unboxed-arguments])
++  (flhypot [sig [(flonum flonum) -> (flonum)]] [flags arith-op mifoldable discard safeongoodargs unboxed-arguments])
+   (flexpt [sig [(flonum flonum) -> (flonum)]] [flags arith-op mifoldable discard safeongoodargs unboxed-arguments])
+   (make-no-infinities-violation [sig [() -> (condition)]] [flags pure unrestricted alloc])
+   (no-infinities-violation? [sig [(ptr) -> (boolean)]] [flags pure unrestricted mifoldable discard])
+diff --git a/racket/src/bc/src/jit.h b/racket/src/bc/src/jit.h
+index 4441a92541..94cecd7494 100644
+--- a/racket/src/bc/src/jit.h
++++ b/racket/src/bc/src/jit.h
+@@ -1685,6 +1685,8 @@ Scheme_Object *scheme_jit_continuation_apply_install(Apply_LWC_Args *args);
+ #define ARITH_LSH_WRAP      20
+ /*  arithmetic-shift */
+ #define ARITH_SH            21
++/*  flhypot, unsafe-flhypot */
++#define ARITH_HYPOT         22
+ 
+ /* Comparison codes. Used in jitarith.c and jitinline.c. */
+ 
+diff --git a/racket/src/bc/src/jitarith.c b/racket/src/bc/src/jitarith.c
+index 15ff76ab27..87070fbe94 100644
+--- a/racket/src/bc/src/jitarith.c
++++ b/racket/src/bc/src/jitarith.c
+@@ -48,6 +48,7 @@ static int is_inline_unboxable_op(Scheme_Object *obj, int flag, int unsafely, in
+     if (IS_NAMED_PRIM(obj, "unsafe-fl/")) return 1;
+     if (IS_NAMED_PRIM(obj, "unsafe-flabs")) return 1;
+     if (IS_NAMED_PRIM(obj, "unsafe-flsqrt")) return 1;
++    if (IS_NAMED_PRIM(obj, "unsafe-flhypot")) return 1;
+     if (IS_NAMED_PRIM(obj, "unsafe-flmin")) return 1;
+     if (IS_NAMED_PRIM(obj, "unsafe-flmax")) return 1;
+     if (IS_NAMED_PRIM(obj, "unsafe-fx->fl")) return 1;
+@@ -65,6 +66,7 @@ static int is_inline_unboxable_op(Scheme_Object *obj, int flag, int unsafely, in
+       if (IS_NAMED_PRIM(obj, "fl/")) return 2;
+       if (IS_NAMED_PRIM(obj, "flabs")) return 2;
+       if (IS_NAMED_PRIM(obj, "flsqrt")) return 2;
++      if (IS_NAMED_PRIM(obj, "flhypot")) return 2;
+       if (IS_NAMED_PRIM(obj, "flmin")) return 2;
+       if (IS_NAMED_PRIM(obj, "flmax")) return 2;
+       if (IS_NAMED_PRIM(obj, "flimag-part")) return 2;
+@@ -452,6 +454,7 @@ static int can_fast_double(int arith, int cmp, int two_args)
+       || (arith == ARITH_ABS)
+       || (arith == ARITH_EX_INEX)
+       || (arith == ARITH_SQRT)
++      || (arith == ARITH_HYPOT)
+       || (arith == ARITH_FLUNOP)
+       || (arith == ARITH_INEX_EX)
+       || (arith == ARITH_INEX_TRUNC_EX))
+@@ -508,6 +511,7 @@ typedef void (*call_extfp_proc)(void);
+ #  endif
+ 
+ DECL_BIN_FP_GLUE(expt)
++DECL_BIN_FLONUM_GLUE(hypot)
+ typedef void (*call_fp_bin_proc)(void);
+ 
+ #  ifdef MZ_LONG_DOUBLE
+@@ -989,6 +993,20 @@ static int generate_float_point_arith(mz_jit_state *jitter, Scheme_Object *rator
+           }
+         }
+         break;
++      case ARITH_HYPOT:
++        {
++          if (!reversed) {
++            (void)mz_tl_sti_d_fppop(tl_scheme_jit_save_fp2, JIT_FPR0, JIT_R2);
++            (void)mz_tl_sti_d_fppop(tl_scheme_jit_save_fp, JIT_FPR1, JIT_R2);
++          } else {
++            (void)mz_tl_sti_d_fppop(tl_scheme_jit_save_fp, JIT_FPR0, JIT_R2);
++            (void)mz_tl_sti_d_fppop(tl_scheme_jit_save_fp2, JIT_FPR1, JIT_R2);
++          }
++          mz_prepare(0);
++          (void)mz_finish(call_hypot);
++          (void)mz_tl_ldi_d_fppush(JIT_FPR0, tl_scheme_jit_save_fp, JIT_R2);
++        }
++        break;
+ # endif
+ #endif
+       default:
+diff --git a/racket/src/bc/src/jitinline.c b/racket/src/bc/src/jitinline.c
+index 4ee655cffe..b517e16d63 100644
+--- a/racket/src/bc/src/jitinline.c
++++ b/racket/src/bc/src/jitinline.c
+@@ -3784,6 +3784,12 @@ int scheme_generate_inlined_binary(mz_jit_state *jitter, Scheme_App3_Rec *app, i
+     } else if (IS_NAMED_PRIM(rator, "flexpt")) {
+       scheme_generate_arith(jitter, rator, app->rand1, app->rand2, 2, ARITH_EXPT, 0, 0, NULL, 1, 0, -1, NULL, dest);
+       return 1;
++    } else if (IS_NAMED_PRIM(rator, "unsafe-flhypot")) {
++      scheme_generate_arith(jitter, rator, app->rand1, app->rand2, 2, ARITH_HYPOT, 0, 0, NULL, 1, 0, 1, NULL, dest);
++      return 1;
++    } else if (IS_NAMED_PRIM(rator, "flhypot")) {
++      scheme_generate_arith(jitter, rator, app->rand1, app->rand2, 2, ARITH_HYPOT, 0, 0, NULL, 1, 0, -1, NULL, dest);
++      return 1;
+ #ifdef MZ_LONG_DOUBLE
+     } else if (IS_NAMED_PRIM(rator, "unsafe-extfl+")) {
+       scheme_generate_extflonum_arith(jitter, rator, app->rand1, app->rand2, 2, ARITH_ADD, 0, 0, NULL, 1, 0, 1, NULL, dest);
+diff --git a/racket/src/bc/src/numarith.c b/racket/src/bc/src/numarith.c
+index b36b15d3d2..345f416e63 100644
+--- a/racket/src/bc/src/numarith.c
++++ b/racket/src/bc/src/numarith.c
+@@ -42,6 +42,7 @@ static Scheme_Object *fl_mult (int argc, Scheme_Object *argv[]);
+ static Scheme_Object *fl_div (int argc, Scheme_Object *argv[]);
+ static Scheme_Object *fl_abs (int argc, Scheme_Object *argv[]);
+ static Scheme_Object *fl_sqrt (int argc, Scheme_Object *argv[]);
++static Scheme_Object *fl_hypot (int argc, Scheme_Object *argv[]);
+ 
+ static Scheme_Object *unsafe_fl_plus (int argc, Scheme_Object *argv[]);
+ static Scheme_Object *unsafe_fl_minus (int argc, Scheme_Object *argv[]);
+@@ -49,6 +50,7 @@ static Scheme_Object *unsafe_fl_mult (int argc, Scheme_Object *argv[]);
+ static Scheme_Object *unsafe_fl_div (int argc, Scheme_Object *argv[]);
+ static Scheme_Object *unsafe_fl_abs (int argc, Scheme_Object *argv[]);
+ static Scheme_Object *unsafe_fl_sqrt (int argc, Scheme_Object *argv[]);
++static Scheme_Object *unsafe_fl_hypot (int argc, Scheme_Object *argv[]);
+ 
+ static Scheme_Object *extfl_plus (int argc, Scheme_Object *argv[]);
+ static Scheme_Object *extfl_minus (int argc, Scheme_Object *argv[]);
+@@ -292,6 +294,16 @@ void scheme_init_flfxnum_numarith(Scheme_Startup_Env *env)
+                                                             | SCHEME_PRIM_WANTS_FLONUM_FIRST);
+   scheme_addto_prim_instance("flsqrt", p, env);
+ 
++  p = scheme_make_folding_prim(fl_hypot, "flhypot", 2, 2, 1);
++  if (scheme_can_inline_fp_op())
++    flags = SCHEME_PRIM_IS_BINARY_INLINED;
++  else
++    flags = SCHEME_PRIM_SOMETIMES_INLINED;
++  SCHEME_PRIM_PROC_FLAGS(p) |= scheme_intern_prim_opt_flags(flags
++                                                            | SCHEME_PRIM_PRODUCES_FLONUM
++                                                            | SCHEME_PRIM_WANTS_FLONUM_BOTH);
++  scheme_addto_prim_instance("flhypot", p, env);
++
+ }
+ 
+ void scheme_init_extfl_numarith(Scheme_Startup_Env *env)
+@@ -505,6 +517,17 @@ void scheme_init_unsafe_numarith(Scheme_Startup_Env *env)
+                                                             | SCHEME_PRIM_PRODUCES_FLONUM
+                                                             | SCHEME_PRIM_WANTS_FLONUM_FIRST);
+   scheme_addto_prim_instance("unsafe-flsqrt", p, env);
++
++  p = scheme_make_folding_prim(unsafe_fl_hypot, "unsafe-flhypot", 2, 2, 1);
++  if (scheme_can_inline_fp_op())
++    flags = SCHEME_PRIM_IS_BINARY_INLINED;
++  else
++    flags = SCHEME_PRIM_SOMETIMES_INLINED;
++  SCHEME_PRIM_PROC_FLAGS(p) |= scheme_intern_prim_opt_flags(flags
++                                                            | SCHEME_PRIM_IS_UNSAFE_FUNCTIONAL
++                                                            | SCHEME_PRIM_PRODUCES_FLONUM
++                                                            | SCHEME_PRIM_WANTS_FLONUM_BOTH);
++  scheme_addto_prim_instance("unsafe-flhypot", p, env);
+ }
+ 
+ void scheme_init_extfl_unsafe_numarith(Scheme_Startup_Env *env)
+@@ -1438,6 +1461,12 @@ static Scheme_Object *pos_sqrt(int argc, Scheme_Object **argv)
+ 
+ UNSAFE_FL1(unsafe_fl_sqrt, sqrt, pos_sqrt)
+ 
++static Scheme_Object *unsafe_fl_hypot(int argc, Scheme_Object *argv[])
++{
++  return scheme_make_double(scheme_double_hypot(SCHEME_DBL_VAL(argv[0]),
++                                                SCHEME_DBL_VAL(argv[1])));
++}
++
+ #define SAFE_FL(name, sname, op, zero_args, PRE_CHECK)      \
+  static Scheme_Object *name(int argc, Scheme_Object *argv[]) \
+  {                                                           \
+@@ -1472,6 +1501,15 @@ SAFE_FL(fl_div, "fl/", /, scheme_false, if (argc == 1) v = 1.0 / v;)
+ SAFE_FL1(fl_abs, "flabs", fabs)
+ SAFE_FL1(fl_sqrt, "flsqrt", sqrt)
+ 
++static Scheme_Object *fl_hypot(int argc, Scheme_Object *argv[])
++{
++  if (!SCHEME_DBLP(argv[0]))
++    scheme_wrong_contract("flhypot", "flonum?", 0, argc, argv);
++  if (!SCHEME_DBLP(argv[1]))
++    scheme_wrong_contract("flhypot", "flonum?", 1, argc, argv);
++  return unsafe_fl_hypot(argc, argv);
++}
++
+ #ifdef MZ_LONG_DOUBLE
+ # define UNSAFE_EXTFL(name, op)                                          \
+   static Scheme_Object *name(int argc, Scheme_Object *argv[])           \
+diff --git a/racket/src/bc/src/number.c b/racket/src/bc/src/number.c
+index 8474e7406f..bdc85015aa 100644
+--- a/racket/src/bc/src/number.c
++++ b/racket/src/bc/src/number.c
+@@ -3960,6 +3960,14 @@ double scheme_double_expt(double x, double y) {
+   return sch_pow(x, y);
+ }
+ 
++double scheme_double_hypot(double x, double y) XFORM_SKIP_PROC {
++#ifdef _MSC_VER
++  return _hypot(x, y);
++#else
++  return hypot(x, y);
++#endif
++}
++
+ #ifdef MZ_LONG_DOUBLE
+ long_double scheme_long_double_expt(long_double x, long_double y) {
+   return sch_powl(x, y);
+diff --git a/racket/src/bc/src/schminc.h b/racket/src/bc/src/schminc.h
+index d4598f0fd4..4991ffb7cb 100644
+--- a/racket/src/bc/src/schminc.h
++++ b/racket/src/bc/src/schminc.h
+@@ -15,7 +15,7 @@
+ 
+ #define USE_COMPILED_STARTUP 1
+ 
+-#define EXPECTED_PRIM_COUNT 1672
++#define EXPECTED_PRIM_COUNT 1674
+ 
+ #ifdef MZSCHEME_SOMETHING_OMITTED
+ # undef USE_COMPILED_STARTUP
+diff --git a/racket/src/bc/src/schpriv.h b/racket/src/bc/src/schpriv.h
+index 1f2186a5e1..10f77bc98c 100644
+--- a/racket/src/bc/src/schpriv.h
++++ b/racket/src/bc/src/schpriv.h
+@@ -2629,6 +2629,7 @@ XFORM_NONGCING double scheme_double_atan2(double v, double v2);
+ XFORM_NONGCING double scheme_double_log(double x);
+ XFORM_NONGCING double scheme_double_exp(double x);
+ XFORM_NONGCING double scheme_double_expt(double x, double y);
++XFORM_NONGCING double scheme_double_hypot(double x, double y);
+ 
+ /***** extflonums *****/
+ #ifdef MZ_LONG_DOUBLE
+diff --git a/racket/src/cs/primitive/flfxnum.ss b/racket/src/cs/primitive/flfxnum.ss
+index 1bfc56c6c0..7d66e1a23e 100644
+--- a/racket/src/cs/primitive/flfxnum.ss
++++ b/racket/src/cs/primitive/flfxnum.ss
+@@ -22,6 +22,7 @@
+   [flexp (known-procedure/folding 2)]
+   [flexpt (known-procedure/folding 4)]
+   [flfloor (known-procedure/folding 2)]
++  [flhypot (known-procedure/has-unsafe/folding 4 'unsafe-flhypot)]
+   [flimag-part (known-procedure/folding 2)]
+   [fllog (known-procedure/folding 2)]
+   [flmax (known-procedure/folding -2)]
+diff --git a/racket/src/cs/primitive/unsafe.ss b/racket/src/cs/primitive/unsafe.ss
+index 4572d18120..232444562b 100644
+--- a/racket/src/cs/primitive/unsafe.ss
++++ b/racket/src/cs/primitive/unsafe.ss
+@@ -80,6 +80,7 @@
+   [unsafe-flrandom (known-procedure/no-prompt 2)]
+   [unsafe-flreal-part (known-procedure/then-pure/folding-unsafe 2 'flreal-part)]
+   [unsafe-flsingle (known-procedure/then-pure/folding-unsafe 2 'flsingle)]
++  [unsafe-flhypot (known-procedure/then-pure/folding-unsafe 4 'flhypot)]
+   [unsafe-flsqrt (known-procedure/then-pure/folding-unsafe 2 'flsqrt)]
+   [unsafe-flvector-length (known-procedure/then-pure/folding-unsafe 2 'flvector-length)]
+   [unsafe-flvector-ref (known-procedure/succeeds 4)]
+diff --git a/racket/src/cs/rumble.sls b/racket/src/cs/rumble.sls
+index b33395f71f..93ee98425b 100644
+--- a/racket/src/cs/rumble.sls
++++ b/racket/src/cs/rumble.sls
+@@ -493,7 +493,7 @@
+           make-flrectangular
+           gcd
+           lcm
+-          fllog flatan
++          fllog flatan flhypot
+           fxquotient
+ 
+           random
+@@ -668,6 +668,7 @@
+           unsafe-flatan
+           unsafe-fllog
+           unsafe-flexp
++          unsafe-flhypot
+           unsafe-flsqrt
+           unsafe-flexpt
+ 
+diff --git a/racket/src/cs/rumble/unsafe.ss b/racket/src/cs/rumble/unsafe.ss
+index 06836342e7..3a95fd5d05 100644
+--- a/racket/src/cs/rumble/unsafe.ss
++++ b/racket/src/cs/rumble/unsafe.ss
+@@ -79,6 +79,7 @@
+ (define unsafe-flatan (unsafe-primitive flatan))
+ (define unsafe-fllog (unsafe-primitive fllog))
+ (define unsafe-flexp (unsafe-primitive flexp))
++(define unsafe-flhypot (unsafe-primitive flhypot))
+ (define unsafe-flsqrt (unsafe-primitive flsqrt))
+ (define unsafe-flexpt (unsafe-primitive flexpt))
+ 
+diff --git a/racket/src/version/racket_version.h b/racket/src/version/racket_version.h
+index 694c794fc6..2712142057 100644
+--- a/racket/src/version/racket_version.h
++++ b/racket/src/version/racket_version.h
+@@ -16,7 +16,7 @@
+ #define MZSCHEME_VERSION_X 9
+ #define MZSCHEME_VERSION_Y 3
+ #define MZSCHEME_VERSION_Z 0
+-#define MZSCHEME_VERSION_W 8
++#define MZSCHEME_VERSION_W 9
+ 
+ /* A level of indirection makes `#` work as needed: */
+ #define AS_a_STR_HELPER(x) #x
+-- 
+2.53.0
+

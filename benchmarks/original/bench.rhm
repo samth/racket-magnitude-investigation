@@ -1,0 +1,149 @@
+#lang rhombus/static
+
+import:
+  "inexact.rkt" open: rename mandelbrot as inexact_impl
+  "lut.rhm" open
+  "reference.rhm" open: rename mandelbrot as reference_impl
+  "roofline.rkt" open: rename mandelbrot as roofline_impl
+  "typed-opt.rkt" open: rename mandelbrot as typed_opt_impl
+  "typed-scalar-simpl.rkt" open: rename mandelbrot as typed_scalar_simpl_impl
+  "typed-scalar.rkt" open: rename mandelbrot as typed_scalar_impl
+  "typed-zfl-alt-mag.rkt" open: rename mandelbrot as typed_zfl_alt_mag_impl
+  "typed-zfl-cfl.rkt" open: rename mandelbrot as typed_zfl_cfl_impl
+  "typed-zfl.rkt" open: rename mandelbrot as typed_zfl_impl
+  "typed.rkt" open: rename mandelbrot as typed_impl
+
+  lib("racket/base.rkt") as ~none:
+    expose:
+      #{current-memory-use} as current_memory_use
+
+  rhombus/measure
+  rhombus/memory
+
+def corner = math.complex(-2, 2)
+
+//==============================================================================
+namespace ~open:
+  def cache = MutableMap{}
+
+  export fun get_iter_lut(~max_iter: max_iter :: PosInt):
+    cache.get(max_iter, _) <| fun():
+      let lut = make_iter_lut(
+        ~background: [255, 255, 255],
+        ~foreground: [0, 0, 0],
+        ~max_iter,
+        ~gamma: 2.4)
+      cache[max_iter] := lut
+      lut
+
+//==============================================================================
+namespace ~open:
+  def cache = MutableMap{}
+
+  export fun get_reference_result(
+    ~resolution: resolution :: PosInt,
+    ~max_iter: max_iter :: PosInt,
+  ) :: ImmutableBytes:
+    cache.get([resolution, max_iter], _) <| fun():
+      let dst = Bytes.make(resolution * resolution * 4)
+      reference_impl(
+        ~width: resolution,
+        ~height: resolution,
+        ~max_iter,
+        ~lut: get_iter_lut(~max_iter),
+        ~corner,
+        ~scale: 4 / resolution,
+        ~dst,
+        ~dst_offset: 0,
+        ~dst_row_stride: resolution * 4)
+      let result = dst.snapshot()
+      cache[[resolution, max_iter]] := result
+      result
+
+//==============================================================================
+fun benchmark(
+  ~name: name :: String,
+  ~impl: impl :: Function,
+  ~resolution: resolution :: PosInt,
+  ~max_iter: max_iter :: PosInt,
+  ~repeat: repeat :: PosInt,
+):
+  let reference = get_reference_result(~resolution, ~max_iter)
+  let lut = get_iter_lut(~max_iter)
+
+  let scale = 4 / resolution
+  let dst_row_stride = resolution * 4
+
+  // Discarded warmup iteration
+  block:
+    let dst = Bytes.make(resolution * resolution * 4)
+    impl(
+      ~width: resolution,
+      ~height: resolution,
+      ~max_iter,
+      ~lut,
+      ~corner,
+      ~scale,
+      ~dst,
+      ~dst_offset: 0,
+      ~dst_row_stride)
+
+  let [[time, tba], ...] = for List (_ in 0..repeat):
+    let dst = Bytes.make(resolution * resolution * 4)
+
+    memory.gc()
+    let start_tba = current_memory_use(#'cumulative)
+    let start_time = measure.real_milliseconds()
+    impl(
+      ~width: resolution,
+      ~height: resolution,
+      ~max_iter,
+      ~lut,
+      ~corner,
+      ~scale,
+      ~dst,
+      ~dst_offset: 0,
+      ~dst_row_stride)
+    let end_time = measure.real_milliseconds()
+    let end_tba = current_memory_use(#'cumulative)
+
+    unless dst is_now reference
+    | for (i in 0..dst.length()):
+        unless dst[i] == reference[i]
+        | error(
+            "result does not match reference",
+            error.val(~label: "first mismatch at", i),
+            error.val(~label: "reference value", reference[i]),
+            error.val(~label: "benchmark value", dst[i]))
+
+    [end_time - start_time, end_tba - start_tba]
+
+  fun fmt_time(ms):
+    ms |> math.round |> math.exact |> to_string |> (_ ++ "ms")
+
+  fun fmt_tba(tba):
+    @str{@math.round(tba / 1_000_000) MB}
+
+  println("----")
+  println(@str{[@name]}, @str{@(resolution)x@(resolution)}, @str{max_iter=@max_iter})
+  println(@str{time min: @(fmt_time(math.min(time, ...)))},
+          @str{max: @(fmt_time(math.max(time, ...)))},
+          @str{avg: @(fmt_time(math.sum(time, ...) / repeat))})
+  println(@str{alloc avg: @fmt_tba(math.sum(tba, ...) / repeat)})
+
+//==============================================================================
+benchmark(
+  ~name: "inexact",
+  ~impl: inexact_impl,
+  ~resolution: 1024,
+  ~max_iter: 1024,
+  ~repeat: 5)
+
+
+benchmark(
+  ~name: "typed-zfl",
+  ~impl: typed_zfl_impl,
+  ~resolution: 1024,
+  ~max_iter: 1024,
+  ~repeat: 5)
+

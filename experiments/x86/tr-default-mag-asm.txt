@@ -1,0 +1,309 @@
+       0: 4883fd02                       (cmp rbp #x2)
+       4: 0f85df050000                   (jnz (+ rip #x5df)) ; => 5e9
+       a: 4d894518                       (mov (mem64+ r13 #x18) r8)
+       e: 49897d20                       (mov (mem64+ r13 #x20) rdi)
+      12: 4d396e48                       (cmp (mem64+ r14 #x48) r13)
+      16: 0f86bc050000                   (jbe (+ rip #x5bc)) ; => 5d8
+      1c: 498b4d18                       (mov rcx (mem64+ r13 #x18)) ; <=
+      20: 4883e107                       (and rcx #x7)
+      24: 4883f907                       (cmp rcx #x7)
+      28: 0f8529050000                   (jnz (+ rip #x529)) ; => 557
+      2e: 498b4d18                       (mov rcx (mem64+ r13 #x18))
+      32: f6410107                       (test (mem8+ rcx #x1) #x7)
+      36: 0f851b050000                   (jnz (+ rip #x51b)) ; => 557
+      3c: 498b4d18                       (mov rcx (mem64+ r13 #x18))
+      40: 488b4901                       (mov rcx (mem64+ rcx #x1))
+      44: 48c1e901                       (shr rcx #x1)
+      48: 4883e1f8                       (and rcx #xfffffffffffffff8)
+      4c: 49894d28                       (mov (mem64+ r13 #x28) rcx)
+      50: 4831c9                         (xor rcx rcx) ; <=
+      53: 4d31c0                         (xor r8 r8)
+      56: 4889cd                         (mov rbp rcx) ; <=
+      59: 4d894530                       (mov (mem64+ r13 #x30) r8)
+      5d: 498b4d30                       (mov rcx (mem64+ r13 #x30))
+      61: 490b4d20                       (or rcx (mem64+ r13 #x20))
+      65: f6c107                         (test cl #x7)
+      68: 0f855a040000                   (jnz (+ rip #x45a)) ; => 4c8
+      6e: 498b4d20                       (mov rcx (mem64+ r13 #x20))
+      72: 49394d30                       (cmp (mem64+ r13 #x30) rcx)
+      76: 0f8448040000                   (jz (+ rip #x448)) ; => 4c4
+      7c: 4889e9                         (mov rcx rbp) ; <=
+      7f: 4831ed                         (xor rbp rbp)
+      82: 49836e6801                     (sub (mem64+ r14 #x68) #x1) ; <=
+      87: 0f84f3030000                   (jz (+ rip #x3f3)) ; => 480
+      8d: 4889ea                         (mov rdx rbp) ; <=
+      90: 490b5528                       (or rdx (mem64+ r13 #x28))
+      94: f6c207                         (test dl #x7)
+      97: 0f858b030000                   (jnz (+ rip #x38b)) ; => 428
+      9d: 49396d28                       (cmp (mem64+ r13 #x28) rbp)
+      a1: 0f8425030000                   (jz (+ rip #x325)) ; => 3cc
+      a7: 498b5518                       (mov rdx (mem64+ r13 #x18)) ; <=
+      ab: 4883e207                       (and rdx #x7)
+      af: 4883fa07                       (cmp rdx #x7)
+      b3: 0f85b6020000                   (jnz (+ rip #x2b6)) ; => 36f
+      b9: 498b5518                       (mov rdx (mem64+ r13 #x18))
+      bd: 488b7201                       (mov rsi (mem64+ rdx #x1))
+      c1: 4889f2                         (mov rdx rsi)
+      c4: 48c1ea01                       (shr rdx #x1)
+      c8: 4883e2f8                       (and rdx #xfffffffffffffff8)
+      cc: 4839d5                         (cmp rbp rdx)
+      cf: 0f839a020000                   (jnb (+ rip #x29a)) ; => 36f
+      d5: 4809ee                         (or rsi rbp)
+      d8: 40f6c607                       (test sil #x7)
+      dc: 0f858d020000                   (jnz (+ rip #x28d)) ; => 36f
+      e2: 498b5518                       (mov rdx (mem64+ r13 #x18))
+      e6: 4c8b442a09                     (mov r8 (mem64+ rdx #x9 (* rbp #x1)))
+      eb: 49896d10                       (mov (mem64+ r13 #x10) rbp) ; <=
+      ef: 49894d08                       (mov (mem64+ r13 #x8) rcx)
+      f3: 4d894538                       (mov (mem64+ r13 #x38) r8)
+      f7: 4983c540                       (add r13 #x40)
+      fb: 49bc1b71ae4100000000           (mov r12 #x41ae711b) ; 'real-part
+     105: 4d8b7c2405                     (mov r15 (mem64+ r12 #x5))
+     10a: 488d0d20000000                 (lea rcx (mem+ rip #x20)) ; => 131
+     111: 49894d00                       (mov (mem64+ r13 #x0) rcx)
+     115: 48c7c501000000                 (mov rbp #x1)
+     11c: 41ff64240d                     (jmp (mem64+ r12 #xd))
+     121: 6201000000000000               (data)
+     129: a33f000000000000               (data)
+     131: 4983ed40                       (sub r13 #x40) ; <=
+     135: 4889ea                         (mov rdx rbp)
+     138: 498b6d10                       (mov rbp (mem64+ r13 #x10))
+     13c: 498b4d08                       (mov rcx (mem64+ r13 #x8))
+     140: 4d8b4538                       (mov r8 (mem64+ r13 #x38))
+     144: 4889d7                         (mov rdi rdx)
+     147: 49896d10                       (mov (mem64+ r13 #x10) rbp)
+     14b: 49894d08                       (mov (mem64+ r13 #x8) rcx)
+     14f: 49897d40                       (mov (mem64+ r13 #x40) rdi)
+     153: 4983c548                       (add r13 #x48)
+     157: 49bc4b71ae4100000000           (mov r12 #x41ae714b) ; 'imag-part
+     161: 4d8b7c2405                     (mov r15 (mem64+ r12 #x5))
+     166: 488d0d20000000                 (lea rcx (mem+ rip #x20)) ; => 18d
+     16d: 49894d00                       (mov (mem64+ r13 #x0) rcx)
+     171: 48c7c501000000                 (mov rbp #x1)
+     178: 41ff64240d                     (jmp (mem64+ r12 #xd))
+     17d: be01000000000000               (data)
+     185: a75f000000000000               (data)
+     18d: 4983ed48                       (sub r13 #x48) ; <=
+     191: 4889ea                         (mov rdx rbp)
+     194: 498b6d10                       (mov rbp (mem64+ r13 #x10))
+     198: 498b4d08                       (mov rcx (mem64+ r13 #x8))
+     19c: 498b7d40                       (mov rdi (mem64+ r13 #x40))
+     1a0: 40f6c507                       (test bpl #x7)
+     1a4: 0f8576010000                   (jnz (+ rip #x176)) ; => 320
+     1aa: 4889ee                         (mov rsi rbp)
+     1ad: 4883c608                       (add rsi #x8)
+     1b1: 0f8069010000                   (jo (+ rip #x169)) ; => 320
+     1b7: 4889f5                         (mov rbp rsi)
+     1ba: 488b7f06                       (mov rdi (mem64+ rdi #x6)) ; <=
+     1be: 48c7c6ffffffff                 (mov rsi #xffffffffffffffff)
+     1c5: 48c1ee01                       (shr rsi #x1)
+     1c9: 4821fe                         (and rsi rdi)
+     1cc: 664c0f6efe                     (movq xmm15 rsi)
+     1d1: 488b7206                       (mov rsi (mem64+ rdx #x6))
+     1d5: 48c7c2ffffffff                 (mov rdx #xffffffffffffffff)
+     1dc: 48c1ea01                       (shr rdx #x1)
+     1e0: 4821f2                         (and rdx rsi)
+     1e3: 664c0f6ef2                     (movq xmm14 rdx)
+     1e8: 48bafa62cf4300000000           (mov rdx #x43cf62fa) ; 0.0
+     1f2: f2440f106a06                   (movsd xmm13 (mem64+ rdx #x6))
+     1f8: 66450f2eee                     (ucomisd xmm13 xmm14)
+     1fd: 7575                           (jnz (+ rip #x75)) ; => 274
+     1ff: 7273                           (jb (+ rip #x73)) ; => 274
+     201: 48baaa36354b00000000           (mov rdx #x4b3536aa) ; 2.0 ; <=
+     20b: f2440f107206                   (movsd xmm14 (mem64+ rdx #x6))
+     211: 66450f2ef7                     (ucomisd xmm14 xmm15)
+     216: 0f8266feffff                   (jb (+ rip #x-19a)) ; => 82
+     21c: f6c107                         (test cl #x7)
+     21f: 7511                           (jnz (+ rip #x11)) ; => 232
+     221: 4889ca                         (mov rdx rcx)
+     224: 4883c208                       (add rdx #x8)
+     228: 7008                           (jo (+ rip #x8)) ; => 232
+     22a: 4889d1                         (mov rcx rdx)
+     22d: e950feffff                     (jmp (+ rip #x-1b0)) ; => 82
+     232: 4989c8                         (mov r8 rcx) ; <=
+     235: 49896d10                       (mov (mem64+ r13 #x10) rbp)
+     239: 4983c538                       (add r13 #x38)
+     23d: 488d0d20000000                 (lea rcx (mem+ rip #x20)) ; => 264
+     244: 49894d00                       (mov (mem64+ r13 #x0) rcx)
+     248: e933583af8                     (jmp (+ rip #x-7c5a7cd)) ; #<code add1>
+     24d: 0f1f800000000095               (data)
+     255: 020000000000001f               (data)
+     25d: 1f000000000000                 (data)
+     264: 4983ed38                       (sub r13 #x38) ; <=
+     268: 4889e9                         (mov rcx rbp)
+     26b: 498b6d10                       (mov rbp (mem64+ r13 #x10))
+     26f: e90efeffff                     (jmp (+ rip #x-1f2)) ; => 82
+     274: 48baca63c74300000000           (mov rdx #x43c763ca) ; +inf.0 ; <=
+     27e: f2440f106a06                   (movsd xmm13 (mem64+ rdx #x6))
+     284: 66450f2eef                     (ucomisd xmm13 xmm15)
+     289: 7517                           (jnz (+ rip #x17)) ; => 2a2
+     28b: 7215                           (jb (+ rip #x15)) ; => 2a2
+     28d: 48baca63c74300000000           (mov rdx #x43c763ca) ; +inf.0 ; <=
+     297: f2440f107a06                   (movsd xmm15 (mem64+ rdx #x6))
+     29d: e95fffffff                     (jmp (+ rip #x-a1)) ; => 201
+     2a2: 48baca63c74300000000           (mov rdx #x43c763ca) ; +inf.0 ; <=
+     2ac: f2440f106a06                   (movsd xmm13 (mem64+ rdx #x6))
+     2b2: 66450f2eee                     (ucomisd xmm13 xmm14)
+     2b7: 7504                           (jnz (+ rip #x4)) ; => 2bd
+     2b9: 7202                           (jb (+ rip #x2)) ; => 2bd
+     2bb: ebd0                           (jmp (+ rip #x-30)) ; => 28d
+     2bd: 66450f2efe                     (ucomisd xmm15 xmm14) ; <=
+     2c2: 762e                           (jbe (+ rip #x2e)) ; => 2f2
+     2c4: f2450f5ef7                     (divsd xmm14 xmm15)
+     2c9: f2450f59f6                     (mulsd xmm14 xmm14)
+     2ce: 48baaae6fe4b00000000           (mov rdx #x4bfee6aa) ; 1.0
+     2d8: f2440f106a06                   (movsd xmm13 (mem64+ rdx #x6))
+     2de: f2450f58f5                     (addsd xmm14 xmm13)
+     2e3: f2450f51f6                     (sqrtsd xmm14 xmm14)
+     2e8: f2450f59fe                     (mulsd xmm15 xmm14)
+     2ed: e90fffffff                     (jmp (+ rip #x-f1)) ; => 201
+     2f2: f2450f5efe                     (divsd xmm15 xmm14) ; <=
+     2f7: f2450f59ff                     (mulsd xmm15 xmm15)
+     2fc: 48babae6fe4b00000000           (mov rdx #x4bfee6ba) ; 1.0
+     306: f2440f106a06                   (movsd xmm13 (mem64+ rdx #x6))
+     30c: f2450f58fd                     (addsd xmm15 xmm13)
+     311: f2450f51ff                     (sqrtsd xmm15 xmm15)
+     316: f2450f59fe                     (mulsd xmm15 xmm14)
+     31b: e9e1feffff                     (jmp (+ rip #x-11f)) ; => 201
+     320: 4989e8                         (mov r8 rbp) ; <=
+     323: 49894d08                       (mov (mem64+ r13 #x8) rcx)
+     327: 49897d40                       (mov (mem64+ r13 #x40) rdi)
+     32b: 49895538                       (mov (mem64+ r13 #x38) rdx)
+     32f: 4983c548                       (add r13 #x48)
+     333: 488d0d20000000                 (lea rcx (mem+ rip #x20)) ; => 35a
+     33a: 49894d00                       (mov (mem64+ r13 #x0) rcx)
+     33e: e93d573af8                     (jmp (+ rip #x-7c5a8c3)) ; #<code add1>
+     343: 0f1f80000000008b               (data)
+     34b: 03000000000000a7               (data)
+     353: 7e000000000000                 (data)
+     35a: 4983ed48                       (sub r13 #x48) ; <=
+     35e: 498b4d08                       (mov rcx (mem64+ r13 #x8))
+     362: 498b7d40                       (mov rdi (mem64+ r13 #x40))
+     366: 498b5538                       (mov rdx (mem64+ r13 #x38))
+     36a: e94bfeffff                     (jmp (+ rip #x-1b5)) ; => 1ba
+     36f: 4d8b4518                       (mov r8 (mem64+ r13 #x18)) ; <=
+     373: 4889ef                         (mov rdi rbp)
+     376: 49896d10                       (mov (mem64+ r13 #x10) rbp)
+     37a: 49894d08                       (mov (mem64+ r13 #x8) rcx)
+     37e: 4983c538                       (add r13 #x38)
+     382: 49bc7bab364200000000           (mov r12 #x4236ab7b) ; 'vector-ref
+     38c: 4d8b7c2405                     (mov r15 (mem64+ r12 #x5))
+     391: 488d0d20000000                 (lea rcx (mem+ rip #x20)) ; => 3b8
+     398: 49894d00                       (mov (mem64+ r13 #x0) rcx)
+     39c: 48c7c502000000                 (mov rbp #x2)
+     3a3: 41ff64240d                     (jmp (mem64+ r12 #xd))
+     3a8: e903000000000000               (data)
+     3b0: 9f1f000000000000               (data)
+     3b8: 4983ed38                       (sub r13 #x38) ; <=
+     3bc: 4989e8                         (mov r8 rbp)
+     3bf: 498b6d10                       (mov rbp (mem64+ r13 #x10))
+     3c3: 498b4d08                       (mov rcx (mem64+ r13 #x8))
+     3c7: e91ffdffff                     (jmp (+ rip #x-2e1)) ; => eb
+     3cc: 41f6453007                     (test (mem8+ r13 #x30) #x7) ; <=
+     3d1: 7512                           (jnz (+ rip #x12)) ; => 3e5
+     3d3: 498b6d30                       (mov rbp (mem64+ r13 #x30))
+     3d7: 4883c508                       (add rbp #x8)
+     3db: 7008                           (jo (+ rip #x8)) ; => 3e5
+     3dd: 4989e8                         (mov r8 rbp)
+     3e0: e971fcffff                     (jmp (+ rip #x-38f)) ; => 56
+     3e5: 4d8b4530                       (mov r8 (mem64+ r13 #x30)) ; <=
+     3e9: 49894d08                       (mov (mem64+ r13 #x8) rcx)
+     3ed: 4983c530                       (add r13 #x30)
+     3f1: 488d0d20000000                 (lea rcx (mem+ rip #x20)) ; => 418
+     3f8: 49894d00                       (mov (mem64+ r13 #x0) rcx)
+     3fc: e97f563af8                     (jmp (+ rip #x-7c5a981)) ; #<code add1>
+     401: 0f1f800000000049               (data)
+     409: 040000000000009b               (data)
+     411: 0e000000000000                 (data)
+     418: 4983ed30                       (sub r13 #x30) ; <=
+     41c: 498b4d08                       (mov rcx (mem64+ r13 #x8))
+     420: 4989e8                         (mov r8 rbp)
+     423: e92efcffff                     (jmp (+ rip #x-3d2)) ; => 56
+     428: 4989e8                         (mov r8 rbp) ; <=
+     42b: 498b7d28                       (mov rdi (mem64+ r13 #x28))
+     42f: 49896d10                       (mov (mem64+ r13 #x10) rbp)
+     433: 49894d08                       (mov (mem64+ r13 #x8) rcx)
+     437: 4983c538                       (add r13 #x38)
+     43b: 488d0d20000000                 (lea rcx (mem+ rip #x20)) ; => 462
+     442: 49894d00                       (mov (mem64+ r13 #x0) rcx)
+     446: e9f53a3af8                     (jmp (+ rip #x-7c5c50b)) ; #<code =>
+     44b: 0f1f800000000093               (data)
+     453: 040000000000009f               (data)
+     45b: 1f000000000000                 (data)
+     462: 4983ed38                       (sub r13 #x38) ; <=
+     466: 4889ea                         (mov rdx rbp)
+     469: 498b6d10                       (mov rbp (mem64+ r13 #x10))
+     46d: 498b4d08                       (mov rcx (mem64+ r13 #x8))
+     471: 4883fa06                       (cmp rdx #x6)
+     475: 0f842cfcffff                   (jz (+ rip #x-3d4)) ; => a7
+     47b: e94cffffff                     (jmp (+ rip #x-b4)) ; => 3cc
+     480: 49896d10                       (mov (mem64+ r13 #x10) rbp) ; <=
+     484: 49894d08                       (mov (mem64+ r13 #x8) rcx)
+     488: 4983c538                       (add r13 #x38)
+     48c: 488d0d20000000                 (lea rcx (mem+ rip #x20)) ; => 4b3
+     493: 49894d00                       (mov (mem64+ r13 #x0) rcx)
+     497: e944f43af8                     (jmp (+ rip #x-7c50bbc)) ; #<code event>
+     49c: 0f1f8000000000e4               (data)
+     4a4: 040000000000009d               (data)
+     4ac: 1f000000000000                 (data)
+     4b3: 4983ed38                       (sub r13 #x38) ; <=
+     4b7: 498b6d10                       (mov rbp (mem64+ r13 #x10))
+     4bb: 498b4d08                       (mov rcx (mem64+ r13 #x8))
+     4bf: e9c9fbffff                     (jmp (+ rip #x-437)) ; => 8d
+     4c4: 41ff6500                       (jmp (mem64+ r13 #x0)) ; <=
+     4c8: 49836e6801                     (sub (mem64+ r14 #x68) #x1) ; <=
+     4cd: 7537                           (jnz (+ rip #x37)) ; => 506
+     4cf: 49896d08                       (mov (mem64+ r13 #x8) rbp)
+     4d3: 4983c538                       (add r13 #x38)
+     4d7: 488d0d20000000                 (lea rcx (mem+ rip #x20)) ; => 4fe
+     4de: 49894d00                       (mov (mem64+ r13 #x0) rcx)
+     4e2: e9f9f33af8                     (jmp (+ rip #x-7c50c07)) ; #<code event>
+     4e7: 0f1f80000000002f               (data)
+     4ef: 050000000000009d               (data)
+     4f7: 1e000000000000                 (data)
+     4fe: 4983ed38                       (sub r13 #x38) ; <=
+     502: 498b6d08                       (mov rbp (mem64+ r13 #x8))
+     506: 4d8b4530                       (mov r8 (mem64+ r13 #x30)) ; <=
+     50a: 498b7d20                       (mov rdi (mem64+ r13 #x20))
+     50e: 49896d08                       (mov (mem64+ r13 #x8) rbp)
+     512: 4983c538                       (add r13 #x38)
+     516: 488d0d20000000                 (lea rcx (mem+ rip #x20)) ; => 53d
+     51d: 49894d00                       (mov (mem64+ r13 #x0) rcx)
+     521: e91a3a3af8                     (jmp (+ rip #x-7c5c5e6)) ; #<code =>
+     526: 0f1f80000000006e               (data)
+     52e: 050000000000009f               (data)
+     536: 1e000000000000                 (data)
+     53d: 4983ed38                       (sub r13 #x38) ; <=
+     541: 4889e9                         (mov rcx rbp)
+     544: 498b6d08                       (mov rbp (mem64+ r13 #x8))
+     548: 4883f906                       (cmp rcx #x6)
+     54c: 0f842afbffff                   (jz (+ rip #x-4d6)) ; => 7c
+     552: e96dffffff                     (jmp (+ rip #x-93)) ; => 4c4
+     557: 49836e6801                     (sub (mem64+ r14 #x68) #x1) ; <=
+     55c: 752f                           (jnz (+ rip #x2f)) ; => 58d
+     55e: 4983c528                       (add r13 #x28)
+     562: 488d0d20000000                 (lea rcx (mem+ rip #x20)) ; => 589
+     569: 49894d00                       (mov (mem64+ r13 #x0) rcx)
+     56d: e96ef33af8                     (jmp (+ rip #x-7c50c92)) ; #<code event>
+     572: 0f1f8000000000ba               (data)
+     57a: 0500000000000015               (data)
+     582: 06000000000000                 (data)
+     589: 4983ed28                       (sub r13 #x28) ; <=
+     58d: 4d8b4518                       (mov r8 (mem64+ r13 #x18)) ; <=
+     591: 4983c528                       (add r13 #x28)
+     595: 49bc9bac364200000000           (mov r12 #x4236ac9b) ; 'unsafe-vector-length
+     59f: 4d8b7c2405                     (mov r15 (mem64+ r12 #x5))
+     5a4: 488d0d20000000                 (lea rcx (mem+ rip #x20)) ; => 5cb
+     5ab: 49894d00                       (mov (mem64+ r13 #x0) rcx)
+     5af: 48c7c501000000                 (mov rbp #x1)
+     5b6: 41ff64240d                     (jmp (mem64+ r12 #xd))
+     5bb: fc05000000000000               (data)
+     5c3: 1706000000000000               (data)
+     5cb: 4983ed28                       (sub r13 #x28) ; <=
+     5cf: 49896d28                       (mov (mem64+ r13 #x28) rbp)
+     5d3: e978faffff                     (jmp (+ rip #x-588)) ; => 50
+     5d8: e863b038f8                     (call (+ rip #x-7c74f9d)) ; #<code dooverflow> ; <=
+     5dd: 0f1f8000000000                 (nop (mem32+ rax #x0))
+     5e4: e933faffff                     (jmp (+ rip #x-5cd)) ; => 1c
+     5e9: e9c2b938f8                     (jmp (+ rip #x-7c7463e)) ; #<code doargerr> ; <=
+     5ee: 0f1f8000000000                 (data)

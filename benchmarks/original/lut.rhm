@@ -1,0 +1,23 @@
+#lang rhombus/static
+
+export fun make_iter_lut(
+  ~background: [bg_r :: Byte, bg_g :: Byte, bg_b :: Byte],
+  ~foreground: [fg_r :: Byte, fg_g :: Byte, fg_b :: Byte],
+  ~max_iter: max_iter :: PosInt,
+  ~gamma: gamma :: PosReal,
+) :: Bytes:
+  let lut = Bytes.make((max_iter + 1) * 4)
+  let exponent = 1.0 / gamma
+  for (iter in 0..=max_iter):
+    let t = (iter / max_iter) ** exponent
+    let interp = fun(bg, fg):
+      (bg + (fg - bg) * t)
+        |> math.round
+        |> math.exact
+        |> math.max(_, 0)
+        |> math.min(_, 255)
+    lut[iter*4] := 255
+    lut[iter*4 + 1] := interp(bg_r, fg_r)
+    lut[iter*4 + 2] := interp(bg_g, fg_g)
+    lut[iter*4 + 3] := interp(bg_b, fg_b)
+  lut

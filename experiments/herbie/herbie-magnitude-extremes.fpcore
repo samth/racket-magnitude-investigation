@@ -1,0 +1,43 @@
+(FPCore (x y)
+  :name "Hybrid magnitude at large finite values"
+  :precision binary64
+  :pre (and (<= 1e200 x 1e205) (<= 1e200 y 1e205))
+  :spec (hypot x y)
+  (let ((r (fabs x)) (i (fabs y)))
+    (let ((larger (if (< r i) i r)))
+      (if (and (<= 1e-150 larger) (<= larger 1e150))
+          (sqrt (+ (* r r) (* i i)))
+          (if (== i 0)
+              r
+              (if (< i r)
+                  (* r (sqrt (+ 1 (* (/ i r) (/ i r)))))
+                  (* i (sqrt (+ 1 (* (/ r i) (/ r i)))))))))))
+
+(FPCore (x y)
+  :name "Direct squaring at large finite values"
+  :precision binary64
+  :pre (and (<= 1e200 x 1e205) (<= 1e200 y 1e205))
+  :spec (hypot x y)
+  (sqrt (+ (* x x) (* y y))))
+
+(FPCore (x y)
+  :name "Hybrid magnitude at small finite values"
+  :precision binary64
+  :pre (and (<= 1e-205 x 1e-200) (<= 1e-205 y 1e-200))
+  :spec (hypot x y)
+  (let ((r (fabs x)) (i (fabs y)))
+    (let ((larger (if (< r i) i r)))
+      (if (and (<= 1e-150 larger) (<= larger 1e150))
+          (sqrt (+ (* r r) (* i i)))
+          (if (== i 0)
+              r
+              (if (< i r)
+                  (* r (sqrt (+ 1 (* (/ i r) (/ i r)))))
+                  (* i (sqrt (+ 1 (* (/ r i) (/ r i)))))))))))
+
+(FPCore (x y)
+  :name "Direct squaring at small finite values"
+  :precision binary64
+  :pre (and (<= 1e-205 x 1e-200) (<= 1e-205 y 1e-200))
+  :spec (hypot x y)
+  (sqrt (+ (* x x) (* y y))))

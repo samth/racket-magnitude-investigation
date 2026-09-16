@@ -1,0 +1,27 @@
+; These finite, ordinary-range inputs model the complex values in the benchmark.
+(FPCore (x y)
+  :name "Typed Racket magnitude: direct squaring on ordinary values"
+  :precision binary64
+  :pre (and (<= -2 x 2) (<= -2 y 2))
+  :spec (hypot x y)
+  (let ((r (fabs x)) (i (fabs y)))
+    (let ((larger (if (< r i) i r)))
+      (if (and (<= 1e-150 larger) (<= larger 1e150))
+          (sqrt (+ (* r r) (* i i)))
+          (if (== i 0)
+              r
+              (if (< i r)
+                  (* r (sqrt (+ 1 (* (/ i r) (/ i r)))))
+                  (* i (sqrt (+ 1 (* (/ r i) (/ r i)))))))))))
+
+(FPCore (x y)
+  :name "Prior Typed Racket magnitude: scaled ratio"
+  :precision binary64
+  :pre (and (<= -2 x 2) (<= -2 y 2))
+  :spec (hypot x y)
+  (let ((r (fabs x)) (i (fabs y)))
+    (if (== i 0)
+        r
+        (if (< i r)
+            (* r (sqrt (+ 1 (* (/ i r) (/ i r)))))
+            (* i (sqrt (+ 1 (* (/ r i) (/ r i)))))))))

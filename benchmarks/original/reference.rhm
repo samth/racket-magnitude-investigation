@@ -1,0 +1,28 @@
+#lang rhombus/static
+
+export fun mandelbrot(
+  ~width: width :: PosInt,
+  ~height: height :: PosInt,
+  ~max_iter: max_iter :: PosInt,
+  ~lut: lut :: Bytes,
+  ~corner: corner :: Number,
+  ~scale: scale :: Real,
+  ~dst: dst :: MutableBytes,
+  ~dst_offset: dst_offset :: Nat,
+  ~dst_row_stride: dst_row_stride :: Nat,
+):
+    let corner = math.inexact(corner)
+    let scale = math.inexact(scale)
+    for:
+      each px_y in 0..height
+      each px_x in 0..width
+      let c = corner + math.complex(px_x, -px_y) * scale
+      let iter = recur iterate(iter = 0, z = c):
+        if iter < max_iter && math.magnitude(z) <= 2
+        | iterate(iter + 1, z*z + c)
+        | iter
+      dst.copy_from(
+        dst_offset + px_y*dst_row_stride + px_x*4,
+        lut,
+        iter*4,
+        iter*4 + 4)

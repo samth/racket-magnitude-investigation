@@ -1,0 +1,3 @@
+(FPCore (x y)
+  :name "native hypot"
+  (hypot x y))
