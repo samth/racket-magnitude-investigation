@@ -1,0 +1,40 @@
+Typed Racket branch: avoid-redundant-float-complex-coercions
+Commit: c63c8ed4
+
+x86, Intel Core Ultra 7 265
+----
+[typed-zfl] 1024x1024 max_iter=1024
+time min: 503ms max: 505ms avg: 504ms
+alloc avg: 5166 MB
+----
+[typed-zfl-alt-mag] 1024x1024 max_iter=1024
+time min: 455ms max: 457ms avg: 456ms
+alloc avg: 3485 MB
+----
+[typed-zfl-squared-mag] 1024x1024 max_iter=1024
+time min: 423ms max: 425ms avg: 424ms
+alloc avg: 3485 MB
+
+ARM, Neoverse N1
+----
+[typed-zfl] 1024x1024 max_iter=1024
+time min: 2383ms max: 2402ms avg: 2390ms
+alloc avg: 5166 MB
+----
+[typed-zfl-alt-mag] 1024x1024 max_iter=1024
+time min: 1046ms max: 1052ms avg: 1048ms
+alloc avg: 3485 MB
+----
+[typed-zfl-squared-mag] 1024x1024 max_iter=1024
+time min: 884ms max: 894ms avg: 889ms
+alloc avg: 3485 MB
+
+Isolated 100-million-iteration recurrence
+
+x86 raw: 119 ms, 0 ms GC, 882576 allocated bytes
+x86 with two coercions: 327 ms, 3 ms GC, 3204740608 allocated bytes
+ARM raw: 296 ms, 0 ms GC, 948176 allocated bytes
+ARM with two coercions: 1829 ms, 11 ms GC, 3204871552 allocated bytes
+
+Typed Racket optimizer tests:
+169 successes, 0 failures, 0 errors

@@ -12,6 +12,9 @@ All times are averages for a 1024x1024 Mandelbrot image with `max_iter=1024`, on
 | ratio without infinity check [1] | Diagnostic shortened scaled-division formula | 768 ms / 0.575x | 3988 ms / 1.015x | 6822 / 6822 MB |
 | `typed-zfl-alt-mag.rkt` | `sqrt(real^2 + imag^2)` | 644 ms / 0.483x | 3251 ms / 0.830x | 6822 / 6822 MB |
 | `typed-zfl-squared-mag.rkt` | Compare `real^2 + imag^2` with 4; no `sqrt` | 655 ms / 0.491x | 2695 ms / 0.688x | 6822 / 6822 MB |
+| coercion fix + stock magnitude | Remove redundant component coercions; retain stock zero test and scaled division | 504 ms / 0.378x | 2390 ms / 0.610x | 5166 / 5166 MB |
+| coercion fix + `typed-zfl-alt-mag.rkt` | Remove redundant component coercions with direct square root | 456 ms / 0.342x | 1048 ms / 0.267x | 3485 / 3485 MB |
+| coercion fix + `typed-zfl-squared-mag.rkt` | Remove redundant component coercions with squared escape test | 424 ms / 0.318x | 889 ms / 0.227x | 3485 / 3485 MB |
 | hybrid magnitude [1] | Direct square in the ordinary range, scaled division at extremes | 745 ms / 0.558x | 3483 ms / 0.886x | 6822 / 6822 MB |
 | ordinary FFI libm `hypot` [1] | FFI wrapper with boxed arguments/result | 1306 ms / 0.978x | 4638 ms / 1.180x | 8523 / 8523 MB |
 | new `unsafe-flhypot` primitive [1] | Compiler-known, unboxed libm `hypot` | 1338 ms / 1.002x | 3730 ms / 0.949x | 6822 / 6822 MB |
@@ -75,6 +78,35 @@ On x86, eliminating the expensive runtime magnitude calculation is enough to hid
 
 The squared-magnitude experiment separates `sqrt` from the complex-representation cost. Removing `sqrt` changes 3251 ms to 2695 ms on ARM, but 644 ms to 655 ms on x86 within normal run variation. ARM benefits materially from avoiding that operation, yet the result still allocates 6822 MB and reaches only a 1.45x speedup. Magnitude is no longer the main remaining bottleneck.
 
+## Where the remaining boxes come from
+
+After the generic `zero?` fix, the complex variants retain approximately four 16-byte flonums per hot iteration. Two independent allocation differences identify them:
+
+- The complex squared-magnitude variant allocates 6822 MB, while the scalar version with the same duplicated-square recurrence allocates 3502 MB. The 3320 MB difference is 31.9 bytes per iteration: two flonums.
+- The scalar local-procedure variant allocates 3502 MB, while the immediately applied named loop allocates 119 MB. The 3383 MB difference is 32.5 bytes per iteration: two more flonums.
+
+The first pair is introduced directly by `n-ary->binary/non-floats` in TR's float-complex optimizer. In the branch where neither operand is marked as non-float, the old code nevertheless wrapped the accumulated component in `real->double-flonum` before an unsafe flonum operation. In the Mandelbrot recurrence, that accumulator is already the result of `unsafe-fl-` or `unsafe-fl+`. Passing it to the generic coercion first requires a boxed Racket value. The patch on branch `avoid-redundant-float-complex-coercions` passes the known flonum directly instead.
+
+The second pair is caused by the recursive local-procedure boundary. Chez keeps the two component arguments boxed for the `define`-then-call shape, but recognizes the immediately applied named `let` as a loop and keeps both values in floating-point registers. These boxes are also not semantically necessary, but eliminating them requires a source transformation, a stronger TR loop transformation, or improved Chez analysis.
+
+With only the first pair removed, the squared complex benchmark falls from 6822 MB to 3485 MB. Its x86 time falls from 655 ms to 424 ms, and its ARM time falls from 2695 ms to 889 ms. The patched complex code is then essentially tied with the analogous scalar code; the remaining gap is the second boxed pair.
+
+## Why boxing is especially expensive on the tested ARM machine
+
+An isolated 100-million-iteration loop compared two flonum recurrences. The first kept both values in floating-point registers. The second applied `real->double-flonum` to both already-flonum results on every iteration.
+
+| Isolated loop | x86 time | ARM time | Allocation | GC time, x86 / ARM |
+|---|---:|---:|---:|---:|
+| Raw unboxed recurrence | 119 ms | 296 ms | about 0.9 MB | 0 / 0 ms |
+| Two redundant coercions | 327 ms | 1829 ms | about 3205 MB | 3 / 11 ms |
+| Added cost | 208 ms | 1533 ms | about 3204 MB | 3 / 11 ms |
+
+The small GC totals show that collection is not the main cost. The coercing loop allocates each 16-byte flonum in the nursery, stores the floating-point result, spills live Scheme state, calls the generic `real->double-flonum` procedure, performs its type checks, restores state, and later reloads the double from the box.
+
+The AArch64 disassembly uses four `movz`/`movk` instructions to materialize each full procedure address, followed by an indirect branch through the procedure object. The primitive performs tag and header checks and another indirect transfer. The x86 sequence implements the same boxed calling convention more compactly, and the newer Core Ultra processor executes the dependent calls, branches, and memory traffic much faster than the Neoverse N1. The ARM penalty is therefore in mutator-side boxing and generic-call machinery, not primarily in garbage collection or floating-point arithmetic.
+
+Chez already knows how to eliminate its internal `real->flonum` and `$real->flonum` primitives when `known-flonum-result?` proves the argument is a flonum. Racket CS's `real->double-flonum`, however, reaches Chez as a call to a separately compiled Racket wrapper. Its compiler metadata describes a foldable procedure but does not expose the identity-on-flonum rule or the unboxed result path. Chez therefore cannot apply its existing primitive optimization at this call site. Making the Racket operation a compiler-recognized intrinsic could eliminate the call too, but avoiding the redundant call in TR is smaller and also applies to Racket BC.
+
 ## Why Lucas's scalar versions are faster
 
 `typed-scalar.rkt` carries `zr` and `zi` as separate `Float` arguments. This avoids the generated complex multiply/add machinery and its two extra per-iteration coercion boxes. Its `math/flonum` `flhypot` is the same scaled-division algorithm, but it is defined inside `begin-encourage-inline` and receives scalar arguments directly. Even with the division, scalarization improves the result to 483 ms on x86 and 1836 ms on ARM.
@@ -123,7 +155,7 @@ The same atomic form takes 16367 ms and allocates 13548 MB on the Neoverse N1. A
 ## Concrete optimization opportunities
 
 1. Change the generated generic `zero?` to `unsafe-fl=`. This removes one allocation per magnitude call.
-2. Remove the `real->double-flonum` coercion boxes introduced by generated float-complex multiplication and addition.
+2. Remove the `real->double-flonum` coercion boxes introduced by generated float-complex multiplication and addition. Implemented and tested on branch `avoid-redundant-float-complex-coercions`, commit `c63c8ed4`.
 3. Arrange generated scalar recurrences as immediate loops, or otherwise communicate loop-carried flonum types to Chez so recursive calls remain unboxed.
 4. Use range information from `i < max_iter` to replace the hot checked `fx+` with `unsafe-fx+` when `max_iter` is a positive fixnum.
 5. Consider strength reduction for multiplication by exactly `2.0` where the floating-point semantics are acceptable.
@@ -134,6 +166,7 @@ The same atomic form takes 16367 ms and allocates 13548 MB on the Neoverse N1. A
 
 - Racket `flhypot`: branch `flhypot`, commit `1cb4f05769`.
 - Typed Racket: branch `use-flhypot`, commits `8c8af219`, `5bc1455f`, and `1819ebda`.
+- Typed Racket redundant-coercion fix: branch `avoid-redundant-float-complex-coercions`, commit `c63c8ed4`.
 - Math library: branch `use-racket-flhypot`, commit `3fd5a82`.
 
 Those worktrees live under the ignored `checkouts/` directory. Raw benchmark logs are under `results/`; source variants are under `benchmarks/`; expansions, disassembly, MPFR inputs, and Herbie reports are under `experiments/`.

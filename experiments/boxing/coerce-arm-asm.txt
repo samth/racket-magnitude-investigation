@@ -1,0 +1,244 @@
+=== raw ===
+       0: ff0200f1                       (subs xzr x23 #x0)
+       4: 410a0054                       (b.ne (+ pc #x148)) ; => 14c
+       8: 5e0d93d2                       (movz x30 #x986a) ; 0.75
+       c: fe30baf2                       (movk x30 (lsl #xd187 #x10))
+      10: fe6dddf2                       (movk x30 (lsl #xeb6f #x20))
+      14: 1e00e0f2                       (movk x30 (lsl #x0 #x30))
+      18: d56340fc                       (ldur d21 (mem+ x30 #x6))
+      1c: 5e0f93d2                       (movz x30 #x987a) ; 0.25
+      20: fe30baf2                       (movk x30 (lsl #xd187 #x10))
+      24: fe6dddf2                       (movk x30 (lsl #xeb6f #x20))
+      28: 1e00e0f2                       (movk x30 (lsl #x0 #x30))
+      2c: d36340fc                       (ldur d19 (mem+ x30 #x6))
+      30: 1e0080d2                       (movz x30 #x0)
+      34: b442601e                       (fmov d20 d21) ; <=
+      38: 7542601e                       (fmov d21 d19)
+      3c: 0f0081d2                       (movz x15 #x800)
+      40: eff5a5f2                       (movk x15 (lsl #x2faf #x10))
+      44: df030feb                       (subs xzr x30 x15)
+      48: 2a060054                       (b.ge (+ pc #xc4)) ; => 10c
+      4c: d60600f1                       (subs x22 x22 #x1)
+      50: 60030054                       (b.eq (+ pc #x6c)) ; => bc
+      54: 4f1193d2                       (movz x15 #x988a) ; 0.99999999 ; <=
+      58: ef30baf2                       (movk x15 (lsl #xd187 #x10))
+      5c: ef6dddf2                       (movk x15 (lsl #xeb6f #x20))
+      60: 0f00e0f2                       (movk x15 (lsl #x0 #x30))
+      64: f36140fc                       (ldur d19 (mem+ x15 #x6))
+      68: b50a731e                       (fmul d21 d21 d19)
+      6c: 4f1393d2                       (movz x15 #x989a) ; 1e-9
+      70: ef30baf2                       (movk x15 (lsl #xd187 #x10))
+      74: ef6dddf2                       (movk x15 (lsl #xeb6f #x20))
+      78: 0f00e0f2                       (movk x15 (lsl #x0 #x30))
+      7c: f36140fc                       (ldur d19 (mem+ x15 #x6))
+      80: b32a731e                       (fadd d19 d21 d19)
+      84: 4f1593d2                       (movz x15 #x98aa) ; 0.99999998
+      88: ef30baf2                       (movk x15 (lsl #xd187 #x10))
+      8c: ef6dddf2                       (movk x15 (lsl #xeb6f #x20))
+      90: 0f00e0f2                       (movk x15 (lsl #x0 #x30))
+      94: f56140fc                       (ldur d21 (mem+ x15 #x6))
+      98: 950a751e                       (fmul d21 d20 d21)
+      9c: 4f1393d2                       (movz x15 #x989a) ; 1e-9
+      a0: ef30baf2                       (movk x15 (lsl #xd187 #x10))
+      a4: ef6dddf2                       (movk x15 (lsl #xeb6f #x20))
+      a8: 0f00e0f2                       (movk x15 (lsl #x0 #x30))
+      ac: f46140fc                       (ldur d20 (mem+ x15 #x6))
+      b0: b53a741e                       (fsub d21 d21 d20)
+      b4: de230091                       (add x30 x30 #x8)
+      b8: dfffff17                       (b (+ pc #x-84)) ; => 34
+      bc: 9e0600f9                       (str x30 (mem+ x20 (lsl #x1 #x3))) ; <=
+      c0: 951200fd                       (str d21 (mem+ x20 (lsl #x4 #x3)))
+      c4: 941600fd                       (str d20 (mem+ x20 (lsl #x5 #x3)))
+      c8: 94c20091                       (add x20 x20 #x30)
+      cc: 7e010010                       (adr x30 (+ pc #x2c)) ; => f8
+      d0: 9e0200f9                       (str x30 (mem+ x20 (lsl #x0 #x3)))
+      d4: 0aba84d2                       (movz x10 #x25d0) ; #<code event>
+      d8: 4a19bbf2                       (movk x10 (lsl #xd8ca #x10))
+      dc: ea6dddf2                       (movk x10 (lsl #xeb6f #x20))
+      e0: 0a00e0f2                       (movk x10 (lsl #x0 #x30))
+      e4: 40011fd6                       (br x10)
+      e8: 2901000000000000               (data)
+      f0: 9900000000000000               (data)
+      f8: 94c200d1                       (sub x20 x20 #x30) ; <=
+      fc: 9e0640f9                       (ldr x30 (mem+ x20 (lsl #x1 #x3)))
+     100: 951240fd                       (ldr d21 (mem+ x20 (lsl #x4 #x3)))
+     104: 941640fd                       (ldr d20 (mem+ x20 (lsl #x5 #x3)))
+     108: d3ffff17                       (b (+ pc #x-b4)) ; => 54
+     10c: b81a00d1                       (sub x24 x21 #x6) ; <=
+     110: b5420091                       (add x21 x21 #x10)
+     114: 7e5240f9                       (ldr x30 (mem+ x19 (lsl #x14 #x3)))
+     118: df0315eb                       (subs xzr x30 x21)
+     11c: c3000054                       (b.cc (+ pc #x18)) ; => 134
+     120: f70318aa                       (orr x23 xzr x24) ; <=
+     124: b52a741e                       (fadd d21 d21 d20)
+     128: f56200fc                       (stur d21 (mem+ x23 #x6))
+     12c: 8a0240f8                       (ldur x10 (mem+ x20))
+     130: 40011fd6                       (br x10)
+     134: 0a7891d2                       (movz x10 #x8bc0) ; #<code get-room> ; <=
+     138: ea18bbf2                       (movk x10 (lsl #xd8c7 #x10))
+     13c: ea6dddf2                       (movk x10 (lsl #xeb6f #x20))
+     140: 0a00e0f2                       (movk x10 (lsl #x0 #x30))
+     144: 40013fd6                       (blr x10)
+     148: f6ffff17                       (b (+ pc #x-28)) ; => 120
+     14c: 0a6693d2                       (movz x10 #x9b30) ; #<code doargerr> ; <=
+     150: ea18bbf2                       (movk x10 (lsl #xd8c7 #x10))
+     154: ea6dddf2                       (movk x10 (lsl #xeb6f #x20))
+     158: 0a00e0f2                       (movk x10 (lsl #x0 #x30))
+     15c: 40011fd6                       (br x10)
+=== coerce ===
+       0: ff0200f1                       (subs xzr x23 #x0)
+       4: 81130054                       (b.ne (+ pc #x270)) ; => 274
+       8: 7e4a40f9                       (ldr x30 (mem+ x19 (lsl #x12 #x3)))
+       c: 9f021eeb                       (subs xzr x20 x30)
+      10: 62120054                       (b.cs (+ pc #x24c)) ; => 25c
+      14: 57ff92d2                       (movz x23 #x97fa) ; 0.75 ; <=
+      18: 17b4baf2                       (movk x23 (lsl #xd5a0 #x10))
+      1c: f76dddf2                       (movk x23 (lsl #xeb6f #x20))
+      20: 1700e0f2                       (movk x23 (lsl #x0 #x30))
+      24: 5efd92d2                       (movz x30 #x97ea) ; 0.25
+      28: 1eb4baf2                       (movk x30 (lsl #xd5a0 #x10))
+      2c: fe6dddf2                       (movk x30 (lsl #xeb6f #x20))
+      30: 1e00e0f2                       (movk x30 (lsl #x0 #x30))
+      34: 0e0080d2                       (movz x14 #x0)
+      38: ef031eaa                       (orr x15 xzr x30) ; <=
+      3c: 8e0600f9                       (str x14 (mem+ x20 (lsl #x1 #x3)))
+      40: 8e0640f9                       (ldr x14 (mem+ x20 (lsl #x1 #x3)))
+      44: 1e0081d2                       (movz x30 #x800)
+      48: fef5a5f2                       (movk x30 (lsl #x2faf #x10))
+      4c: df011eeb                       (subs xzr x14 x30)
+      50: 2a0e0054                       (b.ge (+ pc #x1c4)) ; => 214
+      54: d60600f1                       (subs x22 x22 #x1)
+      58: a00b0054                       (b.eq (+ pc #x174)) ; => 1cc
+      5c: b81a00d1                       (sub x24 x21 #x6) ; <=
+      60: b5420091                       (add x21 x21 #x10)
+      64: 7e5240f9                       (ldr x30 (mem+ x19 (lsl #x14 #x3)))
+      68: df0315eb                       (subs xzr x30 x21)
+      6c: 430a0054                       (b.cc (+ pc #x148)) ; => 1b4
+      70: e00318aa                       (orr x0 xzr x24) ; <=
+      74: 5efb92d2                       (movz x30 #x97da) ; 0.99999999
+      78: 1eb4baf2                       (movk x30 (lsl #xd5a0 #x10))
+      7c: fe6dddf2                       (movk x30 (lsl #xeb6f #x20))
+      80: 1e00e0f2                       (movk x30 (lsl #x0 #x30))
+      84: f46140fc                       (ldur d20 (mem+ x15 #x6))
+      88: d56340fc                       (ldur d21 (mem+ x30 #x6))
+      8c: 950a751e                       (fmul d21 d20 d21)
+      90: 5ed992d2                       (movz x30 #x96ca) ; 1e-9
+      94: 1eb4baf2                       (movk x30 (lsl #xd5a0 #x10))
+      98: fe6dddf2                       (movk x30 (lsl #xeb6f #x20))
+      9c: 1e00e0f2                       (movk x30 (lsl #x0 #x30))
+      a0: d46340fc                       (ldur d20 (mem+ x30 #x6))
+      a4: b52a741e                       (fadd d21 d21 d20)
+      a8: 156000fc                       (stur d21 (mem+ x0 #x6))
+      ac: b81a00d1                       (sub x24 x21 #x6)
+      b0: b5420091                       (add x21 x21 #x10)
+      b4: 7e5240f9                       (ldr x30 (mem+ x19 (lsl #x14 #x3)))
+      b8: df0315eb                       (subs xzr x30 x21)
+      bc: 03070054                       (b.cc (+ pc #xe0)) ; => 19c
+      c0: 5edb92d2                       (movz x30 #x96da) ; 0.99999998 ; <=
+      c4: 1eb4baf2                       (movk x30 (lsl #xd5a0 #x10))
+      c8: fe6dddf2                       (movk x30 (lsl #xeb6f #x20))
+      cc: 1e00e0f2                       (movk x30 (lsl #x0 #x30))
+      d0: f46240fc                       (ldur d20 (mem+ x23 #x6))
+      d4: d56340fc                       (ldur d21 (mem+ x30 #x6))
+      d8: 950a751e                       (fmul d21 d20 d21)
+      dc: 5ed992d2                       (movz x30 #x96ca) ; 1e-9
+      e0: 1eb4baf2                       (movk x30 (lsl #xd5a0 #x10))
+      e4: fe6dddf2                       (movk x30 (lsl #xeb6f #x20))
+      e8: 1e00e0f2                       (movk x30 (lsl #x0 #x30))
+      ec: d46340fc                       (ldur d20 (mem+ x30 #x6))
+      f0: b53a741e                       (fsub d21 d21 d20)
+      f4: 156300fc                       (stur d21 (mem+ x24 #x6))
+      f8: 980a00f9                       (str x24 (mem+ x20 (lsl #x2 #x3)))
+      fc: 94620091                       (add x20 x20 #x18)
+     100: 78e795d2                       (movz x24 #xaf3b) ; 'real->double-flonum
+     104: f8eabaf2                       (movk x24 (lsl #xd757 #x10))
+     108: f86dddf2                       (movk x24 (lsl #xeb6f #x20))
+     10c: 1800e0f2                       (movk x24 (lsl #x0 #x30))
+     110: 1a5340f8                       (ldur x26 (mem+ x24 #x5))
+     114: 3e010010                       (adr x30 (+ pc #x24)) ; => 138
+     118: 9e0200f9                       (str x30 (mem+ x20 (lsl #x0 #x3)))
+     11c: 370080d2                       (movz x23 #x1)
+     120: 0ad340f8                       (ldur x10 (mem+ x24 #xd))
+     124: 40011fd6                       (br x10)
+     128: 6901000000000000               (data)
+     130: 8f01000000000000               (data)
+     138: 946200d1                       (sub x20 x20 #x18) ; <=
+     13c: 980a40f9                       (ldr x24 (mem+ x20 (lsl #x2 #x3)))
+     140: fe0317aa                       (orr x30 xzr x23)
+     144: e00318aa                       (orr x0 xzr x24)
+     148: 9e0e00f9                       (str x30 (mem+ x20 (lsl #x3 #x3)))
+     14c: 94820091                       (add x20 x20 #x20)
+     150: 78e795d2                       (movz x24 #xaf3b) ; 'real->double-flonum
+     154: f8eabaf2                       (movk x24 (lsl #xd757 #x10))
+     158: f86dddf2                       (movk x24 (lsl #xeb6f #x20))
+     15c: 1800e0f2                       (movk x24 (lsl #x0 #x30))
+     160: 1a5340f8                       (ldur x26 (mem+ x24 #x5))
+     164: 3e010010                       (adr x30 (+ pc #x24)) ; => 188
+     168: 9e0200f9                       (str x30 (mem+ x20 (lsl #x0 #x3)))
+     16c: 370080d2                       (movz x23 #x1)
+     170: 0ad340f8                       (ldur x10 (mem+ x24 #xd))
+     174: 40011fd6                       (br x10)
+     178: b901000000000000               (data)
+     180: 9302000000000000               (data)
+     188: 948200d1                       (sub x20 x20 #x20) ; <=
+     18c: 9e0e40f9                       (ldr x30 (mem+ x20 (lsl #x3 #x3)))
+     190: 8f0640f9                       (ldr x15 (mem+ x20 (lsl #x1 #x3)))
+     194: ee210091                       (add x14 x15 #x8)
+     198: a8ffff17                       (b (+ pc #x-160)) ; => 38
+     19c: 0a7891d2                       (movz x10 #x8bc0) ; #<code get-room> ; <=
+     1a0: ea18bbf2                       (movk x10 (lsl #xd8c7 #x10))
+     1a4: ea6dddf2                       (movk x10 (lsl #xeb6f #x20))
+     1a8: 0a00e0f2                       (movk x10 (lsl #x0 #x30))
+     1ac: 40013fd6                       (blr x10)
+     1b0: c4ffff17                       (b (+ pc #x-f0)) ; => c0
+     1b4: 0a7891d2                       (movz x10 #x8bc0) ; #<code get-room> ; <=
+     1b8: ea18bbf2                       (movk x10 (lsl #xd8c7 #x10))
+     1bc: ea6dddf2                       (movk x10 (lsl #xeb6f #x20))
+     1c0: 0a00e0f2                       (movk x10 (lsl #x0 #x30))
+     1c4: 40013fd6                       (blr x10)
+     1c8: aaffff17                       (b (+ pc #x-158)) ; => 70
+     1cc: 8f0a00f9                       (str x15 (mem+ x20 (lsl #x2 #x3))) ; <=
+     1d0: 970e00f9                       (str x23 (mem+ x20 (lsl #x3 #x3)))
+     1d4: 94820091                       (add x20 x20 #x20)
+     1d8: 7e010010                       (adr x30 (+ pc #x2c)) ; => 204
+     1dc: 9e0200f9                       (str x30 (mem+ x20 (lsl #x0 #x3)))
+     1e0: 0a0684d2                       (movz x10 #x2030) ; #<code event>
+     1e4: 4a19bbf2                       (movk x10 (lsl #xd8ca #x10))
+     1e8: ea6dddf2                       (movk x10 (lsl #xeb6f #x20))
+     1ec: 0a00e0f2                       (movk x10 (lsl #x0 #x30))
+     1f0: 40011fd6                       (br x10)
+     1f4: 3502000000000000               (data)
+     1fc: 9103000000000000               (data)
+     204: 948200d1                       (sub x20 x20 #x20) ; <=
+     208: 8f0a40f9                       (ldr x15 (mem+ x20 (lsl #x2 #x3)))
+     20c: 970e40f9                       (ldr x23 (mem+ x20 (lsl #x3 #x3)))
+     210: 93ffff17                       (b (+ pc #x-1b4)) ; => 5c
+     214: b81a00d1                       (sub x24 x21 #x6) ; <=
+     218: b5420091                       (add x21 x21 #x10)
+     21c: 7e5240f9                       (ldr x30 (mem+ x19 (lsl #x14 #x3)))
+     220: df0315eb                       (subs xzr x30 x21)
+     224: 03010054                       (b.cc (+ pc #x20)) ; => 244
+     228: f46140fc                       (ldur d20 (mem+ x15 #x6)) ; <=
+     22c: f56240fc                       (ldur d21 (mem+ x23 #x6))
+     230: 952a751e                       (fadd d21 d20 d21)
+     234: 156300fc                       (stur d21 (mem+ x24 #x6))
+     238: f70318aa                       (orr x23 xzr x24)
+     23c: 8a0240f8                       (ldur x10 (mem+ x20))
+     240: 40011fd6                       (br x10)
+     244: 0a7891d2                       (movz x10 #x8bc0) ; #<code get-room> ; <=
+     248: ea18bbf2                       (movk x10 (lsl #xd8c7 #x10))
+     24c: ea6dddf2                       (movk x10 (lsl #xeb6f #x20))
+     250: 0a00e0f2                       (movk x10 (lsl #x0 #x30))
+     254: 40013fd6                       (blr x10)
+     258: f4ffff17                       (b (+ pc #x-30)) ; => 228
+     25c: 0a1892d2                       (movz x10 #x90c0) ; #<code dooverflow> ; <=
+     260: ea18bbf2                       (movk x10 (lsl #xd8c7 #x10))
+     264: ea6dddf2                       (movk x10 (lsl #xeb6f #x20))
+     268: 0a00e0f2                       (movk x10 (lsl #x0 #x30))
+     26c: 40013fd6                       (blr x10)
+     270: 69ffff17                       (b (+ pc #x-25c)) ; => 14
+     274: 0a6693d2                       (movz x10 #x9b30) ; #<code doargerr> ; <=
+     278: ea18bbf2                       (movk x10 (lsl #xd8c7 #x10))
+     27c: ea6dddf2                       (movk x10 (lsl #xeb6f #x20))
+     280: 0a00e0f2                       (movk x10 (lsl #x0 #x30))
+     284: 40011fd6                       (br x10)

@@ -1,0 +1,29 @@
+From c63c8ed4f36d8beda2dc85941fc071bfd26ab403 Mon Sep 17 00:00:00 2001
+From: Sam Tobin-Hochstadt <samth@iu.edu>
+Date: Wed, 16 Sep 2026 10:40:01 -0400
+Subject: [PATCH] Avoid redundant flonum coercion in complex addition
+
+---
+ typed-racket-lib/typed-racket/optimizer/float-complex.rkt | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/typed-racket-lib/typed-racket/optimizer/float-complex.rkt b/typed-racket-lib/typed-racket/optimizer/float-complex.rkt
+index b5a2b99b..c7ffbd2f 100644
+--- a/typed-racket-lib/typed-racket/optimizer/float-complex.rkt
++++ b/typed-racket-lib/typed-racket/optimizer/float-complex.rkt
+@@ -100,8 +100,10 @@
+          (mark-as-non-float (quasisyntax/loc this-syntax
+                               (#,op #,(or o-nf o) #,(or c1-nf c1)))))
+        (if (stx-null? (stx-cdr cs)) new-o (loop new-o (stx-cdr cs)))]
+-      ;; we've hit floats, can start coercing
+-      [else (n-ary->binary this-syntax unsafe (cons #`(real->double-flonum #,(or o-nf o)) cs))])))
++      ;; Neither operand is marked as a non-float, so both are already
++      ;; known to produce flonums. A redundant coercion can interfere with
++      ;; unboxing of the intermediate result.
++      [else (n-ary->binary this-syntax unsafe (cons o cs))])))
+ 
+ 
+ 
+-- 
+2.53.0
+

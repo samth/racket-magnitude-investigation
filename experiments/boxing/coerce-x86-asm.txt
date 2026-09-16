@@ -1,0 +1,149 @@
+=== raw ===
+       0: 4883fd00                       (cmp rbp #x0)
+       4: 0f8500010000                   (jnz (+ rip #x100)) ; => 10a
+       a: 48b9ca582c4b00000000           (mov rcx #x4b2c58ca) ; 0.75
+      14: f2440f107906                   (movsd xmm15 (mem64+ rcx #x6))
+      1a: 48b9da582c4b00000000           (mov rcx #x4b2c58da) ; 0.25
+      24: f2440f107106                   (movsd xmm14 (mem64+ rcx #x6))
+      2a: 4831c9                         (xor rcx rcx)
+      2d: 4881f90008af2f                 (cmp rcx #x2faf0800) ; <=
+      34: 0f8da1000000                   (jnl (+ rip #xa1)) ; => db
+      3a: 49836e6801                     (sub (mem64+ r14 #x68) #x1)
+      3f: 7446                           (jz (+ rip #x46)) ; => 87
+      41: 48baea582c4b00000000           (mov rdx #x4b2c58ea) ; 0.99999999 ; <=
+      4b: f2440f597206                   (mulsd xmm14 (mem64+ rdx #x6))
+      51: 48bafa582c4b00000000           (mov rdx #x4b2c58fa) ; 1e-9
+      5b: f2440f587206                   (addsd xmm14 (mem64+ rdx #x6))
+      61: 48ba0a592c4b00000000           (mov rdx #x4b2c590a) ; 0.99999998
+      6b: f2440f597a06                   (mulsd xmm15 (mem64+ rdx #x6))
+      71: 48bafa582c4b00000000           (mov rdx #x4b2c58fa) ; 1e-9
+      7b: f2440f5c7a06                   (subsd xmm15 (mem64+ rdx #x6))
+      81: 4883c108                       (add rcx #x8)
+      85: eba6                           (jmp (+ rip #x-5a)) ; => 2d
+      87: 49894d08                       (mov (mem64+ r13 #x8) rcx) ; <=
+      8b: f2450f117520                   (movsd (mem64+ r13 #x20) xmm14)
+      91: f2450f117d28                   (movsd (mem64+ r13 #x28) xmm15)
+      97: 4983c530                       (add r13 #x30)
+      9b: 488d0d20000000                 (lea rcx (mem+ rip #x20)) ; => c2
+      a2: 49894d00                       (mov (mem64+ r13 #x0) rcx)
+      a6: e9958d45f7                     (jmp (+ rip #x-8ba726b)) ; #<code event>
+      ab: 0f1f8000000000f3               (data)
+      b3: 0000000000000099               (data)
+      bb: 00000000000000                 (data)
+      c2: 4983ed30                       (sub r13 #x30) ; <=
+      c6: 498b4d08                       (mov rcx (mem64+ r13 #x8))
+      ca: f2450f107520                   (movsd xmm14 (mem64+ r13 #x20))
+      d0: f2450f107d28                   (movsd xmm15 (mem64+ r13 #x28))
+      d6: e966ffffff                     (jmp (+ rip #x-9a)) ; => 41
+      db: 4d8d61fa                       (lea r12 (mem+ r9 #x-6)) ; <=
+      df: 4983c110                       (add r9 #x10)
+      e3: 4d394e58                       (cmp (mem64+ r14 #x58) r9)
+      e7: 7212                           (jb (+ rip #x12)) ; => fb
+      e9: 4c89e5                         (mov rbp r12) ; <=
+      ec: f2450f58f7                     (addsd xmm14 xmm15)
+      f1: f2440f117506                   (movsd (mem64+ rbp #x6) xmm14)
+      f7: 41ff6500                       (jmp (mem64+ r13 #x0))
+      fb: 49e85f4043f7                   (call (+ rip #x-8bcbfa1)) ; #<code get-room> ; <=
+     101: 0f1f8000000000                 (nop (mem32+ rax #x0))
+     108: ebdf                           (jmp (+ rip #x-21)) ; => e9
+     10a: e9c14e43f7                     (jmp (+ rip #x-8bcb13f)) ; #<code doargerr> ; <=
+     10f: 0f1f8000000000                 (data)
+=== coerce ===
+       0: 4883fd00                       (cmp rbp #x0)
+       4: 0f850d020000                   (jnz (+ rip #x20d)) ; => 217
+       a: 4d396e48                       (cmp (mem64+ r14 #x48) r13)
+       e: 0f86f2010000                   (jbe (+ rip #x1f2)) ; => 206
+      14: 48bdca582c4b00000000           (mov rbp #x4b2c58ca) ; 0.75 ; <=
+      1e: 48b9da582c4b00000000           (mov rcx #x4b2c58da) ; 0.25
+      28: 4831d2                         (xor rdx rdx)
+      2b: 49895508                       (mov (mem64+ r13 #x8) rdx) ; <=
+      2f: 49817d080008af2f               (cmp (mem64+ r13 #x8) #x2faf0800)
+      37: 0f8d92010000                   (jnl (+ rip #x192)) ; => 1cf
+      3d: 49836e6801                     (sub (mem64+ r14 #x68) #x1)
+      42: 0f8443010000                   (jz (+ rip #x143)) ; => 18b
+      48: 4d8d61fa                       (lea r12 (mem+ r9 #x-6)) ; <=
+      4c: 4983c110                       (add r9 #x10)
+      50: 4d394e58                       (cmp (mem64+ r14 #x58) r9)
+      54: 0f821f010000                   (jb (+ rip #x11f)) ; => 179
+      5a: 4d89e0                         (mov r8 r12) ; <=
+      5d: 48baea582c4b00000000           (mov rdx #x4b2c58ea) ; 0.99999999
+      67: f2440f107906                   (movsd xmm15 (mem64+ rcx #x6))
+      6d: f2440f597a06                   (mulsd xmm15 (mem64+ rdx #x6))
+      73: 48b9fa582c4b00000000           (mov rcx #x4b2c58fa) ; 1e-9
+      7d: f2440f587906                   (addsd xmm15 (mem64+ rcx #x6))
+      83: f2450f117806                   (movsd (mem64+ r8 #x6) xmm15)
+      89: 4d8d61fa                       (lea r12 (mem+ r9 #x-6))
+      8d: 4983c110                       (add r9 #x10)
+      91: 4d394e58                       (cmp (mem64+ r14 #x58) r9)
+      95: 0f82cc000000                   (jb (+ rip #xcc)) ; => 167
+      9b: 48b90a592c4b00000000           (mov rcx #x4b2c590a) ; 0.99999998 ; <=
+      a5: f2440f107d06                   (movsd xmm15 (mem64+ rbp #x6))
+      ab: f2440f597906                   (mulsd xmm15 (mem64+ rcx #x6))
+      b1: 48b9fa582c4b00000000           (mov rcx #x4b2c58fa) ; 1e-9
+      bb: f2440f5c7906                   (subsd xmm15 (mem64+ rcx #x6))
+      c1: f2450f117c2406                 (movsd (mem64+ r12 #x6) xmm15)
+      c8: 4d896510                       (mov (mem64+ r13 #x10) r12)
+      cc: 4983c518                       (add r13 #x18)
+      d0: 49bc3b2fce4000000000           (mov r12 #x40ce2f3b) ; 'real->double-flonum
+      da: 4d8b7c2405                     (mov r15 (mem64+ r12 #x5))
+      df: 488d0d20000000                 (lea rcx (mem+ rip #x20)) ; => 106
+      e6: 49894d00                       (mov (mem64+ r13 #x0) rcx)
+      ea: 48c7c501000000                 (mov rbp #x1)
+      f1: 41ff64240d                     (jmp (mem64+ r12 #xd))
+      f6: 3701000000000000               (data)
+      fe: 8f01000000000000               (data)
+     106: 4983ed18                       (sub r13 #x18) ; <=
+     10a: 4d8b6510                       (mov r12 (mem64+ r13 #x10))
+     10e: 4889e9                         (mov rcx rbp)
+     111: 4d89e0                         (mov r8 r12)
+     114: 49894d18                       (mov (mem64+ r13 #x18) rcx)
+     118: 4983c520                       (add r13 #x20)
+     11c: 49bc3b2fce4000000000           (mov r12 #x40ce2f3b) ; 'real->double-flonum
+     126: 4d8b7c2405                     (mov r15 (mem64+ r12 #x5))
+     12b: 488d0d20000000                 (lea rcx (mem+ rip #x20)) ; => 152
+     132: 49894d00                       (mov (mem64+ r13 #x0) rcx)
+     136: 48c7c501000000                 (mov rbp #x1)
+     13d: 41ff64240d                     (jmp (mem64+ r12 #xd))
+     142: 8301000000000000               (data)
+     14a: 9302000000000000               (data)
+     152: 4983ed20                       (sub r13 #x20) ; <=
+     156: 498b4d18                       (mov rcx (mem64+ r13 #x18))
+     15a: 498b5508                       (mov rdx (mem64+ r13 #x8))
+     15e: 4883c208                       (add rdx #x8)
+     162: e9c4feffff                     (jmp (+ rip #x-13c)) ; => 2b
+     167: 49e8933e43f7                   (call (+ rip #x-8bcc16d)) ; #<code get-room> ; <=
+     16d: 0f1f8000000000                 (nop (mem32+ rax #x0))
+     174: e922ffffff                     (jmp (+ rip #x-de)) ; => 9b
+     179: 49e8813e43f7                   (call (+ rip #x-8bcc17f)) ; #<code get-room> ; <=
+     17f: 0f1f8000000000                 (nop (mem32+ rax #x0))
+     186: e9cffeffff                     (jmp (+ rip #x-131)) ; => 5a
+     18b: 49894d10                       (mov (mem64+ r13 #x10) rcx) ; <=
+     18f: 49896d18                       (mov (mem64+ r13 #x18) rbp)
+     193: 4983c520                       (add r13 #x20)
+     197: 488d0d20000000                 (lea rcx (mem+ rip #x20)) ; => 1be
+     19e: 49894d00                       (mov (mem64+ r13 #x0) rcx)
+     1a2: e9f98545f7                     (jmp (+ rip #x-8ba7a07)) ; #<code event>
+     1a7: 0f1f8000000000ef               (data)
+     1af: 0100000000000091               (data)
+     1b7: 03000000000000                 (data)
+     1be: 4983ed20                       (sub r13 #x20) ; <=
+     1c2: 498b4d10                       (mov rcx (mem64+ r13 #x10))
+     1c6: 498b6d18                       (mov rbp (mem64+ r13 #x18))
+     1ca: e979feffff                     (jmp (+ rip #x-187)) ; => 48
+     1cf: 4d8d61fa                       (lea r12 (mem+ r9 #x-6)) ; <=
+     1d3: 4983c110                       (add r9 #x10)
+     1d7: 4d394e58                       (cmp (mem64+ r14 #x58) r9)
+     1db: 721a                           (jb (+ rip #x1a)) ; => 1f7
+     1dd: f2440f107906                   (movsd xmm15 (mem64+ rcx #x6)) ; <=
+     1e3: f2440f587d06                   (addsd xmm15 (mem64+ rbp #x6))
+     1e9: f2450f117c2406                 (movsd (mem64+ r12 #x6) xmm15)
+     1f0: 4c89e5                         (mov rbp r12)
+     1f3: 41ff6500                       (jmp (mem64+ r13 #x0))
+     1f7: 49e8033e43f7                   (call (+ rip #x-8bcc1fd)) ; #<code get-room> ; <=
+     1fd: 0f1f8000000000                 (nop (mem32+ rax #x0))
+     204: ebd7                           (jmp (+ rip #x-29)) ; => 1dd
+     206: e8f54243f7                     (call (+ rip #x-8bcbd0b)) ; #<code dooverflow> ; <=
+     20b: 0f1f8000000000                 (nop (mem32+ rax #x0))
+     212: e9fdfdffff                     (jmp (+ rip #x-203)) ; => 14
+     217: e9544c43f7                     (jmp (+ rip #x-8bcb3ac)) ; #<code doargerr> ; <=
+     21c: 0f1f8000000000                 (data)
