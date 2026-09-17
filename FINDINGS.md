@@ -108,11 +108,11 @@ The small GC totals show that collection is not the main cost. The coercing loop
 
 The AArch64 disassembly uses four `movz`/`movk` instructions to materialize each full procedure address, followed by an indirect branch through the procedure object. The primitive performs tag and header checks and another indirect transfer. The x86 sequence implements the same boxed calling convention more compactly, and the newer Core Ultra processor executes the dependent calls, branches, and memory traffic much faster than the Neoverse N1. The ARM penalty is therefore in mutator-side boxing and generic-call machinery, not primarily in garbage collection or floating-point arithmetic.
 
-Chez already knows how to eliminate its internal `real->flonum` and `$real->flonum` primitives when `known-flonum-result?` proves the argument is a flonum. Racket CS's `real->double-flonum`, however, reaches Chez as a call to a separately compiled Racket wrapper. Its compiler metadata describes a foldable procedure but does not expose the identity-on-flonum rule or the unboxed result path. Chez therefore cannot apply its existing primitive optimization at this call site. Making the Racket operation a compiler-recognized intrinsic could eliminate the call too, but avoiding the redundant call in TR is smaller and also applies to Racket BC.
+Chez already knows how to eliminate its internal `real->flonum` and `$real->flonum` primitives when `known-flonum-result?` proves the argument is a flonum. Matthew Flatt added `known-flonum-result?` and connected it to the `$real->flonum` lowering in 2020 (`7768b09118c`). Racket CS's `real->double-flonum`, however, reaches Chez as a call to a separately compiled Racket wrapper. Its compiler metadata describes a foldable procedure but does not expose the identity-on-flonum rule or the unboxed result path. Chez therefore cannot apply Matthew's existing primitive optimization at this call site. Making the Racket operation a compiler-recognized intrinsic could eliminate the call too, but avoiding the redundant call in TR is smaller and also applies to Racket BC.
 
 ## Racket CS to Chez intrinsic connection
 
-Branch `cs-intrinsic-real-to-double-flonum`, commit `c2afc30141`, changes the Racket CS primitive metadata from `known-procedure/folding` to a small cross-module inline expansion:
+The elimination optimization is Matthew Flatt's work in Chez. The experiment on branch `cs-intrinsic-real-to-double-flonum`, commit `c2afc30141`, only exposes Racket's `real->double-flonum` wrapper to that existing optimization and measures the result. It changes the Racket CS primitive metadata from `known-procedure/folding` to a small cross-module inline expansion:
 
 ```racket
 (lambda (x)
