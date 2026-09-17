@@ -1,6 +1,10 @@
-Racket branch: cs-intrinsic-real-to-double-flonum
+Racket metadata prototype branch: cs-intrinsic-real-to-double-flonum
 Commit: c2afc30141
+Base commit: 4d515e4035
 Typed Racket: unmodified c01299b5
+
+These results predate and do not measure Matthew Flatt's distinct upstream
+implementation in e6b47bd2ce.
 
 Final metadata expansion:
 

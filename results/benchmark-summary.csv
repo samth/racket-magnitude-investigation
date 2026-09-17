@@ -8,7 +8,7 @@ ratio-no-infinity-check,768,0.575,3988,1.015,6822,6822,prior-magnitude
 typed-zfl-alt-mag,644,0.483,3251,0.830,6822,6822,fresh
 typed-zfl-squared-mag,655,0.491,2695,0.688,6822,6822,fresh
 coercion-fix-stock-magnitude,504,0.378,2390,0.610,5166,5166,fresh
-racket-cs-coercion-intrinsic-stock-tr,520,0.389,2347,0.606,5170,5170,intrinsic-paired
+racket-cs-coercion-metadata-prototype-stock-tr,520,0.389,2347,0.606,5170,5170,prototype-paired
 coercion-fix-alt-magnitude,456,0.342,1048,0.267,3485,3485,fresh
 coercion-fix-squared-magnitude,424,0.318,889,0.227,3485,3485,fresh
 hybrid-magnitude,745,0.558,3483,0.886,6822,6822,prior-magnitude
