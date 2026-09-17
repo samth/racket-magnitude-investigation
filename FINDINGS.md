@@ -132,7 +132,30 @@ The current narrow pattern deliberately does not cover every surrounding context
 
 The added `fl.ms` regression runs an explicit 100-step flonum recurrence 100,000 times. Stock Chez allocates about 163 MB and reports a failure against the expected 3.2 MB allowance; the branch allocates about 3.2 MB and the complete `fl.ms` matrix finishes without a bug or error. A full local Racket CS build also succeeds.
 
-There is no branch ARM timing. Rebuilding `cpnanopass.ss` from source on `oracle` exceeded the machine's 12 GB of physical memory. With a temporary 16 GB swap file, the host Racket process reached about 11.6 GB resident and 16.1 GB virtual, and the machine had used about 8 GB of swap. After 15 minutes it had accumulated only 111 CPU seconds and had not finished source expansion, so the bounded run was stopped and the temporary swap was removed. The earlier source-written named-loop ARM probe is not a substitute: the available older ARM compilers did not normalize the guarded recursive operator and still allocated 3439 MB.
+There is no direct ARM timing of the Chez branch. Rebuilding `cpnanopass.ss` from source on `oracle` exceeded the machine's 12 GB of physical memory. With a temporary 16 GB swap file, the host Racket process reached about 11.6 GB resident and 16.1 GB virtual, and the machine had used about 8 GB of swap. After 15 minutes it had accumulated only 111 CPU seconds and had not finished source expansion, so the bounded run was stopped and the temporary swap was removed.
+
+The equivalent source-written named loop can be measured with the current compiler. This is still `typed-zfl`: its escape test is exactly `(<= (magnitude z) 2.0)`, and the Typed Racket optimizer expands that `magnitude` call into the same scaled formula used by the explicit-local-function source. The earlier 3232 ms/3439 MB ARM result for this source form came from an older compiled package set that failed to recognize and unbox the guarded recursive operator; it is superseded by the controlled result below.
+
+## The exact named-loop `typed-zfl` across architectures
+
+These runs use Racket `789ef10c51` and only the one-line Typed Racket `zero?` specialization at `8c8af219`. Every row retains the same complex Mandelbrot recurrence. The first two rows differ only in whether that recurrence is an explicit local function or an immediately applied named loop. The last two rows are diagnostics that keep the named-loop structure but replace the escape test.
+
+| Escape test and loop form | x86 time | ARM time | Allocation |
+|---|---:|---:|---:|
+| TR-scaled `(magnitude z)`, explicit local function | 452 ms | 1683 ms | 3485 MB |
+| TR-scaled `(magnitude z)`, source-written named loop | 1241 ms | 1134 ms | 102 MB |
+| Inline `sqrt(zr^2 + zi^2)`, source-written named loop | 778 ms | 516 ms | 102 MB |
+| Inline `zr^2 + zi^2 <= 4`, source-written named loop | 456 ms | 499 ms | 102 MB |
+
+The exact named-loop `typed-zfl` is therefore not slower on ARM. Removing its two loop-boundary boxes cuts time by 33% and allocation by 3383 MB. It remains about twice as slow as Lucas's 570 ms scalar named loop because its optimized `magnitude` is expensive: with the loop already unboxed, replacing the scaled formula by a direct square root saves 618 ms, and removing the square root saves another 17 ms. On this Neoverse N1, essentially all of the remaining escape-test cost is the scaled formula's division, special-case branches, and dependent arithmetic.
+
+The same source transformation reverses direction on the tested x86 processor: it removes the allocation but changes 452 ms to 1241 ms. The squared-radius control rules out named-loop lowering itself as the cause, since that form takes 456 ms, essentially the same as the boxed baseline. Direct square root costs another 322 ms, and the scaled magnitude formula costs another 463 ms.
+
+The generated x86 loop gives a likely microarchitectural explanation for why the boxed version hides those costs. Chez emits legacy SSE2 register-to-register `movsd` instructions when the unboxed loop copies its real and imaginary components into temporaries for the recurrence. Legacy register-source `movsd` replaces only the low 64 bits and retains the destination's upper 64 bits. Because those destination registers just held the magnitude calculation, this creates false merge dependencies from the divide/square-root chain into the recurrence even though the program does not use the upper halves. The boxed explicit-function version instead reloads each component with memory-source `movsd`, which clears the upper 64 bits and breaks that dependency. The out-of-order x86 core can then overlap recurrence work with the magnitude result that controls the branch. AArch64 floating-point register moves write the complete 64-bit scalar register and do not have this legacy SSE merge behavior, so unboxing exposes the expected benefit there. This explanation is supported by the emitted instruction sequences and ISA semantics; a backend experiment replacing the x86 register copies with dependency-breaking moves would provide the final causal test.
+
+Focused compiler listings are preserved in [the unboxed x86 excerpt](experiments/x86/typed-zfl-named-hot.txt), [the boxed x86 excerpt](experiments/x86/typed-zfl-explicit-hot.txt), and [the AArch64 excerpt](experiments/arm/typed-zfl-named-hot.txt). The AArch64 listing shows the two scaled-formula arms explicitly: each has `fdiv`, a dependent multiply/add, `fsqrt`, and a final multiply. Its recurrence starts with full-destination `fmul` instructions and ends with `fmov`, with no boxed flonum allocation in the loop.
+
+The direct-square-root diagnostic must remain inline. Writing it as a separate typed helper reintroduces a complex-value call boundary and allocates 3465 MB on ARM, obscuring the effect being measured.
 
 With only the first pair removed, the squared complex benchmark falls from 6822 MB to 3485 MB. Its x86 time falls from 655 ms to 424 ms, and its ARM time falls from 2695 ms to 889 ms. The patched complex code is then essentially tied with the analogous scalar code; the remaining gap is the second boxed pair.
 

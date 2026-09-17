@@ -1,0 +1,356 @@
+3041:    relocation:    (x86_64-jump 65 (library-code #(libspec < 34830)))
+rpl.934146:
+3041:    code-top-link  
+3049:    mrv pt:        (2047 12 error)
+3057:    subi           (imm 96), %sfp
+3061:    cmpi           (imm 6), %ac0
+3065:    beq            ej.933858(-126)
+3067:    bra            lt.933857(-2499)
+Lerr.933899:
+3072:    movi           (imm 4294967295), %ts
+3082:    jmp            %ts
+3084:    relocation:    (x86_64-jump 65 (library-code #(libspec car 50178)))
+Lerr.933900:
+3084:    movi           (imm 4294967295), %ts
+3094:    jmp            %ts
+3096:    relocation:    (x86_64-jump 65 (library-code #(libspec cdr 50180)))
+Lerr.933901:
+3096:    mov            %rcx, %r8
+3099:    movi           (imm 4294967295), %ts
+3109:    jmp            %ts
+3111:    relocation:    (x86_64-jump 65 (library-code #(libspec car 50178)))
+Lerr.933902:
+3111:    movi           (imm 4294967295), %ts
+3121:    jmp            %ts
+3123:    relocation:    (x86_64-jump 65 (library-code #(libspec cdr 50180)))
+Lerr.933903:
+3123:    mov            %rcx, %r8
+3126:    movi           (imm 4294967295), %ts
+3136:    jmp            %ts
+3138:    relocation:    (x86_64-jump 65 (library-code #(libspec car 50178)))
+Lerr.933904:
+3138:    movi           (imm 4294967295), %ts
+3148:    jmp            %ts
+3150:    relocation:    (x86_64-jump 65 (library-code #(libspec cdr 50180)))
+Lerr.933905:
+3150:    mov            %rcx, %r8
+3153:    movi           (imm 4294967295), %ts
+3163:    jmp            %ts
+3165:    relocation:    (x86_64-jump 65 (library-code #(libspec car 50178)))
+Lerr.933906:
+3165:    movi           (imm 4294967295), %ts
+3175:    jmp            %ts
+3177:    relocation:    (x86_64-jump 65 (library-code #(libspec cdr 50180)))
+Lerr.933907:
+3177:    mov            %rcx, %r8
+3180:    movi           (imm 4294967295), %ts
+3190:    jmp            %ts
+3192:    relocation:    (x86_64-jump 65 (library-code #(libspec car 50178)))
+Lerr.933908:
+3192:    movi           (imm 4294967295), %ts
+3202:    jmp            %ts
+3204:    relocation:    (x86_64-jump 65 (library-code #(libspec cdr 50180)))
+Lerr.933909:
+3204:    mov            %rcx, %r8
+3207:    movi           (imm 4294967295), %ts
+3217:    jmp            %ts
+3219:    relocation:    (x86_64-jump 65 (library-code #(libspec car 50178)))
+Lerr.933910:
+3219:    movi           (imm 4294967295), %ts
+3229:    jmp            %ts
+3231:    relocation:    (x86_64-jump 65 (library-code #(libspec cdr 50180)))
+Lerr.933911:
+3231:    mov            %rcx, %r8
+3234:    movi           (imm 4294967295), %ts
+3244:    jmp            %ts
+3246:    relocation:    (x86_64-jump 65 (library-code #(libspec car 50178)))
+Lerr.933912:
+3246:    movi           (imm 4294967295), %ts
+3256:    jmp            %ts
+3258:    relocation:    (x86_64-jump 65 (library-code #(libspec cdr 50180)))
+Lerr.933913:
+3258:    mov            %rcx, %r8
+3261:    movi           (imm 4294967295), %ts
+3271:    jmp            %ts
+3273:    relocation:    (x86_64-jump 65 (library-code #(libspec car 50178)))
+Lerr.933914:
+3273:    movi           (imm 4294967295), %ts
+3283:    jmp            %ts
+3285:    relocation:    (x86_64-jump 65 (library-code #(libspec cdr 50180)))
+Lerr.933915:
+3285:    mov            %rdi, %r8
+3288:    movi           (imm 4294967295), %ts
+3298:    jmp            %ts
+3300:    relocation:    (x86_64-jump 65 (library-code #(libspec car 50178)))
+overflowed.933916:
+3300:    movi           (imm 4294967295), %ts
+3310:    call           %ts
+3312:    relocation:    (x86_64-call 65 (library-code #(libspec dooverflow 158)))
+3312:    bra            post-overflow-check.933856(-3282)
+lf.933917:
+3317:    movi           (imm 4294967295), %ts
+3327:    jmp            %ts
+3329:    relocation:    (x86_64-jump 65 (library-code #(libspec doargerr 176)))
+lt.933918:
+3329:    movi           (imm 4294967295), %ts
+3339:    jmp            %ts
+3341:    relocation:    (x86_64-jump 65 (library-code #(libspec event-detour 180)))
+3341:    <end [...l/typed-zfl-run.rkt:11:0>
+
+iterate: 
+entry.934147:
+0:       cmpi           (imm 3), %ac0
+4:       bne            lf.933940(1047)
+dcl.934148:
+10:      mov            %r8, %rcx
+13:      mov            %rdi, %rdx
+16:      mov            %rsi, %r8
+19:      mov            (disp 27 %cp), %rdi
+23:      mov            %rdi, %rsi
+26:      or             %r8, %rsi
+29:      testib         (imm 7), %rsi
+33:      bne            lf.933939(830)
+lt.934149:
+39:      cmp            %rdi, %r8
+42:      bge            lf.933920(642)
+lt.933919:
+48:      mov            (disp 6 %rcx), %rdi
+52:      movi           (imm -1), %rsi
+59:      lsri           (imm 1), %rsi
+63:      and            %rdi, %rsi
+66:      sse.movd       %rsi, %fp8
+71:      mov            (disp 6 %rdx), %rdi
+75:      movi           (imm -1), %rsi
+82:      lsri           (imm 1), %rsi
+86:      and            %rdi, %rsi
+89:      sse.movd       %rsi, %fp7
+94:      movi           (literal 0 (object 0.0)), %rsi
+104:     sse.movsd      (disp 6 %rsi), %fp6
+110:     sse.ucomisd    %fp7, %fp6
+115:     bne            lf.933938(576)
+121:     bcs            lf.933938(570)
+ej.933922:
+127:     movi           (literal 0 (object 2.0)), %rsi
+137:     sse.movsd      (disp 6 %rsi), %fp7
+143:     sse.ucomisd    %fp8, %fp7
+148:     bcs            lf.933920(536)
+lt.934150:
+154:     cmp            %sfp, $esp
+158:     bls            overflowed.933937(509)
+post-overflow-check.933927:
+164:     subi           (imm 1), $trap
+169:     beq            lt.933936(414)
+ej.933928:
+175:     testib         (imm 7), %r8
+179:     bne            Lfail.933935(318)
+lt.934151:
+185:     mov            %r8, %rsi
+188:     addi           (imm 8), %rsi
+192:     bvs            Lfail.933935(305)
+ej.933929:
+198:     sse.movsd      (disp 6 %rcx), %fp8
+204:     sse.mulsd      (disp 6 %rcx), %fp8
+210:     sse.movsd      (disp 6 %rdx), %fp7
+216:     sse.mulsd      (disp 6 %rdx), %fp7
+222:     sse.subsd      %fp7, %fp8
+227:     sse.movsd      (disp 6 %rdx), %fp7
+233:     sse.mulsd      (disp 6 %rcx), %fp7
+239:     sse.movsd      (disp 6 %rcx), %fp6
+245:     sse.mulsd      (disp 6 %rdx), %fp6
+251:     sse.addsd      %fp6, %fp7
+256:     lea            (disp -6 %ap), %xp
+260:     addi           (imm 16), %ap
+264:     cmp            %ap, $eap
+268:     bcs            Lget-room.933934(211)
+ej.933930:
+274:     mov            %xp, %rcx
+277:     mov            (disp 19 %cp), %rdx
+281:     sse.movsd      (disp 6 %rdx), %fp6
+287:     sse.addsd      %fp6, %fp8
+292:     sse.movsd      %fp8, (disp 6 %rcx)
+298:     lea            (disp -6 %ap), %xp
+302:     addi           (imm 16), %ap
+306:     cmp            %ap, $eap
+310:     bcs            Lget-room.933933(151)
+ej.933931:
+316:     mov            (disp 11 %cp), %rdx
+320:     sse.movsd      (disp 6 %rdx), %fp8
+326:     sse.addsd      %fp8, %fp7
+331:     sse.movsd      %fp7, (disp 6 %xp)
+338:     mov            %cp, %rdx
+341:     andi           (imm 7), %rdx
+345:     cmpi           (imm 5), %rdx
+349:     beq            ej.933932(99)
+lf.934152:
+351:     mov            %cp, %r8
+354:     movi           (imm 24), %rdi
+361:     mov            %rsi, (disp 32 %sfp)
+365:     mov            %rcx, (disp 16 %sfp)
+369:     mov            %xp, (disp 24 %sfp)
+373:     addi           (imm 40), %sfp
+docall.934153:
+377:     movi           (literal 0 (object slow-extract-procedure.rkt-rumble.sls-slow-extract-procedure-0)), %xp
+387:     mov            (disp 5 %xp), %cp
+392:     lea            (riprel 32), %rcx
+399:     mov            %rcx, (disp 0 %sfp)
+403:     movi           (imm 2), %ac0
+410:     jmp            (disp 13 %xp)
+rpl.934154:
+415:     code-top-link  
+423:     mrv pt:        (14 5 error)
+431:     subi           (imm 40), %sfp
+435:     mov            %ac0, %cp
+438:     mov            (disp 32 %sfp), %rsi
+442:     mov            (disp 16 %sfp), %rcx
+446:     mov            (disp 24 %sfp), %xp
+ej.933932:
+450:     mov            %rcx, %r8
+453:     mov            %xp, %rdi
+456:     movi           (imm 3), %ac0
+463:     jmp            (disp 3 %cp)
+Lget-room.933933:
+467:     movi           (imm 4294967295), %xp
+477:     call           %xp
+480:     relocation:    (x86_64-call 65 (library-code #(libspec get-room 178)))
+480:     bra            ej.933931(-169)
+Lget-room.933934:
+485:     movi           (imm 4294967295), %xp
+495:     call           %xp
+498:     relocation:    (x86_64-call 65 (library-code #(libspec get-room 178)))
+498:     bra            ej.933930(-229)
+Lfail.933935:
+503:     movi           (imm 8), %rdi
+510:     mov            %cp, (disp 8 %sfp)
+514:     mov            %rcx, (disp 16 %sfp)
+518:     mov            %rdx, (disp 24 %sfp)
+522:     addi           (imm 32), %sfp
+docall.934155:
+526:     lea            (riprel 32), %rcx
+533:     mov            %rcx, (disp 0 %sfp)
+537:     movi           (imm 4294967295), %ts
+547:     jmp            %ts
+549:     relocation:    (x86_64-jump 65 (library-code #(libspec + 34838)))
+rpl.934156:
+549:     code-top-link  
+557:     mrv pt:        (7 4 error)
+565:     subi           (imm 32), %sfp
+569:     mov            %ac0, %rsi
+572:     mov            (disp 8 %sfp), %cp
+576:     mov            (disp 16 %sfp), %rcx
+580:     mov            (disp 24 %sfp), %rdx
+584:     bra            ej.933929(-391)
+lt.933936:
+589:     mov            %cp, (disp 8 %sfp)
+593:     mov            %rcx, (disp 16 %sfp)
+597:     mov            %rdx, (disp 24 %sfp)
+601:     mov            %r8, (disp 32 %sfp)
+605:     addi           (imm 40), %sfp
+docall.934157:
+609:     lea            (riprel 32), %rcx
+616:     mov            %rcx, (disp 0 %sfp)
+620:     movi           (imm 4294967295), %ts
+630:     jmp            %ts
+632:     relocation:    (x86_64-jump 65 (library-code #(libspec event 32816)))
+rpl.934158:
+632:     code-top-link  
+640:     mrv pt:        (15 5 continue)
+mrvl.934159:
+648:     subi           (imm 40), %sfp
+652:     mov            (disp 8 %sfp), %cp
+656:     mov            (disp 16 %sfp), %rcx
+660:     mov            (disp 24 %sfp), %rdx
+664:     mov            (disp 32 %sfp), %r8
+668:     bra            ej.933928(-498)
+overflowed.933937:
+673:     movi           (imm 4294967295), %ts
+683:     call           %ts
+685:     relocation:    (x86_64-call 65 (library-code #(libspec dooverflow 158)))
+685:     bra            post-overflow-check.933927(-526)
+lf.933920:
+690:     mov            %r8, %ac0
+693:     jmp            (disp 0 %sfp)
+lf.933938:
+697:     movi           (literal 0 (object +inf.0)), %rsi
+707:     sse.movsd      (disp 6 %rsi), %fp6
+713:     sse.ucomisd    %fp8, %fp6
+718:     bne            lf.933926(23)
+720:     bcs            lf.933926(21)
+lt.933924:
+722:     movi           (literal 0 (object +inf.0)), %rsi
+732:     sse.movsd      (disp 6 %rsi), %fp8
+738:     bra            ej.933922(-616)
+lf.933926:
+743:     movi           (literal 0 (object +inf.0)), %rsi
+753:     sse.movsd      (disp 6 %rsi), %fp6
+759:     sse.ucomisd    %fp7, %fp6
+764:     bne            lf.933925(4)
+766:     bcs            lf.933925(2)
+768:     bra            lt.933924(-48)
+lf.933925:
+770:     sse.ucomisd    %fp7, %fp8
+775:     bls            lf.933923(46)
+lt.934160:
+777:     sse.divsd      %fp8, %fp7
+782:     sse.mulsd      %fp7, %fp7
+787:     movi           (literal 0 (object 1.0)), %rsi
+797:     sse.movsd      (disp 6 %rsi), %fp6
+803:     sse.addsd      %fp6, %fp7
+808:     sse.sqrtsd     %fp7, %fp7
+813:     sse.mulsd      %fp7, %fp8
+818:     bra            ej.933922(-696)
+lf.933923:
+823:     sse.divsd      %fp7, %fp8
+828:     sse.mulsd      %fp8, %fp8
+833:     movi           (literal 0 (object 1.0)), %rsi
+843:     sse.movsd      (disp 6 %rsi), %fp6
+849:     sse.addsd      %fp6, %fp8
+854:     sse.sqrtsd     %fp8, %fp8
+859:     sse.mulsd      %fp7, %fp8
+864:     bra            ej.933922(-742)
+lf.933939:
+869:     subi           (imm 1), $trap
+874:     bne            ej.933921(87)
+lt.934161:
+876:     mov            %cp, (disp 8 %sfp)
+880:     mov            %rcx, (disp 16 %sfp)
+884:     mov            %rdx, (disp 24 %sfp)
+888:     mov            %r8, (disp 32 %sfp)
+892:     mov            %rdi, (disp 40 %sfp)
+896:     addi           (imm 48), %sfp
+docall.934162:
+900:     lea            (riprel 32), %rcx
+907:     mov            %rcx, (disp 0 %sfp)
+911:     movi           (imm 4294967295), %ts
+921:     jmp            %ts
+923:     relocation:    (x86_64-jump 65 (library-code #(libspec event 32817)))
+rpl.934163:
+923:     code-top-link  
+931:     mrv pt:        (31 6 continue)
+mrvl.934164:
+939:     subi           (imm 48), %sfp
+943:     mov            (disp 8 %sfp), %cp
+947:     mov            (disp 16 %sfp), %rcx
+951:     mov            (disp 24 %sfp), %rdx
+955:     mov            (disp 32 %sfp), %r8
+959:     mov            (disp 40 %sfp), %rdi
+ej.933921:
+963:     mov            %cp, (disp 8 %sfp)
+967:     mov            %rcx, (disp 16 %sfp)
+971:     mov            %rdx, (disp 24 %sfp)
+975:     mov            %r8, (disp 32 %sfp)
+979:     addi           (imm 40), %sfp
+docall.934165:
+983:     lea            (riprel 32), %rcx
+990:     mov            %rcx, (disp 0 %sfp)
+994:     movi           (imm 4294967295), %ts
+1004:    jmp            %ts
+1006:    relocation:    (x86_64-jump 65 (library-code #(libspec < 34831)))
+rpl.934166:
+1006:    code-top-link  
+1014:    mrv pt:        (15 5 error)
+1022:    subi           (imm 40), %sfp
+1026:    mov            (disp 8 %sfp), %cp
+1030:    mov            (disp 16 %sfp), %rcx
+1034:    mov            (disp 24 %sfp), %rdx
+1038:    mov            (disp 32 %sfp), %r8
+1042:    cmpi           (imm 6), %ac0

@@ -1,0 +1,511 @@
+1060:    ldurfi         %fp5, %lr, 6
+1064:    fmul           %fp6, %fp5, %fp6
+1068:    ldri           %r0, %sfp, 72
+1072:    strfi          %fp6, %sfp, 144
+1076:    addi           %sfp, %sfp, 152, #f
+docall.1716048:
+1080:    movzi          %xp, 0, 0
+1084:    movki          %xp, 0, 1
+1088:    movki          %xp, 0, 2
+1092:    movki          %xp, 0, 3
+1096:    relocation:    (arm64-abs 0 (object exact->inexact))
+1096:    lduri          %cp, %xp, 5
+1100:    adr            %lr, 36
+1104:    stri           %lr, %sfp, 0
+1108:    movzi          %ac0, 1, 0
+1112:    lduri          %jmptmp, %xp, 13
+1116:    br             %jmptmp
+rpl.1716049:
+1120:    code-top-link  
+1128:    mrv pt:        (8191 19 error)
+1136:    subi           %sfp, %sfp, 152, #f
+1140:    mov            %r1, %ac0
+1144:    ldrfi          %fp6, %sfp, 144
+1148:    andi           %lr, %r1, 7
+1152:    cmpi           %lr, 2
+1156:    bne            lf.1715870(1788)
+ej.1715837:
+1160:    ldurfi         %fp5, %r1, 6
+1164:    ldri           %lr, %sfp, 104
+1168:    ldurfi         %fp4, %lr, 6
+1172:    fmul           %fp4, %fp4, %fp5
+1176:    fmul           %fp6, %fp6, %fp5
+1180:    ldrfi          %fp5, %sfp, 128
+1184:    fadd           %fp5, %fp5, %fp4
+1188:    strfi          %fp5, %sfp, 128
+1192:    ldrfi          %fp5, %sfp, 136
+1196:    fadd           %fp1, %fp5, %fp6
+1200:    movzi          %r15, 70, 0
+1204:    subi           %xp, %ap, 7, #f
+1208:    addi           %ap, %ap, 16, #f
+1212:    ldri           %lr, %tc, 160
+1216:    cmp            %lr, %ap
+1220:    bcc            Lget-room.1715869(1700)
+ej.1715838:
+1224:    sturi          %r15, %xp, 7
+1228:    movzi          %lr, 30, 0
+1232:    sturi          %lr, %xp, 15
+1236:    movzi          %r0, 0, 0
+1240:    fmov           %fp5, %fp1
+1244:    ldrfi          %fp6, %sfp, 128
+iterate_142.1715864:
+1248:    ldri           %lr, %sfp, 64
+1252:    orr            %lr, %r0, %lr
+1256:    tsti           %sp, %lr, 7
+1260:    bne            lf.1715868(1452)
+lt.1716050:
+1264:    ldri           %lr, %sfp, 64
+1268:    cmp            %r0, %lr
+1272:    bge            ej.1715840(368)
+lt.1715839:
+1276:    fmov.f->g      %lr, %fp6
+1280:    movzi          %r15, 0, 0
+1284:    subi           %r15, %r15, 1, #f
+1288:    lsri           %r15, %r15, 1
+1292:    and            %lr, %lr, %r15
+1296:    fmov.g->f      %fp4, %lr
+1300:    fmov.f->g      %lr, %fp5
+1304:    movzi          %r15, 0, 0
+1308:    subi           %r15, %r15, 1, #f
+1312:    lsri           %r15, %r15, 1
+1316:    and            %lr, %lr, %r15
+1320:    fmov.g->f      %fp3, %lr
+1324:    movzi          %lr, 0, 0
+1328:    movki          %lr, 0, 1
+1332:    movki          %lr, 0, 2
+1336:    movki          %lr, 0, 3
+1340:    relocation:    (arm64-abs 0 (object 0.0))
+1340:    ldurfi         %fp2, %lr, 6
+1344:    fcmp           %fp3, %fp2
+1348:    bne            lf.1715867(1188)
+ej.1715842:
+1352:    movzi          %lr, 0, 0
+1356:    movki          %lr, 0, 1
+1360:    movki          %lr, 0, 2
+1364:    movki          %lr, 0, 3
+1368:    relocation:    (arm64-abs 0 (object 2.0))
+1368:    ldurfi         %fp3, %lr, 6
+1372:    fcmp           %fp4, %fp3
+1376:    bhi            ej.1715840(264)
+lt.1716051:
+1380:    subi           %trap, %trap, 1, #t
+1384:    beq            lt.1715866(160)
+ej.1715862:
+1388:    tsti           %sp, %r0, 7
+1392:    bne            Lfail.1715865(56)
+lt.1716052:
+1396:    addi           %lr, %r0, 8, #t
+1400:    bvs            Lfail.1715865(48)
+lf.1716053:
+1404:    mov            %r0, %lr
+ej.1715863:
+1408:    fmul           %fp4, %fp6, %fp6
+1412:    fmul           %fp3, %fp5, %fp5
+1416:    fsub           %fp4, %fp4, %fp3
+1420:    fmul           %fp3, %fp5, %fp6
+1424:    fmul           %fp6, %fp6, %fp5
+1428:    fadd           %fp6, %fp3, %fp6
+1432:    ldrfi          %fp5, %sfp, 128
+1436:    fadd           %fp4, %fp4, %fp5
+1440:    fadd           %fp5, %fp6, %fp1
+1444:    fmov           %fp6, %fp4
+1448:    b              iterate_142.1715864(-204)
+Lfail.1715865:
+1452:    movzi          %r1, 8, 0
+1456:    strfi          %fp1, %sfp, 136
+1460:    stri           %xp, %sfp, 104
+1464:    strfi          %fp6, %sfp, 144
+1468:    strfi          %fp5, %sfp, 152
+1472:    addi           %sfp, %sfp, 160, #f
+docall.1716054:
+1476:    adr            %lr, 44
+1480:    stri           %lr, %sfp, 0
+1484:    movzi          %jmptmp, 0, 0
+1488:    movki          %jmptmp, 0, 1
+1492:    movki          %jmptmp, 0, 2
+1496:    movki          %jmptmp, 0, 3
+1500:    br             %jmptmp
+1504:    relocation:    (arm64-jump 65 (library-code #(libspec + 34838)))
+rpl.1716055:
+1504:    code-top-link  
+1512:    mrv pt:        (8191 20 error)
+1520:    subi           %sfp, %sfp, 160, #f
+1524:    mov            %r0, %ac0
+1528:    ldrfi          %fp1, %sfp, 136
+1532:    ldri           %xp, %sfp, 104
+1536:    ldrfi          %fp6, %sfp, 144
+1540:    ldrfi          %fp5, %sfp, 152
+1544:    b              ej.1715863(-140)
+lt.1715866:
+1548:    strfi          %fp1, %sfp, 136
+1552:    stri           %xp, %sfp, 104
+1556:    strfi          %fp6, %sfp, 144
+1560:    strfi          %fp5, %sfp, 152
+1564:    stri           %r0, %sfp, 112
+1568:    addi           %sfp, %sfp, 160, #f
+docall.1716056:
+1572:    adr            %lr, 44
+1576:    stri           %lr, %sfp, 0
+1580:    movzi          %jmptmp, 0, 0
+1584:    movki          %jmptmp, 0, 1
+1588:    movki          %jmptmp, 0, 2
+1592:    movki          %jmptmp, 0, 3
+1596:    br             %jmptmp
+1600:    relocation:    (arm64-jump 65 (library-code #(libspec event 32816)))
+rpl.1716057:
+1600:    code-top-link  
+1608:    mrv pt:        (16383 20 continue)
+mrvl.1716058:
+1616:    subi           %sfp, %sfp, 160, #f
+1620:    ldrfi          %fp1, %sfp, 136
+1624:    ldri           %xp, %sfp, 104
+1628:    ldrfi          %fp6, %sfp, 144
+1632:    ldrfi          %fp5, %sfp, 152
+1636:    ldri           %r0, %sfp, 112
+1640:    b              ej.1715862(-256)
+ej.1715840:
+1644:    addi           %r15, %xp, 7, #f
+1648:    tsti           %sp, %r0, 7
+1652:    bne            lf.1715861(820)
+lt.1716059:
+1656:    stri           %r0, %r15, 0
+ej.1715847:
+1660:    lduri          %lr, %xp, 7
+1664:    ldri           %r14, %sfp, 88
+1668:    ldri           %r15, %sfp, 40
+1672:    orr            %r15, %r14, %r15
+1676:    tsti           %sp, %r15, 7
+1680:    bne            Lfail.1715860(720)
+lt.1716060:
+1684:    ldri           %r15, %sfp, 40
+1688:    asri           %r15, %r15, 3
+1692:    ldri           %r13, %sfp, 88
+1696:    smulh          %r14, %r13, %r15
+1700:    mul            %ac0, %r13, %r15
+1704:    cmp/asr63      %r14, %ac0
+1708:    bne            Lfail.1715860(692)
+ej.1715849:
+1712:    ldri           %r15, %sfp, 96
+1716:    tsti           %sp, %r15, 7
+1720:    bne            Lfail.1715859(596)
+lt.1716061:
+1724:    ldri           %r13, %sfp, 96
+1728:    movzi          %r14, 4, 0
+1732:    smulh          %r15, %r13, %r14
+1736:    mul            %r2, %r13, %r14
+1740:    cmp/asr63      %r15, %r2
+1744:    bne            Lfail.1715859(572)
+ej.1715850:
+1748:    ldri           %r0, %sfp, 32
+1752:    mov            %r1, %ac0
+1756:    stri           %lr, %sfp, 104
+1760:    addi           %sfp, %sfp, 112, #f
+docall.1716062:
+1764:    movzi          %xp, 0, 0
+1768:    movki          %xp, 0, 1
+1772:    movki          %xp, 0, 2
+1776:    movki          %xp, 0, 3
+1780:    relocation:    (arm64-abs 0 (object +))
+1780:    lduri          %cp, %xp, 5
+1784:    adr            %lr, 36
+1788:    stri           %lr, %sfp, 0
+1792:    movzi          %ac0, 3, 0
+1796:    lduri          %jmptmp, %xp, 13
+1800:    br             %jmptmp
+rpl.1716063:
+1804:    code-top-link  
+1812:    mrv pt:        (8191 14 error)
+1820:    subi           %sfp, %sfp, 112, #f
+1824:    ldri           %lr, %sfp, 104
+1828:    mov            %r15, %ac0
+1832:    tsti           %sp, %lr, 7
+1836:    bne            Lfail.1715858(400)
+lt.1716064:
+1840:    movzi          %r13, 4, 0
+1844:    smulh          %r14, %lr, %r13
+1848:    mul            %ac0, %lr, %r13
+1852:    cmp/asr63      %r14, %ac0
+1856:    bne            Lfail.1715858(380)
+ej.1715851:
+1860:    tsti           %sp, %lr, 7
+1864:    bne            Lfail.1715857(288)
+lt.1716065:
+1868:    movzi          %r13, 4, 0
+1872:    smulh          %r14, %lr, %r13
+1876:    mul            %r0, %lr, %r13
+1880:    cmp/asr63      %r14, %r0
+1884:    bne            Lfail.1715857(268)
+ej.1715852:
+1888:    tsti           %sp, %r0, 7
+1892:    bne            Lfail.1715856(180)
+lt.1716066:
+1896:    addi           %lr, %r0, 32, #t
+1900:    bvs            Lfail.1715856(172)
+ej.1715853:
+1904:    stri           %ac0, %sfp, 160
+1908:    stri           %lr, %sfp, 168
+1912:    ldri           %r0, %sfp, 24
+1916:    mov            %r1, %r15
+1920:    ldri           %r2, %sfp, 56
+1924:    addi           %sfp, %sfp, 152, #f
+docall.1716067:
+1928:    movzi          %xp, 0, 0
+1932:    movki          %xp, 0, 1
+1936:    movki          %xp, 0, 2
+1940:    movki          %xp, 0, 3
+1944:    relocation:    (arm64-abs 0 (object bytes-copy!.rkt-rumble.sls-bytes-copy!-0))
+1944:    lduri          %cp, %xp, 5
+1948:    adr            %lr, 36
+1952:    stri           %lr, %sfp, 0
+1956:    movzi          %ac0, 5, 0
+1960:    lduri          %jmptmp, %xp, 13
+1964:    br             %jmptmp
+rpl.1716068:
+1968:    code-top-link  
+1976:    mrv pt:        (4095 19 continue)
+mrvl.1716069:
+1984:    subi           %sfp, %sfp, 152, #f
+1988:    ldri           %lr, %sfp, 96
+1992:    tsti           %sp, %lr, 7
+1996:    bne            Lfail.1715855(12)
+lt.1716070:
+2000:    ldri           %lr, %sfp, 96
+2004:    addi           %ac0, %lr, 8, #t
+2008:    bvc            for-loop_123.1715854(-1420)
+Lfail.1715855:
+2012:    ldri           %r0, %sfp, 96
+2016:    movzi          %r1, 8, 0
+2020:    addi           %sfp, %sfp, 96, #f
+docall.1716071:
+2024:    adr            %lr, 44
+2028:    stri           %lr, %sfp, 0
+2032:    movzi          %jmptmp, 0, 0
+2036:    movki          %jmptmp, 0, 1
+2040:    movki          %jmptmp, 0, 2
+2044:    movki          %jmptmp, 0, 3
+2048:    br             %jmptmp
+2052:    relocation:    (arm64-jump 65 (library-code #(libspec + 34838)))
+rpl.1716072:
+2052:    code-top-link  
+2060:    mrv pt:        (2047 12 error)
+2068:    subi           %sfp, %sfp, 96, #f
+2072:    b              for-loop_123.1715854(-1484)
+Lfail.1715856:
+2076:    movzi          %r1, 32, 0
+2080:    stri           %r15, %sfp, 112
+2084:    stri           %ac0, %sfp, 120
+2088:    addi           %sfp, %sfp, 128, #f
+docall.1716073:
+2092:    adr            %lr, 44
+2096:    stri           %lr, %sfp, 0
+2100:    movzi          %jmptmp, 0, 0
+2104:    movki          %jmptmp, 0, 1
+2108:    movki          %jmptmp, 0, 2
+2112:    movki          %jmptmp, 0, 3
+2116:    br             %jmptmp
+2120:    relocation:    (arm64-jump 65 (library-code #(libspec + 34838)))
+rpl.1716074:
+2120:    code-top-link  
+2128:    mrv pt:        (28671 16 error)
+2136:    subi           %sfp, %sfp, 128, #f
+2140:    mov            %lr, %ac0
+2144:    ldri           %r15, %sfp, 112
+2148:    ldri           %ac0, %sfp, 120
+2152:    b              ej.1715853(-252)
+Lfail.1715857:
+2156:    mov            %r0, %lr
+2160:    movzi          %r1, 32, 0
+2164:    stri           %r15, %sfp, 112
+2168:    stri           %ac0, %sfp, 120
+2172:    addi           %sfp, %sfp, 128, #f
+docall.1716075:
+2176:    adr            %lr, 44
+2180:    stri           %lr, %sfp, 0
+2184:    movzi          %jmptmp, 0, 0
+2188:    movki          %jmptmp, 0, 1
+2192:    movki          %jmptmp, 0, 2
+2196:    movki          %jmptmp, 0, 3
+2200:    br             %jmptmp
+2204:    relocation:    (arm64-jump 65 (library-code #(libspec * 34842)))
+rpl.1716076:
+2204:    code-top-link  
+2212:    mrv pt:        (28671 16 error)
+2220:    subi           %sfp, %sfp, 128, #f
+2224:    mov            %r0, %ac0
+2228:    ldri           %r15, %sfp, 112
+2232:    ldri           %ac0, %sfp, 120
+2236:    b              ej.1715852(-352)
+Lfail.1715858:
+2240:    mov            %r0, %lr
+2244:    movzi          %r1, 32, 0
+2248:    stri           %lr, %sfp, 104
+2252:    stri           %r15, %sfp, 112
+2256:    addi           %sfp, %sfp, 120, #f
+docall.1716077:
+2260:    adr            %lr, 44
+2264:    stri           %lr, %sfp, 0
+2268:    movzi          %jmptmp, 0, 0
+2272:    movki          %jmptmp, 0, 1
+2276:    movki          %jmptmp, 0, 2
+2280:    movki          %jmptmp, 0, 3
+2284:    br             %jmptmp
+2288:    relocation:    (arm64-jump 65 (library-code #(libspec * 34842)))
+rpl.1716078:
+2288:    code-top-link  
+2296:    mrv pt:        (16383 15 error)
+2304:    subi           %sfp, %sfp, 120, #f
+2308:    ldri           %lr, %sfp, 104
+2312:    ldri           %r15, %sfp, 112
+2316:    b              ej.1715851(-460)
+Lfail.1715859:
+2320:    ldri           %r0, %sfp, 96
+2324:    movzi          %r1, 32, 0
+2328:    stri           %lr, %sfp, 104
+2332:    stri           %ac0, %sfp, 112
+2336:    addi           %sfp, %sfp, 120, #f
+docall.1716079:
+2340:    adr            %lr, 44
+2344:    stri           %lr, %sfp, 0
+2348:    movzi          %jmptmp, 0, 0
+2352:    movki          %jmptmp, 0, 1
+2356:    movki          %jmptmp, 0, 2
+2360:    movki          %jmptmp, 0, 3
+2364:    br             %jmptmp
+2368:    relocation:    (arm64-jump 65 (library-code #(libspec * 34842)))
+rpl.1716080:
+2368:    code-top-link  
+2376:    mrv pt:        (16383 15 error)
+2384:    subi           %sfp, %sfp, 120, #f
+2388:    mov            %r2, %ac0
+2392:    ldri           %lr, %sfp, 104
+2396:    ldri           %ac0, %sfp, 112
+2400:    b              ej.1715850(-656)
+Lfail.1715860:
+2404:    ldri           %r0, %sfp, 88
+2408:    ldri           %r1, %sfp, 40
+2412:    stri           %lr, %sfp, 104
+2416:    addi           %sfp, %sfp, 112, #f
+docall.1716081:
+2420:    adr            %lr, 44
+2424:    stri           %lr, %sfp, 0
+2428:    movzi          %jmptmp, 0, 0
+2432:    movki          %jmptmp, 0, 1
+2436:    movki          %jmptmp, 0, 2
+2440:    movki          %jmptmp, 0, 3
+2444:    br             %jmptmp
+2448:    relocation:    (arm64-jump 65 (library-code #(libspec * 34842)))
+rpl.1716082:
+2448:    code-top-link  
+2456:    mrv pt:        (8191 14 error)
+2464:    subi           %sfp, %sfp, 112, #f
+2468:    ldri           %lr, %sfp, 104
+2472:    b              ej.1715849(-764)
+lf.1715861:
+2476:    dmbishst       
+2480:    stri           %r0, %r15, 0
+2484:    ldri           %td, %tc, 160
+2488:    cmp            %ap, %td
+2492:    bcs            lf.1715848(16)
+ej.1715846:
+2496:    subi           %td, %td, 8, #f
+2500:    stri           %td, %tc, 160
+2504:    stri           %r15, %td, 0
+2508:    b              ej.1715847(-852)
+lf.1715848:
+2512:    movzi          %jmptmp, 0, 0
+2516:    movki          %jmptmp, 0, 1
+2520:    movki          %jmptmp, 0, 2
+2524:    movki          %jmptmp, 0, 3
+2528:    blr            %jmptmp
+2532:    relocation:    (arm64-call 65 (library-code #(libspec scan-remembered-set 374)))
+2532:    ldri           %td, %tc, 160
+2536:    b              ej.1715846(-44)
+lf.1715867:
+2540:    movzi          %lr, 0, 0
+2544:    movki          %lr, 0, 1
+2548:    movki          %lr, 0, 2
+2552:    movki          %lr, 0, 3
+2556:    relocation:    (arm64-abs 0 (object +inf.0))
+2556:    ldurfi         %fp2, %lr, 6
+2560:    fcmp           %fp4, %fp2
+2564:    bne            lf.1715845(24)
+lt.1715844:
+2568:    movzi          %lr, 0, 0
+2572:    movki          %lr, 0, 1
+2576:    movki          %lr, 0, 2
+2580:    movki          %lr, 0, 3
+2584:    relocation:    (arm64-abs 0 (object +inf.0))
+2584:    ldurfi         %fp4, %lr, 6
+2588:    b              ej.1715842(-1240)
+lf.1715845:
+2592:    movzi          %lr, 0, 0
+2596:    movki          %lr, 0, 1
+2600:    movki          %lr, 0, 2
+2604:    movki          %lr, 0, 3
+2608:    relocation:    (arm64-abs 0 (object +inf.0))
+2608:    ldurfi         %fp2, %lr, 6
+2612:    fcmp           %fp3, %fp2
+2616:    beq            lt.1715844(-52)
+lf.1716083:
+2620:    fcmp           %fp3, %fp4
+2624:    bcs            lf.1715843(44)
+lt.1716084:
+2628:    fdiv           %fp3, %fp3, %fp4
+2632:    fmul           %fp3, %fp3, %fp3
+2636:    movzi          %lr, 0, 0
+2640:    movki          %lr, 0, 1
+2644:    movki          %lr, 0, 2
+2648:    movki          %lr, 0, 3
+2652:    relocation:    (arm64-abs 0 (object 1.0))
+2652:    ldurfi         %fp2, %lr, 6
+2656:    fadd           %fp3, %fp2, %fp3
+2660:    fsqrt          %fp3, %fp3
+2664:    fmul           %fp4, %fp4, %fp3
+2668:    b              ej.1715842(-1320)
+lf.1715843:
+2672:    fdiv           %fp4, %fp4, %fp3
+2676:    fmul           %fp4, %fp4, %fp4
+2680:    movzi          %lr, 0, 0
+2684:    movki          %lr, 0, 1
+2688:    movki          %lr, 0, 2
+2692:    movki          %lr, 0, 3
+2696:    relocation:    (arm64-abs 0 (object 1.0))
+2696:    ldurfi         %fp2, %lr, 6
+2700:    fadd           %fp4, %fp2, %fp4
+2704:    fsqrt          %fp4, %fp4
+2708:    fmul           %fp4, %fp3, %fp4
+2712:    b              ej.1715842(-1364)
+lf.1715868:
+2716:    subi           %trap, %trap, 1, #t
+2720:    bne            ej.1715841(92)
+lt.1716085:
+2724:    strfi          %fp1, %sfp, 136
+2728:    stri           %xp, %sfp, 104
+2732:    strfi          %fp6, %sfp, 144
+2736:    strfi          %fp5, %sfp, 152
+2740:    stri           %r0, %sfp, 112
+2744:    addi           %sfp, %sfp, 160, #f
+docall.1716086:
+2748:    adr            %lr, 44
+2752:    stri           %lr, %sfp, 0
+2756:    movzi          %jmptmp, 0, 0
+2760:    movki          %jmptmp, 0, 1
+2764:    movki          %jmptmp, 0, 2
+2768:    movki          %jmptmp, 0, 3
+2772:    br             %jmptmp
+2776:    relocation:    (arm64-jump 65 (library-code #(libspec event 32816)))
+rpl.1716087:
+2776:    code-top-link  
+2784:    mrv pt:        (16383 20 continue)
+mrvl.1716088:
+2792:    subi           %sfp, %sfp, 160, #f
+2796:    ldrfi          %fp1, %sfp, 136
+2800:    ldri           %xp, %sfp, 104
+2804:    ldrfi          %fp6, %sfp, 144
+2808:    ldrfi          %fp5, %sfp, 152
+2812:    ldri           %r0, %sfp, 112
+ej.1715841:
+2816:    ldri           %r1, %sfp, 64
+2820:    strfi          %fp1, %sfp, 136
+2824:    stri           %xp, %sfp, 104
+2828:    strfi          %fp6, %sfp, 144
