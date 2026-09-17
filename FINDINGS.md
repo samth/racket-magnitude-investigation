@@ -112,6 +112,28 @@ The small diagnostic in `experiments/boxing/loop-entry-shapes.rkt` differs only 
 
 The narrowest Chez repair is to generalize loop recognition, or add a preceding scope-narrowing transformation, for a nonescaping self-recursive procedure with one external entry call. CP0 or schemify could move the `letrec` inward around that call when doing so preserves evaluation order. Extending floating-point unboxing directly to ordinary procedures would be more invasive: it would need whole-call-set analysis and an unboxed internal calling convention, while the existing loop form is compiled as assignments and jumps. Simply enabling CP0's recursive integration is unlikely to be the right fix; it is disabled because it interferes with the later loop recognition that enables this optimization.
 
+## Chez nested-entry loop prototype
+
+Branch `chez-loop-entry` in `samth/racket`, commit `e5cabda5e3`, implements the narrow repair in `np-recognize-loops`. The current prototype recognizes a one-binding `letrec` whose value is a one-clause `case-lambda` and whose body is a one-binding `let` initialized by the procedure's only external entry call. The recognition is nested inside the existing generic `letrec` clause, avoiding an additional large nanopass matcher. It also recognizes the recursive-call operator emitted in this program as `(if (procedure? loop) loop <slow extraction>)`; the test is statically true because the local binding is the `case-lambda` being analyzed. The unboxing pass itself is unchanged.
+
+The extra recursive-call case matters for the actual Typed Racket output. Its Chez input is not merely `(letrec ([iterate <lambda>]) (let ([iters (iterate ...)]) ...))`: recursive applications use the guarded operator above. Handling only the wider `letrec` scope fixes the small untyped diagnostic but does not fix `typed-zfl`.
+
+The x86 measurements use Racket commit `789ef10c51` and only the one-line Typed Racket `zero?` specialization at `8c8af219`:
+
+| x86 form | Time | Allocation |
+|---|---:|---:|
+| Explicit local function, stock Chez | 451 ms | 3485 MB |
+| Explicit local function, `chez-loop-entry` | 1227 ms | 85 MB |
+| Equivalent source-written named loop, stock Chez | 1235 ms | 102 MB |
+
+The allocation drop shows that the intended two loop-boundary boxes are gone. The nearly identical times for the prototype and the source-written named loop show that the transformation reaches the existing Chez loop/unboxing path; the 2.7x regression relative to the boxed explicit function is not caused by a malformed rewrite. For this division-and-square-root magnitude formula, fully exposing the recurrence to the current loop unboxer is substantially slower on this x86 processor even though it executes with far less allocation.
+
+The current narrow pattern deliberately does not cover every surrounding context. In particular, `experiments/boxing/loop-entry-shapes.rkt` places the entry call inside an `unsafe-fl+` argument, so the committed branch leaves that explicit version at about 230 ms and 3201 MB. An earlier broader prototype recognized that context and matched the named loop's roughly 45 ms and 1 MB, establishing that generalized scope narrowing helps the add-only recurrence too; it was narrowed because the actual Typed Racket program needs only the single-`let` case.
+
+The added `fl.ms` regression runs an explicit 100-step flonum recurrence 100,000 times. Stock Chez allocates about 163 MB and reports a failure against the expected 3.2 MB allowance; the branch allocates about 3.2 MB and the complete `fl.ms` matrix finishes without a bug or error. A full local Racket CS build also succeeds.
+
+There is no branch ARM timing. Rebuilding `cpnanopass.ss` from source on `oracle` exceeded the machine's 12 GB of physical memory. With a temporary 16 GB swap file, the host Racket process reached about 11.6 GB resident and 16.1 GB virtual, and the machine had used about 8 GB of swap. After 15 minutes it had accumulated only 111 CPU seconds and had not finished source expansion, so the bounded run was stopped and the temporary swap was removed. The earlier source-written named-loop ARM probe is not a substitute: the available older ARM compilers did not normalize the guarded recursive operator and still allocated 3439 MB.
+
 With only the first pair removed, the squared complex benchmark falls from 6822 MB to 3485 MB. Its x86 time falls from 655 ms to 424 ms, and its ARM time falls from 2695 ms to 889 ms. The patched complex code is then essentially tied with the analogous scalar code; the remaining gap is the second boxed pair.
 
 ## Why boxing is especially expensive on the tested ARM machine
