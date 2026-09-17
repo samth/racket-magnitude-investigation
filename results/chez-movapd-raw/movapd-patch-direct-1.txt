@@ -1,0 +1,4 @@
+----
+[typed-zfl-named-direct-mag] 1024x1024 max_iter=1024
+time min: 257ms max: 258ms avg: 258ms
+alloc avg: 102 MB

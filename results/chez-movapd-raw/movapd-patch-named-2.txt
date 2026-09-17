@@ -1,0 +1,4 @@
+----
+[typed-zfl-named] 1024x1024 max_iter=1024
+time min: 327ms max: 329ms avg: 328ms
+alloc avg: 102 MB

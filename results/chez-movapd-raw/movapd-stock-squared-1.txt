@@ -1,0 +1,4 @@
+----
+[typed-zfl-named-squared-mag] 1024x1024 max_iter=1024
+time min: 456ms max: 457ms avg: 456ms
+alloc avg: 102 MB
