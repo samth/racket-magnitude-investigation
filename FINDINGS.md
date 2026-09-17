@@ -1,5 +1,19 @@
 # Float-complex magnitude and Mandelbrot performance
 
+## Current Racket CS changes
+
+Matthew Flatt's `e6b47bd2ce` removes the two hot `real->double-flonum` boxes from unmodified Typed Racket by routing the Racket operation through Chez's `#2%real->flonum` primitive. His following complex-primitive commit mainly improves `typed-zfl-cfl`. On top of current Racket/Chez HEAD, the independent one-line Typed Racket change from `(zero? i)` to `(unsafe-fl= i 0.0)` removes one remaining box per generated magnitude call.
+
+| Change | x86 `typed-zfl` | ARM `typed-zfl` | Allocation effect |
+|---|---:|---:|---:|
+| Matthew's `real->double-flonum` commit, versus its parent | 863 -> 503 ms | 4318 -> 2369 ms | -3337 MB, two boxes per hot iteration |
+| `zero?` -> `unsafe-fl=`, on current HEAD | 498 -> 450 ms | 2385 -> 1683 ms | -1681 MB, one box per magnitude call |
+| Parent -> current HEAD plus specialized zero test | 863 -> 450 ms | 4318 -> 1683 ms | 8503/8537 -> 3485 MB |
+
+The full per-commit, per-variant x86 and ARM tables and analysis are in [results/matthew-series.md](results/matthew-series.md). Machine-readable data and raw logs are alongside it.
+
+## Earlier investigation matrix
+
 All times are averages for a 1024x1024 Mandelbrot image with `max_iter=1024`, one discarded warmup, five measured runs, and CPU 0 affinity. Each result was checked byte-for-byte against the reference output. A relative time below 1 is faster than `inexact.rkt` on the same machine.
 
 | Variant | Main change | x86 time / relative | ARM time / relative | Allocation, x86 / ARM |

@@ -1,0 +1,19 @@
+From 8c8af219846456a08255b303217ee343f8736fb7 Mon Sep 17 00:00:00 2001
+From: Sam Tobin-Hochstadt <samth@iu.edu>
+Date: Tue, 15 Sep 2026 17:19:00 -0400
+Subject: [PATCH] Avoid generic zero? in float-complex magnitude optimization
+
+
+diff --git a/typed-racket-lib/typed-racket/optimizer/float-complex.rkt b/typed-racket-lib/typed-racket/optimizer/float-complex.rkt
+index b5a2b99b..83b2080b 100644
+--- a/typed-racket-lib/typed-racket/optimizer/float-complex.rkt
++++ b/typed-racket-lib/typed-racket/optimizer/float-complex.rkt
+@@ -449,7 +449,7 @@
+                ;; reuses the algorithm used by the Racket runtime
+                (let*-values ([(r) (unsafe-flabs c.real-binding)]
+                              [(i) (unsafe-flabs c.imag-binding)])
+-                 (if (zero? i)
++                 (if (unsafe-fl= i 0.0)
+                      r
+                      (if (or (unsafe-fl= r +inf.0)(unsafe-fl= i +inf.0))
+                          +inf.0

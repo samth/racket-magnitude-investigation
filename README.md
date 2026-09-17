@@ -2,6 +2,8 @@
 
 See [FINDINGS.md](FINDINGS.md) for the performance table, accuracy results, generated-code analysis, and optimization opportunities.
 
+The exact per-commit measurements for Matthew Flatt's Racket CS changes and the independent Typed Racket `zero?` specialization are in [results/matthew-series.md](results/matthew-series.md), with machine-readable data and raw logs in the same directory.
+
 The repository contains:
 
 - `benchmarks/original/`: the original benchmark programs.
